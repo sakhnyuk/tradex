@@ -2,6 +2,10 @@
   "name": "tradev",
   "version": "0.0.1",
   "description": "Crossplatform crypto trading platform (Mac / PC) ",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakhnyuk/tradev.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,5 +16,9 @@
     "trading"
   ],
   "author": "Mikhail Sakhnyuk <its545@yandex.ru>",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^7.1.7",
+    "typescript": "^3.7.4"
+  }
 }
