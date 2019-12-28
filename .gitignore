@@ -1,0 +1,34 @@
+# Node modules
+node_modules
+
+# Release folders
+build
+release
+app/main.prod.js
+app/main.prod.js.map
+app/renderer.prod.js
+app/renderer.prod.js.map
+app/style.css
+app/style.css.map
+dist
+dll
+main.js
+main.js.map
+*.prod.js
+*.prod.js.map
+
+#webstorm
+.idea
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.eslintcache
+.DS_Store
+
+# Types
+typings
