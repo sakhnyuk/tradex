@@ -8,14 +8,7 @@
     "prettier/react",
     "prettier"
   ],
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "import",
-    "prettier",
-    "@typescript-eslint",
-    "react-hooks"
-  ],
+  "plugins": ["react", "jsx-a11y", "import", "prettier", "@typescript-eslint", "react-hooks"],
   "settings": {
     "react": {
       "pragma": "React",
@@ -63,6 +56,7 @@
   "rules": {
     "no-else-return": 1,
     "no-tabs": 1,
+    "no-console": "off",
     "comma-dangle": ["error", "always-multiline"],
     "no-mixed-spaces-and-tabs": 2,
     "no-prototype-builtins": 1,
