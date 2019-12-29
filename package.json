@@ -8,7 +8,9 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-renderer-dev": "webpack-dev-server --config ./webpack/webpack.renderer.dev.config.js",
+    "start-main-dev": "webpack --config ./webpack/webpack.main.config.js && electron ./dist/main.dev.js",
+    "dev": "cross-env START_HOT=1 npm run start-renderer-dev"
   },
   "keywords": [
     "cryptocurrency",
@@ -18,10 +20,24 @@
   "author": "Mikhail Sakhnyuk <its545@yandex.ru>",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "@babel/preset-typescript": "^7.7.7",
+    "@hot-loader/react-dom": "^16.11.0",
     "@types/electron": "^1.6.10",
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
     "@typescript-eslint/eslint-plugin": "^2.13.0",
     "@typescript-eslint/parser": "^2.13.0",
+    "babel-loader": "^8.0.6",
+    "cross-env": "^6.0.3",
+    "css-loader": "^3.4.0",
     "electron": "^7.1.7",
+    "electron-builder": "^21.2.0",
+    "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
@@ -31,10 +47,24 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "file-loader": "^5.0.2",
+    "fork-ts-checker-webpack-plugin": "^4.0.0-beta.4",
+    "html-webpack-plugin": "^3.2.0",
+    "image-webpack-loader": "^6.0.0",
     "prettier": "^1.19.1",
+    "react-hot-loader": "^4.12.18",
+    "sass-loader": "^8.0.0",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^1.1.2",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.4",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1",
+    "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   }
 }
