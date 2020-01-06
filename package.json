@@ -62,5 +62,73 @@
   "dependencies": {
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
-  }
+  },
+  "build": {
+    "publish": {
+      "provider": "github"
+    },
+    "productName": "Tradev App",
+    "appId": "com.tradev.org",
+    "files": [
+      "package.json",
+      "manifest.json",
+      "renderer/index.html",
+      "dist/renderer.prod.js",
+      "dist/renderer.css",
+      "dist/main.prod.js",
+      "renderer/charting_library/"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "./resources/icon.png",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "resources/ico-app.png",
+      "signingHashAlgorithms": [
+        "sha1",
+        "sha256"
+      ],
+      "publisherName": [
+        "tradev"
+      ]
+    },
+    "nsis": {
+      "oneClick": "true",
+      "perMachine": "true"
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "rpm",
+        "snap",
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    }
+  },
+  "homepage": "./"
 }
