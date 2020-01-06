@@ -33,6 +33,7 @@
     "electron-builder": "^21.2.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",
+    "error-overlay-webpack-plugin": "^0.4.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.9.0",

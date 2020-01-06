@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const merge = require('webpack-merge');
 const { spawn } = require('child_process');
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 
 const baseConfig = require('./webpack.renderer.config');
 
 module.exports = merge.smart(baseConfig, {
+  plugins: [new ErrorOverlayPlugin()],
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
