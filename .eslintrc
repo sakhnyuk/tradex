@@ -68,6 +68,7 @@
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "import/newline-after-import": "error",
+    "import/extensions": "off",
     "function-paren-newline": "off",
     "func-names": "off",
     "max-len": [

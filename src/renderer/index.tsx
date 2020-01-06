@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
+import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
-const App: React.FC = () => {
-  const [timer, setTimer] = useState(100);
+import { App } from './App';
 
-  useEffect(() => {
-    const timerInterval = setInterval(() => setTimer(timer - 1), 1000);
+render(
+  <AppContainer>
+    <App />
+  </AppContainer>,
+  document.getElementById('root'),
+);
 
-    return () => clearInterval(timerInterval);
+if (module.hot) {
+  module.hot.accept('./', () => {
+    // eslint-disable-next-line global-require
+    const NextApp = require('./App').default;
+    render(
+      <AppContainer>
+        <NextApp />
+      </AppContainer>,
+      document.getElementById('root'),
+    );
   });
-
-  const resetTimer = (): void => setTimer(100);
-
-  return (
-    <AppContainer>
-      <div>
-        <h1>Tradev App</h1>
-        <div>{timer}</div>
-        <button type="button" onClick={resetTimer}>
-          Reset
-        </button>
-      </div>
-    </AppContainer>
-  );
-};
-ReactDOM.render(<App />, document.getElementById('root'));
+}
