@@ -7,7 +7,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const baseConfig = require('./webpack.base.config');
 
 module.exports = merge.smart(baseConfig, {
-  mode: 'development',
   target: 'electron-main',
   entry: {
     main: './src/main/main.dev.ts',
@@ -15,36 +14,15 @@ module.exports = merge.smart(baseConfig, {
   module: {
     rules: [
       {
-        test: /\.node$/,
-        use: 'node-loader',
-      },
-      // {
-      //   test: /\.[jt]sx?$/,
-      //   exclude: /node_modules/,
-      //   use: [
-      //     {
-      //       loader: 'babel-loader',
-      //       options: {
-      //         cacheDirectory: true,
-      //       },
-      //     },
-      //     'ts-loader',
-      //   ],
-      // },
-      {
-        test: /\.ts(x?)$/,
-        use: 'ts-loader',
+        test: /\.tsx?$/,
         exclude: /node_modules/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+        },
       },
     ],
   },
-
-  output: {
-    path: path.join(__dirname, '..', 'dist'),
-    libraryTarget: 'commonjs2',
-    filename: '[name].dev.js',
-  },
-
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       reportFiles: ['src/main/**/*'],

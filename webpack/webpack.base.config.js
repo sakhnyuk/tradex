@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path');
 
-const { dependencies } = require('../package.json');
+const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
-  externals: [...Object.keys(dependencies || {})],
-
+  mode: 'development',
+  output: {
+    path: path.resolve(__dirname, '..', 'dist'),
+    filename: isProd ? '[name].prod.js' : '[name].dev.js',
+  },
   node: {
     __dirname: false,
     __filename: false,
@@ -12,5 +16,6 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json'],
   },
+  devtool: 'source-map',
   plugins: [],
 };
