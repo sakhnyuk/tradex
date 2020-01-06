@@ -1,11 +1,51 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { app, BrowserWindow } from 'electron';
-import * as path from 'path';
-import * as url from 'url';
+import { app, BrowserWindow, ipcMain, dialog, BrowserWindowConstructorOptions } from 'electron';
+import path from 'path';
+import url from 'url';
+import isDev from 'electron-is-dev';
+import log from 'electron-log';
+import windowStateKeeper, { State } from 'electron-window-state';
+// import MenuBuilder from './Menu';
 
-let win: BrowserWindow | null;
+let mainWindow: BrowserWindow | null;
 
-const installExtensions = async () => {
+const mac = process.platform === 'darwin';
+// const win = process.platform === 'win32';
+
+// Logger -------------------
+log.info('App starting...');
+log.info(`Electron version - ${app.getVersion()}`);
+
+// Checker internet connection ---------
+ipcMain.on('status-changed', (_, status) => {
+  if (!status) {
+    const dialogOpts = {
+      type: 'info',
+      message: 'Lost internet connection',
+      detail: 'Something is wrong with internet connection! All trading functions needs a stable internet.',
+    };
+    dialog.showMessageBox(dialogOpts);
+  }
+});
+
+// second app instance handle ---------
+log.info('requestSingleInstanceLock...');
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      if (!mainWindow.isVisible()) mainWindow.show();
+      mainWindow.focus();
+    }
+  });
+}
+
+// Install react/redux chrome devtools extensions
+const installExtensions = async (): Promise<void | any[]> => {
   // eslint-disable-next-line global-require
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
@@ -14,25 +54,44 @@ const installExtensions = async () => {
   return Promise.all(extensions.map(name => installer.default(installer[name], forceDownload))).catch(console.log);
 };
 
+// main window creator ---------
 const createWindow = async (): Promise<void> => {
-  if (process.env.NODE_ENV !== 'production') {
+  if (isDev) {
     await installExtensions();
   }
 
-  win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-    },
+  const mainWindowState: State = windowStateKeeper({
+    defaultWidth: 1280,
+    defaultHeight: 760,
   });
 
-  if (process.env.NODE_ENV !== 'production') {
-    process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
+  const windowOptions: BrowserWindowConstructorOptions = {
+    fullscreenable: false,
+    show: false,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
+    minWidth: 1280,
+    minHeight: 760,
+    titleBarStyle: 'hidden',
+    frame: false,
+    // icon: path.resolve(__dirname, '../resources/ico-app.ico'),
+    webPreferences: {
+      nodeIntegration: true, // important option for node api in react app
+    },
+  };
 
-    win.loadURL(`http://localhost:2003`);
+  mainWindow = new BrowserWindow(windowOptions);
+  if (mainWindow !== null) {
+    mainWindowState.manage(mainWindow);
+  }
+
+  if (isDev) {
+    process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
+    mainWindow.loadURL(`http://localhost:2003`);
   } else {
-    win.loadURL(
+    mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
@@ -41,19 +100,46 @@ const createWindow = async (): Promise<void> => {
     );
   }
 
-  if (process.env.NODE_ENV !== 'production') {
+  mainWindow.on('enter-full-screen', (event: Electron.Event) => {
+    event.preventDefault();
+  });
+
+  mainWindow.once('ready-to-show', () => {
+    if (!mainWindow) {
+      throw new Error('"mainWindow" is not defined');
+    }
+    if (process.env.START_MINIMIZED) {
+      mainWindow.minimize();
+    } else {
+      mainWindow.show();
+      mainWindow.focus();
+    }
+  });
+
+  if (isDev) {
     // Open DevTools, see https://github.com/electron/electron/issues/12438 for why we wait for dom-ready
-    win.webContents.once('dom-ready', () => {
-      win!.webContents.openDevTools();
+    mainWindow.webContents.once('dom-ready', () => {
+      mainWindow!.webContents.openDevTools();
     });
   }
 
-  win.on('closed', () => {
-    win = null;
+  mainWindow.on('close', (event: Event) => {
+    if (mainWindow === null) return;
+
+    if (mainWindow.isVisible()) {
+      mainWindow.hide();
+      event.preventDefault();
+    }
   });
 };
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+});
+
+app.on('before-quit', () => {
+  if (mac) app.exit(0);
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -62,7 +148,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  if (win === null) {
-    createWindow();
+  if (mainWindow !== null) {
+    mainWindow.show();
   }
 });
