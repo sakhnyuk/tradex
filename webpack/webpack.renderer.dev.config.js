@@ -1,19 +1,35 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 const { spawn } = require('child_process');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 
 const baseConfig = require('./webpack.renderer.config');
 
+const port = 2003;
+
 module.exports = merge.smart(baseConfig, {
-  plugins: [new ErrorOverlayPlugin()],
+  plugins: [
+    new ErrorOverlayPlugin(),
+    new webpack.HotModuleReplacementPlugin({
+      multiStep: false,
+    }),
+  ],
+  entry: {
+    renderer: [
+      'react-hot-loader/patch',
+      `webpack-dev-server/client?http://localhost:${port}/`,
+      'webpack/hot/only-dev-server',
+      require.resolve('../src/renderer/index.tsx'),
+    ],
+  },
   resolve: {
     alias: {
       'react-dom': '@hot-loader/react-dom',
     },
   },
   devServer: {
-    port: 2003,
+    port,
     compress: true,
     noInfo: true,
     stats: 'errors-only',

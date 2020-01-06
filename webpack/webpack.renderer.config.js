@@ -8,9 +8,9 @@ const baseConfig = require('./webpack.base.config');
 
 module.exports = merge.smart(baseConfig, {
   target: 'electron-renderer',
-  entry: {
-    app: './src/renderer/index.tsx',
-  },
+  // entry: {
+  //   app: './src/renderer/index.tsx',
+  // },
   module: {
     rules: [
       {
