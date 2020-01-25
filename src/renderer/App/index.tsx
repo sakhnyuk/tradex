@@ -6,6 +6,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { createTheme } from '../theme/createTheme';
 import { history } from '../store/configureStore';
 import styles from './styles';
+import MacHeader from '../components/Header/Mac';
 // import { isMac } from '../appConstant';
 
 const useStyles = makeStyles(styles);
@@ -18,6 +19,7 @@ export const App: React.FC = () => {
     <MuiThemeProvider theme={createTheme(theme)}>
       <ConnectedRouter history={history}>
         <div className={classes.root}>
+          <MacHeader />
           {/* {isMac ? <MacHeader /> : <WinHeader />} */}
           <div className={classes.container}>
             <div className={classes.leftMenu}>{/* <LeftMenu /> */}</div>
