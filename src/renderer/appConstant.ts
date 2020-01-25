@@ -13,9 +13,7 @@ export const exchanges = [
 ];
 
 export const privateExchanges = ['binance', 'bitfinex', 'cryptobridge', 'crex24', 'okex', 'hitbtc', 'huobi-global'];
-
 export const marginExchanges = ['bitmex', 'bitmex-testnet'];
-
 export const arbitrageExchanges = ['binance', 'bitfinex', 'exmo'];
 
 export const exchangePairs = {
@@ -33,3 +31,5 @@ export const exchangePairs = {
 };
 
 export const storeVersion = 2006;
+
+export const isMac = process.platform === 'darwin';

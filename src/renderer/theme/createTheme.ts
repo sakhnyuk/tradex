@@ -12,7 +12,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
   }
 }
 
-const createTheme = (currentTheme: TypeTheme): Theme => {
+export const createTheme = (currentTheme: TypeTheme): Theme => {
   return createMuiTheme({
     appColors: {
       useNextVariants: true,
@@ -64,5 +64,3 @@ const createTheme = (currentTheme: TypeTheme): Theme => {
     },
   });
 };
-
-export default createTheme;
