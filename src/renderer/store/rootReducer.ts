@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 
-const reducer = history =>
+const reducer = (history: any) =>
   combineReducers({
     router: connectRouter(history),
   });
