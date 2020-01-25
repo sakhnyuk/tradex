@@ -91,12 +91,6 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/jsx-one-expression-per-line": "off",
-    "@typescript-eslint/explicit-function-return-type": [
-      "warn",
-      {
-        "allowExpressions": true,
-        "allowHigherOrderFunctions": false
-      }
-    ]
+    "@typescript-eslint/explicit-function-return-type": "off"
   }
 }
