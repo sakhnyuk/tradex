@@ -13,28 +13,24 @@ const useStyles = makeStyles(styles);
 
 const WinHeader: React.FC = () => {
   const classes = useStyles();
-
   const [showMaxButton, toggleMaxRestoreButtons] = useState(true);
+  const electronWindow = remote.getCurrentWindow();
 
   const onMinButtonClick = () => {
-    const electronWindow = remote.getCurrentWindow();
     electronWindow.minimize();
   };
 
   const onMaxButtonClick = () => {
-    const electronWindow = remote.getCurrentWindow();
     electronWindow.maximize();
     toggleMaxRestoreButtons(false);
   };
 
   const onRestoreButtonClick = () => {
-    const electronWindow = remote.getCurrentWindow();
     electronWindow.unmaximize();
     toggleMaxRestoreButtons(true);
   };
 
   const onCloseButtonClick = () => {
-    const electronWindow = remote.getCurrentWindow();
     electronWindow.close();
   };
 
