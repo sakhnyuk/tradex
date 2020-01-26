@@ -33,3 +33,5 @@ export const exchangePairs = {
 export const storeVersion = 2006;
 
 export const isMac = process.platform === 'darwin';
+
+export const appName = 'Tradev App';
