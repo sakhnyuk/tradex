@@ -54,11 +54,7 @@ const style = (theme: Theme) =>
       gridColumn: 1,
       ...buttonStyles.basic,
     },
-    maxButton: {
-      gridColumn: 2,
-      ...buttonStyles.basic,
-    },
-    restoreButton: {
+    centerButton: {
       gridColumn: 2,
       ...buttonStyles.basic,
     },

@@ -46,11 +46,11 @@ const WinHeader: React.FC = () => {
             <span>&#xE921;</span>
           </div>
           {showMaxButton ? (
-            <div onClick={onMaxButtonClick} className={classes.maxButton}>
+            <div onClick={onMaxButtonClick} className={classes.centerButton}>
               <span>&#xE922;</span>
             </div>
           ) : (
-            <div onClick={onRestoreButtonClick} className={classes.restoreButton}>
+            <div onClick={onRestoreButtonClick} className={classes.centerButton}>
               <span>&#xE923;</span>
             </div>
           )}
