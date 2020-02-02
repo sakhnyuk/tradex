@@ -35,3 +35,14 @@ export const storeVersion = 2006;
 export const isMac = process.platform === 'darwin';
 
 export const appName = 'Tradev App';
+
+export const appRouting = {
+  path: {
+    ANALYSIS: '/',
+    SETTINGS: '/settings',
+  },
+  labels: {
+    ANALYSIS: 'Analysis',
+    SETTINGS: 'Settings',
+  },
+};
