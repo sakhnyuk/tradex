@@ -1,6 +1,9 @@
 import { Store } from '../types';
 
+export const selectCoreStore = (state: Store) => state.core;
+
 export const selectCore = {
+  store: (state: Store) => state.core,
   isOnline: (state: Store) => state.core.isOnline,
   reloadChart: (state: Store) => state.core.reloadChart,
   theme: (state: Store) => state.core.theme,
