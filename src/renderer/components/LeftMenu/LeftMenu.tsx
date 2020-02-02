@@ -12,7 +12,7 @@ import { appRouting } from '../../appConstant';
 
 const useStyles = makeStyles(styles);
 
-const LeftMenu = () => {
+const LeftMenu: React.FC = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const pathname = useSelector((state: any) => state.router.location.pathname);

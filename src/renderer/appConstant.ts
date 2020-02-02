@@ -12,11 +12,32 @@ export const exchanges = [
   'exmo',
 ];
 
-export const privateExchanges = ['binance', 'bitfinex', 'cryptobridge', 'crex24', 'okex', 'hitbtc', 'huobi-global'];
+export type Exchange =
+  | 'binance'
+  | 'bitfinex'
+  | 'bitmex'
+  | 'bitmex-testnet'
+  | 'cryptobridge'
+  | 'hitbtc'
+  | 'okex'
+  | 'poloniex'
+  | 'crex24'
+  | 'huobi-global'
+  | 'exmo';
+
+export const privateExchanges: Exchange[] = [
+  'binance',
+  'bitfinex',
+  'cryptobridge',
+  'crex24',
+  'okex',
+  'hitbtc',
+  'huobi-global',
+];
 export const marginExchanges = ['bitmex', 'bitmex-testnet'];
 export const arbitrageExchanges = ['binance', 'bitfinex', 'exmo'];
 
-export const exchangePairs = {
+export const exchangePairs: { [key: string]: string } = {
   binance: 'BTC/USDT',
   bitfinex: 'BTC/USD',
   bitmex: 'XBT/USD',
