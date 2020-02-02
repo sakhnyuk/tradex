@@ -81,7 +81,7 @@ export const updateTrades = createAction<string[][]>('exchange/updateTrades');
 export const setOrderBook = createAction<any>('exchange/setOrderBook');
 export const updateOrderbook = createAction<any>('exchange/updateOrderbook');
 
-const exchangeReducer = createReducer({}, initialState)
+const exchangeReducer = createReducer<ExchangeStore>({}, initialState)
   .on(setPairAndExchange, (state, { exchange, pair }: PairAndExchange) => {
     let newState = state;
 

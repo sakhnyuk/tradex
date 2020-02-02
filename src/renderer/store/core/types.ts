@@ -47,5 +47,13 @@ export interface SetToCore {
   showAllPositions?: boolean;
   orderBookIsLoading?: boolean;
   tradesIsLoading?: boolean;
-  pairListSorting?: string;
+  pairListSorting?: 
+  | 'Volume'
+  | 'VolumeDescending'
+  | 'Price'
+  | 'PriceDescending'
+  | 'Name'
+  | 'NameDescending'
+  | 'Change'
+  | 'ChangeDescending';;
 }
