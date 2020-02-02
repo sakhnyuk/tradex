@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 import { takeLatest, call, put } from 'redux-saga/effects';
 
-import { fetchCoinIcons, setIcons, sendFeedback } from './reducer';
+import { fetchCoinIcons, setToCore } from './reducer';
 
 const url = 'https://cryptobook.world/ru/api/get/coin';
 
@@ -16,7 +16,7 @@ function* fetchIconsSaga() {
     Object.keys(icons).forEach(key => {
       iconUrls[icons[key].short_name] = `https://www.cryptobook.world${icons[key].icon}`;
     });
-    yield put(setIcons(iconUrls));
+    yield put(setToCore({ icons: iconUrls }));
   } catch (error) {
     console.error(error, '02');
   }
