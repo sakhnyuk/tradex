@@ -1,7 +1,7 @@
 import React from 'react';
 import { MuiThemeProvider, makeStyles } from '@material-ui/core';
 import { ConnectedRouter } from 'connected-react-router';
-// import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { createTheme } from '../theme/createTheme';
 import { history } from '../store/configureStore';
@@ -10,11 +10,12 @@ import MacHeader from '../components/Header/MacOS';
 import WinHeader from '../components/Header/Windows';
 import { isMac } from '../appConstant';
 import LeftMenu from '../components/LeftMenu';
+import Analysis from '../components/Analysis';
 
 const useStyles = makeStyles(styles);
 
 export const App: React.FC = () => {
-  const theme = 'dark';
+  const theme = 'light';
   const classes = useStyles();
 
   return (
@@ -26,10 +27,10 @@ export const App: React.FC = () => {
             <div className={classes.leftMenu}>
               <LeftMenu />
             </div>
-            {/* <Switch>
+            <Switch>
               <Route exact path="/" component={Analysis} />
-              <Route path="/settings" component={Settings} />
-            </Switch> */}
+              {/* <Route path="/settings" component={Settings} /> */}
+            </Switch>
           </div>
         </div>
       </ConnectedRouter>
