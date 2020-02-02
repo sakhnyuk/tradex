@@ -1,8 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'connected-react-router';
-import { createHashHistory } from 'history';
 import createSagaMiddleware from 'redux-saga';
-import createReducer from './rootReducer';
+
+import { createHashHistory } from 'history';
+import { createRootReducer } from './rootReducer';
 
 declare global {
   interface Window {
@@ -14,15 +15,11 @@ declare global {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const history = createHashHistory();
 
-export const configureStore = (initialState = {}) => {
+export const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware();
-  const reducer = createReducer(history);
+  const rootReducer = createRootReducer(history);
 
-  const store = createStore(
-    reducer,
-    initialState,
-    composeEnhancers(applyMiddleware(routerMiddleware(history), sagaMiddleware)),
-  );
+  const store = createStore(rootReducer, composeEnhancers(applyMiddleware(routerMiddleware(history), sagaMiddleware)));
 
   return store;
 };

@@ -30,7 +30,7 @@ export const exchangePairs = {
   exmo: 'BTC/USD',
 };
 
-export const storeVersion = 2006;
+export const storeVersion = 20022020;
 
 export const isMac = process.platform === 'darwin';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { MuiThemeProvider, makeStyles } from '@material-ui/core';
 import { ConnectedRouter } from 'connected-react-router';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import { createTheme } from '../theme/createTheme';
 import { history } from '../store/configureStore';
