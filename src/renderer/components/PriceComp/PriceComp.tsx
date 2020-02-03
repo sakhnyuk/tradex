@@ -2,7 +2,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectStringPrice, selectIsPriceRising } from '../../store/exchange/selectors';
 
-const PriceComp = ({ classes }) => {
+interface Props {
+  classes?: any;
+}
+
+const PriceComp: React.FC<Props> = ({ classes }) => {
   const price = useSelector(selectStringPrice);
   const isPriceRising = useSelector(selectIsPriceRising);
 

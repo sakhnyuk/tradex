@@ -5,10 +5,16 @@ import { updateTrades, updateOrderbook, setPrice, setOrderBook, setIsPriceRising
 import { setOrderBookIsLoading, setTradesIsLoading } from '../core/reducer';
 import { PairAndExchange } from './types';
 
-// prevent empty updates
-const isEmpty = updates => !updates.asks.length && !updates.bids.length;
+declare global {
+  interface Window {
+    updateChartPrice: any;
+  }
+}
 
-const createBatchTrades = channel =>
+// prevent empty updates
+const isEmpty = (updates: { asks: string[][]; bids: string[][] }) => !updates.asks.length && !updates.bids.length;
+
+const createBatchTrades = (channel: any) =>
   function* batchTrades() {
     const trades = [];
 
@@ -22,6 +28,7 @@ const createBatchTrades = channel =>
         // this block syncs data for chart
         // inits in tvChartContainer/api/updater
         // will throw some errors before inits (so needs ?.)
+        // eslint-disable-next-line no-unused-expressions
         window.updateChartPrice?.(trades[0].price);
 
         yield put(setPrice(trades[0].price));
@@ -32,7 +39,7 @@ const createBatchTrades = channel =>
     }
   };
 
-const createBatchOrderbook = channel =>
+const createBatchOrderbook = (channel: any) =>
   function* batchOrderbook() {
     let updates = { asks: [], bids: [] };
 
@@ -55,7 +62,7 @@ const createBatchOrderbook = channel =>
     }
   };
 
-const createBgWorker = (timer, task) =>
+const createBgWorker = (timer: number, task: () => void) =>
   function* bgWorker() {
     while (true) {
       // starts the task in the background

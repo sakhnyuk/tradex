@@ -116,9 +116,12 @@ class ReduxSagaWebca {
     return this.webcas[exchange].getPairs();
   };
 
-  fetchOHLCV = async (symbolInfo: string, resolution: string, from: number, to: number) => {
+  fetchOHLCV = async (symbolInfo: any, resolution: string, from: number, to: number) => {
     // we got symbolInfo for example = binance:BTC/USDT
     // So we shuold split it
+
+    console.info('TODO type this -', symbolInfo);
+
     const [exchange, base, quote] = symbolInfo.name.split(/[:/]/);
     const pair = `${base}/${quote}`;
 

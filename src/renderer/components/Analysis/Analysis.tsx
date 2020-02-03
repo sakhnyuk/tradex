@@ -15,9 +15,7 @@ const Analysis = () => {
       <div className={classes.header}>
         <Header isAnalysis />
       </div>
-      {/* <div className={classes.pairBar}>
-        <PairsBar />
-      </div> */}
+      <div>{/* <PairsBar /> */}</div>
       <div className={classes.chartFullPage}>{/* <FourChart /> */}</div>
 
       <Paper className={classes.orderBook}>{/* <OrderBook /> */}</Paper>

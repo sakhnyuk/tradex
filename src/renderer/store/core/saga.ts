@@ -11,7 +11,7 @@ const fetchIconsRequest = () => fetch(url).then(r => r.json());
 function* fetchIconsSaga() {
   try {
     const icons = yield call(fetchIconsRequest);
-    icons.sort((a, b) => b.market_cap - a.market_cap);
+    icons.sort((a: any, b: any) => b.market_cap - a.market_cap);
 
     const iconUrls: { [key: string]: any } = {};
 

@@ -164,19 +164,4 @@ const Header: React.FC<Props> = ({ isAnalysis }) =>
     );
   };
 
-Header.defaultProps = {
-  pairInfo: {
-    priceChangePercent: 0,
-    high: 0,
-    low: 0,
-    volume: 0,
-  },
-  classes: {},
-  ticker: '',
-  openCloseSetting: () => {},
-  openClosePairsBar: () => {},
-  openCloseFeedback: () => {},
-  setLayout: () => {},
-};
-
 export default Header;
