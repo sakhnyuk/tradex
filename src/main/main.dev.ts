@@ -79,6 +79,7 @@ const createWindow = async (): Promise<void> => {
     // icon: path.resolve(__dirname, '../resources/ico-app.ico'),
     webPreferences: {
       nodeIntegration: true, // important option for node api in react app
+      webSecurity: false, // CORS off
     },
   };
 
