@@ -28,6 +28,7 @@ function* resubscribeSaga() {
   let webcaWatchers = yield fork(createWatchers(defaultPairAndExchange));
   while (true) {
     const { payload } = yield take(setPairAndExchange);
+
     if (webcaWatchers) yield cancel(webcaWatchers);
     webcaWatchers = yield fork(createWatchers(payload));
   }

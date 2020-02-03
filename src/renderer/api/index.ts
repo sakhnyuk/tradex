@@ -48,7 +48,7 @@ class ReduxSagaWebca {
 
   // PUBLIC METHODS
 
-  tradesChannel({ exchange, pair }: { exchange: Exchange; pair: string }) {
+  tradesChannel = ({ exchange, pair }: { exchange: Exchange; pair: string }) => {
     if (this._tradesChannel) this._tradesChannel.close();
 
     const api = this.webcas[exchange];
@@ -66,7 +66,7 @@ class ReduxSagaWebca {
 
     this._tradesChannel = channel;
     return channel;
-  }
+  };
 
   orderbookChannel = ({ exchange, pair }: { exchange: Exchange; pair: string }) => {
     if (this._orderbookChannel) this._orderbookChannel.close();

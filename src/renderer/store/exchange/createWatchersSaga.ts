@@ -3,6 +3,7 @@ import API from '../../api';
 
 import { updateTrades, updateOrderbook, setPrice, setOrderBook, setIsPriceRising } from './reducer';
 import { setOrderBookIsLoading, setTradesIsLoading } from '../core/reducer';
+import { PairAndExchange } from './types';
 
 // prevent empty updates
 const isEmpty = updates => !updates.asks.length && !updates.bids.length;
@@ -66,7 +67,7 @@ const createBgWorker = (timer, task) =>
     }
   };
 
-export default pairAndExchange => {
+export default (pairAndExchange: PairAndExchange) => {
   return function* createWatchers() {
     const tradesChannel = yield call(API.public.tradesChannel, pairAndExchange);
     const orderbookChannel = yield call(API.public.orderbookChannel, pairAndExchange);

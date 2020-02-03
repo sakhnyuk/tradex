@@ -11,7 +11,7 @@ const activePair = (state: Store) => activeExchange(state).activePair;
 
 export const selectExchange = (state: Store) => state.exchange.exchange;
 
-export const selectPairAndExchange = createSelector(activeExchange, activePair, (exchange, pair) => ({
+export const selectPairAndExchange = createSelector(selectExchange, activePair, (exchange, pair) => ({
   exchange,
   pair,
 }));
