@@ -11,7 +11,7 @@ import MacHeader from '../components/Header/MacOS';
 import WinHeader from '../components/Header/Windows';
 import { isMac } from '../appConstant';
 import LeftMenu from '../components/LeftMenu';
-import Analysis from '../components/Analysis';
+import Analysis from '../routes/Analysis';
 import { selectCore } from '../store/core/selectors';
 import { useCoreActions } from '../store/core/useCoreActions';
 
