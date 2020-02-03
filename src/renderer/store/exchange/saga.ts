@@ -24,6 +24,7 @@ import { Exchange } from '../../appConstant';
 
 function* resubscribeSaga() {
   const defaultPairAndExchange = yield select(selectPairAndExchange);
+
   let webcaWatchers = yield fork(createWatchers(defaultPairAndExchange));
   while (true) {
     const { payload } = yield take(setPairAndExchange);
@@ -73,8 +74,9 @@ function* onlineWatcher() {
   let resubscribeTask;
 
   while (true) {
-    const { payload: online } = yield take(setOnline);
-    if (online) {
+    const { payload: isOnline } = yield take(setOnline);
+
+    if (isOnline) {
       yield call(testNetworkSaga);
 
       if (resubscribeTask) yield cancel(resubscribeTask);

@@ -35,6 +35,7 @@ export const App: React.FC = () => {
     };
     window.addEventListener('online', update);
     window.addEventListener('offline', update);
+
     update();
 
     return () => {

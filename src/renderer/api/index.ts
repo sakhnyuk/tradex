@@ -7,11 +7,11 @@ import { exchanges, Exchange } from '../appConstant';
 class ReduxSagaWebca {
   webcas: { [key: string]: any } = {};
 
-  _tradesChannel: any;
+  _tradesChannel: any = null;
 
-  _orderbookChannel: any;
+  _orderbookChannel: any = null;
 
-  _klinesChannel: any;
+  _klinesChannel: any = null;
 
   public: any;
 
