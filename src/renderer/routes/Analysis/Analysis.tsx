@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core';
 
 import styles from './styles';
 import Header from '../../components/TradeHeader/Header';
+import Trades from '../../components/Trades';
 
 const useStyles = makeStyles(styles);
 
@@ -19,7 +20,9 @@ const Analysis = () => {
       <div className={classes.chartFullPage}>{/* <FourChart /> */}</div>
 
       <Paper className={classes.orderBook}>{/* <OrderBook /> */}</Paper>
-      <Paper className={classes.trades}>{/* <Trades /> */}</Paper>
+      <Paper className={classes.trades}>
+        <Trades />
+      </Paper>
 
       {/* <Exchanges showDemo /> */}
     </div>
