@@ -24,144 +24,138 @@ interface Props {
   isAnalysis?: boolean;
 }
 
-const Header: React.FC<Props> = ({ isAnalysis }) =>
-  //   {
-  //   ticker,
-  //   pairInfo,
-  //   openCloseSetting,
-  //   openClosePairsBar,
-  //   isMac,
-  //   account,
-  //   instructionStep,
-  //   isInstructionMode,
-  // }
-  {
-    const classes = useStyles();
+const Header: React.FC<Props> = ({ isAnalysis }) => {
+  const classes = useStyles();
 
-    const { setOpenPairsBar, setOpenSetting } = useCoreActions();
+  const { setOpenPairsBar, setOpenSetting } = useCoreActions();
 
-    const ticker = useSelector(select.selectActivePair);
-    const pairInfo = useSelector(select.selectPairInfo);
-    const isMac = useSelector(selectCore.isMac);
-    const exchange = useSelector(select.selectExchange);
+  const ticker = useSelector(select.selectActivePair);
+  const pairInfo = useSelector(select.selectPairInfo);
+  const isMac = useSelector(selectCore.isMac);
+  const exchange = useSelector(select.selectExchange);
 
-    const splitData = ticker.split(/[:/]/);
+  const splitData = ticker.split(/[:/]/);
 
-    let percentageData;
-    let percentageColor;
-    if (pairInfo && pairInfo.priceChangePercent) {
-      percentageData = `${pairInfo.priceChangePercent.toFixed(2)}%`;
-      percentageColor = pairInfo.priceChangePercent >= 0 ? classes.itemGreen : classes.itemRed;
-    } else {
-      percentageData = 0;
-      percentageColor = classes.itemGreen;
-    }
+  let percentageData;
+  let percentageColor;
+  if (pairInfo && pairInfo.priceChangePercent) {
+    percentageData = `${pairInfo.priceChangePercent.toFixed(2)}%`;
+    percentageColor = pairInfo.priceChangePercent >= 0 ? classes.itemGreen : classes.itemRed;
+  } else {
+    percentageData = 0;
+    percentageColor = classes.itemGreen;
+  }
 
-    return (
-      <div className={classes.headerContainer}>
-        <AppBar position="relative" elevation={0} className={classes.appBar}>
-          <Toolbar
-            disableGutters
-            className={isMac ? classes.macToolbarHeader : classes.toolbarHeader} // padding for topHeader ???
+  return (
+    <div className={classes.headerContainer}>
+      <AppBar position="relative" elevation={0} className={classes.appBar}>
+        <Toolbar
+          disableGutters
+          className={isMac ? classes.macToolbarHeader : classes.toolbarHeader} // padding for topHeader ???
+        >
+          <Button
+            classes={{
+              root: classnames({
+                [classes.pairButton]: true,
+              }),
+            }}
+            onClick={() => setOpenPairsBar(true)}
+            color="inherit"
           >
-            <Button
-              classes={{
-                root: classnames({
-                  [classes.pairButton]: true,
-                }),
-              }}
-              onClick={() => setOpenPairsBar(true)}
-              color="inherit"
-            >
-              {ticker}
-            </Button>
+            {ticker}
+          </Button>
 
-            <Button
-              classes={{
-                root: classnames({
-                  [classes.pairButton]: true,
-                  [classes.borderRight]: true,
-                }),
-              }}
-              onClick={() => setOpenSetting(true)}
-              color="inherit"
-            >
-              {/* {account.exchange} */}
-              {/* <div className={classes.accountName}>{isAnalysis ? 'analysis' : account.name.slice(0, 16)}</div> */}
-              {exchange}
-              <div className={classes.accountName}>analysis</div>
-            </Button>
+          <Button
+            classes={{
+              root: classnames({
+                [classes.pairButton]: true,
+                [classes.borderRight]: true,
+              }),
+            }}
+            onClick={() => setOpenSetting(true)}
+            color="inherit"
+          >
+            {/* {account.exchange} */}
+            {/* <div className={classes.accountName}>{isAnalysis ? 'analysis' : account.name.slice(0, 16)}</div> */}
+            {exchange}
+            <div className={classes.accountName}>analysis</div>
+          </Button>
 
-            <Grid container alignItems="center" className={classes.tickerInfo}>
-              <Grid item>
-                <ListItem className={classes.item}>
-                  <ListItemText
-                    primary="Last Price"
-                    secondary={<PriceComp />}
-                    classes={{
-                      primary: classes.itemTitle,
-                      secondary: classes.itemWhite,
-                    }}
-                  />
-                </ListItem>
-              </Grid>
-
-              <Grid item>
-                <ListItem className={classes.item}>
-                  <ListItemText
-                    primary="24h Change"
-                    secondary={pairInfo ? percentageData : null}
-                    classes={{
-                      primary: classes.itemTitle,
-                      secondary: pairInfo ? percentageColor : '',
-                    }}
-                  />
-                </ListItem>
-              </Grid>
-
-              <Grid item>
-                <ListItem className={classes.item}>
-                  <ListItemText
-                    primary="24h High"
-                    secondary={formatPrice(pairInfo?.high)}
-                    classes={{
-                      primary: classes.itemTitle,
-                      secondary: classes.itemWhite,
-                    }}
-                  />
-                </ListItem>
-              </Grid>
-
-              <Grid item>
-                <ListItem className={classes.item}>
-                  <ListItemText
-                    primary="24h Low"
-                    secondary={formatPrice(pairInfo?.low)}
-                    classes={{
-                      primary: classes.itemTitle,
-                      secondary: classes.itemWhite,
-                    }}
-                  />
-                </ListItem>
-              </Grid>
-
-              <Grid item>
-                <ListItem className={classes.item}>
-                  <ListItemText
-                    primary="24h Volume"
-                    secondary={`${formatQuantity(pairInfo?.volume || 0)} ${splitData[1]}`}
-                    classes={{
-                      primary: classes.itemTitle,
-                      secondary: classes.itemWhite,
-                    }}
-                  />
-                </ListItem>
-              </Grid>
+          <Grid container alignItems="center" className={classes.tickerInfo}>
+            <Grid item>
+              <ListItem className={classes.item}>
+                <ListItemText
+                  primary="Last Price"
+                  secondary={<PriceComp />}
+                  classes={{
+                    primary: classes.itemTitle,
+                    secondary: classes.itemWhite,
+                    multiline: classes.itemMultiline,
+                  }}
+                />
+              </ListItem>
             </Grid>
-          </Toolbar>
-        </AppBar>
-      </div>
-    );
-  };
+
+            <Grid item>
+              <ListItem className={classes.item}>
+                <ListItemText
+                  primary="24h Change"
+                  secondary={pairInfo ? percentageData : null}
+                  classes={{
+                    primary: classes.itemTitle,
+                    secondary: pairInfo ? percentageColor : '',
+                    multiline: classes.itemMultiline,
+                  }}
+                />
+              </ListItem>
+            </Grid>
+
+            <Grid item>
+              <ListItem className={classes.item}>
+                <ListItemText
+                  primary="24h High"
+                  secondary={formatPrice(pairInfo?.high)}
+                  classes={{
+                    primary: classes.itemTitle,
+                    secondary: classes.itemWhite,
+                    multiline: classes.itemMultiline,
+                  }}
+                />
+              </ListItem>
+            </Grid>
+
+            <Grid item>
+              <ListItem className={classes.item}>
+                <ListItemText
+                  primary="24h Low"
+                  secondary={formatPrice(pairInfo?.low)}
+                  classes={{
+                    primary: classes.itemTitle,
+                    secondary: classes.itemWhite,
+                    multiline: classes.itemMultiline,
+                  }}
+                />
+              </ListItem>
+            </Grid>
+
+            <Grid item>
+              <ListItem className={classes.item}>
+                <ListItemText
+                  primary="24h Volume"
+                  secondary={`${formatQuantity(pairInfo?.volume || 0)} ${splitData[1]}`}
+                  classes={{
+                    primary: classes.itemTitle,
+                    secondary: classes.itemWhite,
+                    multiline: classes.itemMultiline,
+                  }}
+                />
+              </ListItem>
+            </Grid>
+          </Grid>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+};
 
 export default Header;

@@ -82,6 +82,10 @@ const style = (theme: Theme) =>
       padding: '0',
       color: theme.palette.text.primary,
     },
+    itemMultiline: {
+      marginBottom: '4px',
+      marginTop: '4px',
+    },
     itemRed: {
       textAlign: 'left',
       fontSize: '14px',
