@@ -1,5 +1,15 @@
 import { TypeTheme } from '../../theme/interface';
 
+export type SortingPairs =
+  | 'Volume'
+  | 'VolumeDescending'
+  | 'Price'
+  | 'PriceDescending'
+  | 'Name'
+  | 'NameDescending'
+  | 'Change'
+  | 'ChangeDescending';
+
 export interface CoreReducer {
   isMac: boolean;
   isOnline: boolean;
@@ -18,15 +28,7 @@ export interface CoreReducer {
   showAllPositions: boolean;
   orderBookIsLoading: boolean;
   tradesIsLoading: boolean;
-  pairListSorting:
-    | 'Volume'
-    | 'VolumeDescending'
-    | 'Price'
-    | 'PriceDescending'
-    | 'Name'
-    | 'NameDescending'
-    | 'Change'
-    | 'ChangeDescending';
+  pairListSorting: SortingPairs;
 }
 
 export interface SetToCore {
@@ -47,13 +49,5 @@ export interface SetToCore {
   showAllPositions?: boolean;
   orderBookIsLoading?: boolean;
   tradesIsLoading?: boolean;
-  pairListSorting?: 
-  | 'Volume'
-  | 'VolumeDescending'
-  | 'Price'
-  | 'PriceDescending'
-  | 'Name'
-  | 'NameDescending'
-  | 'Change'
-  | 'ChangeDescending';;
+  pairListSorting?: SortingPairs;
 }

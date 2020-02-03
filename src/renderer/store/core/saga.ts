@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 import { takeLatest, call, put } from 'redux-saga/effects';
 
-import { fetchCoinIcons, setToCore } from './reducer';
+import { fetchCoinIcons, setIcons } from './reducer';
 
 const url = 'https://cryptobook.world/ru/api/get/coin';
 
@@ -12,11 +12,14 @@ function* fetchIconsSaga() {
   try {
     const icons = yield call(fetchIconsRequest);
     icons.sort((a, b) => b.market_cap - a.market_cap);
-    const iconUrls = {};
+
+    const iconUrls: { [key: string]: any } = {};
+
     Object.keys(icons).forEach(key => {
       iconUrls[icons[key].short_name] = `https://www.cryptobook.world${icons[key].icon}`;
     });
-    yield put(setToCore({ icons: iconUrls }));
+
+    yield put(setIcons(iconUrls));
   } catch (error) {
     console.error(error, '02');
   }
