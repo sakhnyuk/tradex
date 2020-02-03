@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core';
 
 import styles from './styles';
+import Header from '../TradeHeader/Header';
 
 const useStyles = makeStyles(styles);
 
@@ -11,7 +12,9 @@ const Analysis = () => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.header}>{/* <Header isAnalysis /> */}</div>
+      <div className={classes.header}>
+        <Header isAnalysis />
+      </div>
       {/* <div className={classes.pairBar}>
         <PairsBar />
       </div> */}
