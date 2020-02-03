@@ -96,13 +96,21 @@ export const selectIsPriceRising = (state: Store) => activeExchange(state).data[
 export const selectStringPrice = (state: Store) => formatPrice(selectPrice(state));
 
 export const selectTradeRow = (state: Store, id: number) => activeExchange(state).data[activePair(state)].trades[id];
-export const selectOrderbookRow = (state: Store, side: string, id: number) => {
+
+export const selectOrderbookRow = (state: Store, side: string, id: number): number[] => {
   const asksOrBids = activeExchange(state).data[activePair(state)].orderBook[side];
+
+  if (!asksOrBids.length) return [0, 0, 0, 0];
+
   if (side === 'asks') {
     const { length } = asksOrBids;
-    return asksOrBids[length + id - 1000];
+    return asksOrBids[length + id - 1000] || [0, 0, 0, 0];
   }
-  return asksOrBids[id];
+  if (side === 'bids') {
+    return asksOrBids[id];
+  }
+
+  return [0, 0, 0, 0];
 };
 
 export const selectMarginalBase = (state: Store) => selectPairInfo(state)?.base;
