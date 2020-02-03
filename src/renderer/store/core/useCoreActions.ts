@@ -9,7 +9,7 @@ export const useCoreActions = () => {
   const dispatch = useDispatch();
 
   const actions = {
-    setOnline: useCallback((isOnline: boolean) => dispatch(act.setToCore({ isOnline })), [dispatch]),
+    setOnline: useCallback((isOnline: boolean) => dispatch(act.setOnline(isOnline)), [dispatch]),
     setReloadChart: useCallback((reloadChart: boolean) => dispatch(act.setReloadChart(reloadChart)), [dispatch]),
     setTheme: useCallback((theme: TypeTheme) => dispatch(act.setTheme(theme)), [dispatch]),
     setOpenSetting: useCallback((settingOpen: boolean) => dispatch(act.setOpenSetting(settingOpen)), [dispatch]),
