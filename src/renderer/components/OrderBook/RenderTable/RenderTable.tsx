@@ -17,7 +17,7 @@ const RenderTable: React.FC<Props> = ({ side, color }) => {
 
   const handleResize = () => {
     const asksRef = document.getElementById('list');
-
+    if (asksRef === null) return;
     asksRef.scrollTop = asksRef.scrollHeight - asksRef.clientHeight;
   };
 
