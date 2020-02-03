@@ -61,12 +61,11 @@ export const savePairAndExchange = createAction('exchange/setExchangeAndPair');
 
 export const fetchExchangeConfig = createAction('exchange/fetchExchangeConfig');
 export const setOrderTypes = createAction<SetOrderTypes>('exchange/setOrderTypes');
-export const setActiveOrderType = createAction('exchange/setActiveOrderType');
+export const setActiveOrderType = createAction<string>('exchange/setActiveOrderType');
 export const setSupportedComponents = createAction<SetSupportedComponents>('exchange/setSupportedComponents');
 export const setHistoryComponent = createAction<string>('exchange/setHistoryComponent');
 export const setSupportedIntervals = createAction<SetSupportedIntervals>('core/setSupportedIntervals');
 
-export const requestPairList = createAction('exchange/requestPairList');
 export const setPairList = createAction<{ [pair: string]: any }>('exchange/setPairList');
 export const setFilteredPairList = createAction<{ [key: string]: any }>('exchange/updatePairList');
 export const setMarketList = createAction<string[]>('exchange/setMarketList');
@@ -80,6 +79,9 @@ export const setIsPriceRising = createAction<boolean>('exchange/setIsPriceRising
 export const updateTrades = createAction<string[][]>('exchange/updateTrades');
 export const setOrderBook = createAction<any>('exchange/setOrderBook');
 export const updateOrderbook = createAction<any>('exchange/updateOrderbook');
+
+// SAGA starters
+export const requestPairList = createAction('exchange/requestPairList');
 
 const exchangeReducer = createReducer<ExchangeStore>({}, initialState)
   .on(setPairAndExchange, (state, { exchange, pair }: PairAndExchange) => {

@@ -1,5 +1,5 @@
 import { take, put, call, all, fork, cancel, cancelled, delay } from 'redux-saga/effects';
-import rsw from '../../../reduxSagaWebca';
+import API from '../../api';
 
 import { updateTrades, updateOrderbook, setPrice, setOrderBook, setIsPriceRising } from './reducer';
 import { setOrderBookIsLoading, setTradesIsLoading } from '../core/reducer';
@@ -68,8 +68,8 @@ const createBgWorker = (timer, task) =>
 
 export default pairAndExchange => {
   return function* createWatchers() {
-    const tradesChannel = yield call(rsw.public.tradesChannel, pairAndExchange);
-    const orderbookChannel = yield call(rsw.public.orderbookChannel, pairAndExchange);
+    const tradesChannel = yield call(API.public.tradesChannel, pairAndExchange);
+    const orderbookChannel = yield call(API.public.orderbookChannel, pairAndExchange);
 
     yield all([
       fork(createBgWorker(1000, createBatchTrades(tradesChannel))),

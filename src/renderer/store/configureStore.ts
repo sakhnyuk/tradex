@@ -4,6 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import { createHashHistory } from 'history';
 import { createRootReducer } from './rootReducer';
+import rootSaga from './rootSaga';
 
 declare global {
   interface Window {
@@ -20,6 +21,8 @@ export const configureStore = () => {
   const rootReducer = createRootReducer(history);
 
   const store = createStore(rootReducer, composeEnhancers(applyMiddleware(routerMiddleware(history), sagaMiddleware)));
+
+  sagaMiddleware.run(rootSaga);
 
   return store;
 };

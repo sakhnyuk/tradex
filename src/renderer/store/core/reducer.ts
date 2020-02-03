@@ -26,6 +26,7 @@ const initialState: CoreReducer = {
 };
 
 // Actions
+export const setOnline = createAction<boolean>('core/setOnline');
 export const setToCore = createAction<SetToCore>('core/setOnline');
 export const setReloadChart = createAction<boolean>('core/setReloadChart');
 export const setTheme = createAction<TypeTheme>('core/setTheme');
@@ -50,6 +51,7 @@ const coreReducer = createReducer<CoreReducer>({}, initialState)
     ...state,
     ...payload,
   }))
+  .on(setOnline, (state, isOnline: boolean) => ({ ...state, isOnline }))
   .on(setReloadChart, (state, reloadChart: boolean) => ({ ...state, reloadChart }))
   .on(setTheme, (state, theme: TypeTheme) => ({ ...state, theme }))
   .on(setOpenSetting, (state, settingOpen: boolean) => ({ ...state, settingOpen }))

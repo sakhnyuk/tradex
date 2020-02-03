@@ -1,16 +1,6 @@
 /* eslint-disable no-continue */
 /* eslint-disable max-len */
-import {
-  take,
-  put,
-  call,
-  fork,
-  cancel,
-  takeLatest,
-  takeEvery,
-  select,
-  delay,
-} from 'redux-saga/effects';
+import { take, put, call, fork, cancel, takeLatest, takeEvery, select, delay } from 'redux-saga/effects';
 
 import {
   requestPairList,
@@ -26,10 +16,11 @@ import {
 } from './reducer';
 
 import createWatchers from './createWatchersSaga';
-import logger from '../../../utils/logger';
-import rsw from '../../../reduxSagaWebca';
+import Logger from '../../utils/logger';
+import API from '../../api';
 import { selectPairAndExchange, selectExchange } from './selectors';
 import { setOnline, setOrderBookIsLoading, setTradesIsLoading } from '../core/reducer';
+import { Exchange } from '../../appConstant';
 
 function* resubscribeSaga() {
   const defaultPairAndExchange = yield select(selectPairAndExchange);
@@ -41,21 +32,19 @@ function* resubscribeSaga() {
   }
 }
 
-function* pairListSaga({ payload: exchange }) {
+function* pairListSaga({ payload: exchange }: any) {
   try {
-    const [marketList, fullList] = yield call(rsw.public.fetchPairList, exchange);
+    const [marketList, fullList] = yield call(API.public.fetchPairList, exchange);
     const markets = Object.keys(marketList);
     markets.push('watchlist');
 
-    Object.keys(marketList).forEach(market =>
-      marketList[market].sort((a, b) => b.volume - a.volume)
-    );
+    Object.keys(marketList).forEach(market => marketList[market].sort((a: any, b: any) => b.volume - a.volume));
 
     yield put(setPairList(fullList));
     yield put(setFilteredPairList(marketList));
     yield put(setMarketList(markets));
   } catch (error) {
-    logger.error(error, '40');
+    Logger.error(error, '40');
   }
 }
 
@@ -99,7 +88,7 @@ function* onlineWatcher() {
   }
 }
 
-function* setConfigSaga(config, exchange) {
+function* setConfigSaga(config: any, exchange: Exchange) {
   yield put(setOrderTypes({ orderTypes: config.orderTypes, exchange }));
   yield put(setActiveOrderType(config.orderTypes[0]));
   yield put(setSupportedComponents({ components: config.componentList, exchange }));
@@ -110,10 +99,7 @@ function* exchangeConfigSaga() {
   // fill state on start (prevent bugs)
   const startExchange = yield select(selectExchange);
   try {
-    const { exchange: normal, margin, intervals } = yield call(
-      rsw.public.fetchExchangeConfig,
-      startExchange
-    );
+    const { exchange: normal, margin, intervals } = yield call(API.public.fetchExchangeConfig, startExchange);
     yield put(setSupportedIntervals({ exchange: startExchange, intervals }));
 
     if (margin.isActive) {
@@ -122,7 +108,7 @@ function* exchangeConfigSaga() {
       yield setConfigSaga(normal, startExchange);
     }
   } catch (error) {
-    logger.error(error, '41');
+    Logger.error(error, '41');
   }
 
   // start worker
@@ -137,10 +123,7 @@ function* exchangeConfigSaga() {
     }
 
     try {
-      const { exchange: normal, margin, intervals } = yield call(
-        rsw.public.fetchExchangeConfig,
-        exchange
-      );
+      const { exchange: normal, margin, intervals } = yield call(API.public.fetchExchangeConfig, exchange);
       yield put(setSupportedIntervals({ exchange, intervals }));
 
       if (margin.isActive) {
@@ -150,7 +133,7 @@ function* exchangeConfigSaga() {
 
       yield setConfigSaga(normal, exchange);
     } catch (error) {
-      logger.error(error, '42');
+      Logger.error(error, '42');
     }
   }
 }

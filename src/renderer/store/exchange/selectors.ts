@@ -11,12 +11,10 @@ const activePair = (state: Store) => activeExchange(state).activePair;
 
 export const selectExchange = (state: Store) => state.exchange.exchange;
 
-export const selectPairAndExchange = (state: Store) => {
-  const exchange = selectExchange(state);
-  const pair = activePair(state);
-
-  return { exchange, pair };
-};
+export const selectPairAndExchange = createSelector(activeExchange, activePair, (exchange, pair) => ({
+  exchange,
+  pair,
+}));
 
 export const selectMarkets = (state: Store) => activeExchange(state).markets;
 export const selectActiveMarket = (state: Store) => activeExchange(state).activeMarket;
