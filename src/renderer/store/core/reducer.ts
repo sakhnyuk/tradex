@@ -20,8 +20,8 @@ const initialState: CoreReducer = {
   showAllAccounts: false,
   showAllPairs: false,
   showAllPositions: false,
-  orderBookIsLoading: false,
-  tradesIsLoading: false,
+  orderBookIsLoading: true,
+  tradesIsLoading: true,
   pairListSorting: 'VolumeDescending',
 };
 

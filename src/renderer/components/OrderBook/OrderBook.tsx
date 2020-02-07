@@ -6,10 +6,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { useSelector } from 'react-redux';
+import { CircularProgress } from '@material-ui/core';
 import RenderTable from './RenderTable';
 import Totals from './Totals';
 import TableHeader from './TableHeader';
-// import Loader from '../Loader';
 
 import styles from './style';
 import { selectCore } from '../../store/core/selectors';
@@ -22,7 +22,11 @@ const OrderBook = () => {
   const orderBookIsLoading = useSelector(selectCore.orderBookIsLoading);
 
   if (orderBookIsLoading) {
-    return <div className={classes.main}>{/* <Loader /> */}</div>;
+    return (
+      <div className={classes.loading}>
+        <CircularProgress color="secondary" />
+      </div>
+    );
   }
 
   return (

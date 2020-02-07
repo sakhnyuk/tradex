@@ -70,6 +70,13 @@ const style = (theme: Theme) =>
       color: theme.appColors.fontTableColor,
       fontSize: 11,
     },
+    loading: {
+      height: '100%',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   });
 
 export default style;

@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 
 import { useSelector } from 'react-redux';
 import { AutoSizer, List } from 'react-virtualized';
+import { CircularProgress } from '@material-ui/core';
 import TradeRow from './TradeRow';
 // import Loader from '../Loader';
 
@@ -23,7 +24,11 @@ const Trades = () => {
   const tradesIsLoading = useSelector(selectCore.tradesIsLoading);
 
   if (tradesIsLoading) {
-    return <div className={classes.root}>{/* <Loader /> */}</div>;
+    return (
+      <div className={classes.loading}>
+        <CircularProgress color="secondary" />
+      </div>
+    );
   }
 
   return (
