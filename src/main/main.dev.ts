@@ -17,16 +17,16 @@ log.info('App starting...');
 log.info(`Electron version - ${app.getVersion()}`);
 
 // Checker internet connection ---------
-ipcMain.on('status-changed', (_, status) => {
-  if (!status) {
-    const dialogOpts = {
-      type: 'info',
-      message: 'Lost internet connection',
-      detail: 'Something is wrong with internet connection! All trading functions needs a stable internet.',
-    };
-    dialog.showMessageBox(dialogOpts);
-  }
-});
+// ipcMain.on('status-changed', (_, status) => {
+//   if (!status) {
+//     const dialogOpts = {
+//       type: 'info',
+//       message: 'Lost internet connection',
+//       detail: 'Something is wrong with internet connection! All trading functions needs a stable internet.',
+//     };
+//     dialog.showMessageBox(dialogOpts);
+//   }
+// });
 
 // second app instance handle ---------
 log.info('requestSingleInstanceLock...');
