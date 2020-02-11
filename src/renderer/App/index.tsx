@@ -11,7 +11,7 @@ import MacHeader from '../components/Header/MacOS';
 import WinHeader from '../components/Header/Windows';
 import { isMac } from '../appConstant';
 import LeftMenu from '../components/LeftMenu';
-import Analysis from '../routes/Analysis';
+import Explore from '../routes/Explore';
 import { selectCore } from '../store/core/selectors';
 import { useCoreActions } from '../store/core/useCoreActions';
 
@@ -54,7 +54,7 @@ export const App: React.FC = () => {
               <LeftMenu />
             </div>
             <Switch>
-              <Route exact path="/" component={Analysis} />
+              <Route exact path="/" component={Explore} />
               {/* <Route path="/settings" component={Settings} /> */}
             </Switch>
           </div>

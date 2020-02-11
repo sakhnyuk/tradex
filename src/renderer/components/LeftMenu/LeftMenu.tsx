@@ -25,11 +25,11 @@ const LeftMenu: React.FC = () => {
     <Paper className={classes.root}>
       <BottomNavigationAction
         classes={{
-          root: `${classes.menuButton} ${pathname === appRouting.path.ANALYSIS ? classes.active : ''}`,
+          root: `${classes.menuButton} ${pathname === appRouting.path.EXPLORE ? classes.active : ''}`,
         }}
-        onClick={pushToPage(appRouting.path.ANALYSIS)}
+        onClick={pushToPage(appRouting.path.EXPLORE)}
         showLabel
-        label={appRouting.labels.ANALYSIS}
+        label={appRouting.labels.EXPLORE}
         icon={<ShowChart />}
       />
 

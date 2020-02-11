@@ -59,11 +59,11 @@ export const appName = 'Tradev App';
 
 export const appRouting = {
   path: {
-    ANALYSIS: '/',
+    EXPLORE: '/',
     SETTINGS: '/settings',
   },
   labels: {
-    ANALYSIS: 'Analysis',
+    EXPLORE: 'Explore',
     SETTINGS: 'Settings',
   },
 };

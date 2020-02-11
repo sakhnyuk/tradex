@@ -21,10 +21,10 @@ import PriceComp from '../PriceComp';
 const useStyles = makeStyles(styles);
 
 interface Props {
-  isAnalysis?: boolean;
+  isExplore?: boolean;
 }
 
-const Header: React.FC<Props> = ({ isAnalysis }) => {
+const Header: React.FC<Props> = ({ isExplore }) => {
   const classes = useStyles();
 
   const { setOpenPairsBar, setOpenSetting } = useCoreActions();
@@ -76,9 +76,9 @@ const Header: React.FC<Props> = ({ isAnalysis }) => {
             color="inherit"
           >
             {/* {account.exchange} */}
-            {/* <div className={classes.accountName}>{isAnalysis ? 'analysis' : account.name.slice(0, 16)}</div> */}
+            {/* <div className={classes.accountName}>{isExplore ? 'explore' : account.name.slice(0, 16)}</div> */}
             {exchange}
-            <div className={classes.accountName}>analysis</div>
+            <div className={classes.accountName}>explore</div>
           </Button>
 
           <Grid container alignItems="center" className={classes.tickerInfo}>

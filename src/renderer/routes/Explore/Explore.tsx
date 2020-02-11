@@ -9,13 +9,13 @@ import styles from './styles';
 
 const useStyles = makeStyles(styles);
 
-const Analysis = () => {
+const Explore = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <div className={classes.header}>
-        <Header isAnalysis />
+        <Header isExplore />
       </div>
       <div>{/* <PairsBar /> */}</div>
       <div className={classes.chartFullPage}>{/* <FourChart /> */}</div>
@@ -32,4 +32,4 @@ const Analysis = () => {
   );
 };
 
-export default Analysis;
+export default Explore;

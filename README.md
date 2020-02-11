@@ -6,14 +6,6 @@
 
 Desktop crossplatform client (MacOS and Windows) for trading on all major cryptocurrency exchanges from one place.
 
-### Download release build
-
-Check [release](https://github.com/oneexbit/oneexbit-release/releases) page for last releases and changelog
-
-Download links - [MacOS](https://github.com/oneexbit/oneexbit-release/releases/download/v0.1.8/oneexbit-platform-0.1.8.dmg) | [Windows](https://github.com/oneexbit/oneexbit-release/releases/download/v0.1.8/oneexbit-platform-0.1.8.msi)
-
-![https//rawgithubusercontentcom/oneexbit/oneexbitrelease/master/2png](https://raw.githubusercontent.com/oneexbit/oneexbit-release/master/2.png)
-
 ## Motivation
 
 Crypto enthusiasts are convinced the market for digital assets will soon be as large as the Forex market. However, most experts believe that a mass adoption of crypto trading and the arrival of large institutional investors is still far in the future. The reason is the extreme immaturity of the industry and high risks. Even though the largest crypto exchanges can boast daily trading volumes reaching billions of dollars, their levels of security, reliability and usability are still far below those of traditional stock exchanges.
