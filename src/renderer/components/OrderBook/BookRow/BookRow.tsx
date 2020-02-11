@@ -13,7 +13,7 @@ interface Props {
   color: 'green' | 'red';
   side: 'bids' | 'asks';
   index: number;
-  style: any;
+  style: React.CSSProperties;
 }
 
 const BookRow: React.FC<Props> = ({ color, style, side, index }) => {

@@ -12,7 +12,7 @@ import * as selectExchange from '../../../store/exchange/selectors';
 
 const useStyles = makeStyles(styles);
 
-const Totals = () => {
+const Totals: React.FC = () => {
   const classes = useStyles();
   const orderbook = useSelector(selectExchange.selectOrderbook);
   const activePair = useSelector(selectExchange.selectActivePair);
@@ -34,7 +34,5 @@ const Totals = () => {
     </div>
   );
 };
-
-Totals.propTypes = {};
 
 export default Totals;

@@ -11,7 +11,7 @@ import styles from '../style';
 
 const useStyles = makeStyles(styles);
 
-const TableHeader = () => {
+const TableHeader: React.FC = () => {
   const classes = useStyles();
   const activePair = useSelector(selectExchange.selectActivePair);
 
