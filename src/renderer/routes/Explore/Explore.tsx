@@ -6,6 +6,7 @@ import Header from '../../components/TradeHeader/Header';
 import Trades from '../../components/Trades';
 import OrderBook from '../../components/OrderBook';
 import styles from './styles';
+import Exchanges from '../../components/ExchangesMenu';
 
 const useStyles = makeStyles(styles);
 
@@ -27,7 +28,8 @@ const Explore = () => {
         <Trades />
       </Paper>
 
-      {/* <Exchanges showDemo /> */}
+      {/* Exchanges list menu */}
+      <Exchanges isExplore />
     </div>
   );
 };

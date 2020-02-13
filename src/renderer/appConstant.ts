@@ -1,17 +1,3 @@
-export const exchanges = [
-  'binance',
-  'bitfinex',
-  'bitmex',
-  'bitmex-testnet',
-  'cryptobridge',
-  'hitbtc',
-  'okex',
-  'poloniex',
-  'crex24',
-  'huobi-global',
-  'exmo',
-];
-
 export type Exchange =
   | 'binance'
   | 'bitfinex'
@@ -24,6 +10,20 @@ export type Exchange =
   | 'crex24'
   | 'huobi-global'
   | 'exmo';
+
+export const exchanges: Exchange[] = [
+  'binance',
+  'bitfinex',
+  'bitmex',
+  'bitmex-testnet',
+  'cryptobridge',
+  'hitbtc',
+  'okex',
+  'poloniex',
+  'crex24',
+  'huobi-global',
+  'exmo',
+];
 
 export const privateExchanges: Exchange[] = [
   'binance',
