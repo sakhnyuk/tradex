@@ -57,9 +57,8 @@ const initialState: ExchangeStore = {
 };
 
 export const setPairAndExchange = createAction<PairAndExchange>('exchange/setExchangeAndPair');
-export const savePairAndExchange = createAction('exchange/setExchangeAndPair');
+export const savePairAndExchange = createAction<PairAndExchange>('exchange/setExchangeAndPair');
 
-export const fetchExchangeConfig = createAction('exchange/fetchExchangeConfig');
 export const setOrderTypes = createAction<SetOrderTypes>('exchange/setOrderTypes');
 export const setActiveOrderType = createAction<string>('exchange/setActiveOrderType');
 export const setSupportedComponents = createAction<SetSupportedComponents>('exchange/setSupportedComponents');
@@ -81,6 +80,7 @@ export const setOrderBook = createAction<any>('exchange/setOrderBook');
 export const updateOrderbook = createAction<any>('exchange/updateOrderbook');
 
 // SAGA starters
+export const fetchExchangeConfig = createAction('exchange/fetchExchangeConfig');
 export const requestPairList = createAction('exchange/requestPairList');
 
 const exchangeReducer = createReducer<ExchangeStore>({}, initialState)
