@@ -8,6 +8,7 @@ import OrderBook from '../../components/OrderBook';
 import styles from './styles';
 import Exchanges from '../../components/ExchangesMenu';
 import PairsBar from '../../components/PairsBar';
+import Chart from '../../components/Chart';
 
 const useStyles = makeStyles(styles);
 
@@ -22,12 +23,14 @@ const Explore = () => {
       <div>
         <PairsBar />
       </div>
-      <div className={classes.chartFullPage}>{/* <FourChart /> */}</div>
+      <div className={classes.chartFullPage}>
+        <Chart />
+      </div>
 
       <Paper className={classes.orderBook} elevation={3} variant="outlined" square>
         <OrderBook />
       </Paper>
-      <Paper className={classes.trades}>
+      <Paper className={classes.trades} variant="outlined">
         <Trades />
       </Paper>
 
