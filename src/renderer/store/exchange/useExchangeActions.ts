@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import * as act from './reducer';
 import { PairAndExchange, SetOrderTypes, SetSupportedComponents, SetSupportedIntervals, SetWatchlist } from './types';
+import { Exchange } from '../../appConstant';
 
 export const useExchangeActions = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ export const useExchangeActions = () => {
     updateTrades: useCallback((trades: string[][]) => dispatch(act.updateTrades(trades)), [dispatch]),
     setOrderBook: useCallback((payload: any) => dispatch(act.setOrderBook(payload)), [dispatch]),
     updateOrderbook: useCallback((payload: any) => dispatch(act.updateOrderbook(payload)), [dispatch]),
+    requestPairList: useCallback((exchange: Exchange) => dispatch(act.requestPairList(exchange)), [dispatch]),
   };
 
   return { ...actions, dispatch };

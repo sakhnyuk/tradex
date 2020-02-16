@@ -9,7 +9,7 @@ const initialState: CoreReducer = {
   isOnline: true,
   reloadChart: false,
   storeVersion,
-  theme: 'dark',
+  theme: 'light',
   icons: {},
   settingOpen: false,
   settingPage: 'exchanges',

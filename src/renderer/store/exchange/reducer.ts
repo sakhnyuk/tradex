@@ -2,7 +2,7 @@ import merge from 'lodash/fp/merge';
 import set from 'lodash/fp/set';
 import { createAction, createReducer } from 'redux-act';
 import insertOrderBookUpdates from '../../utils/insertOrderBookUpdates';
-import { exchangePairs } from '../../appConstant';
+import { exchangePairs, Exchange } from '../../appConstant';
 import { insertTotalAsks, insertTotalBids } from '../../utils/insertTotal';
 
 import {
@@ -81,7 +81,7 @@ export const updateOrderbook = createAction<any>('exchange/updateOrderbook');
 
 // SAGA starters
 export const fetchExchangeConfig = createAction('exchange/fetchExchangeConfig');
-export const requestPairList = createAction('exchange/requestPairList');
+export const requestPairList = createAction<Exchange>('exchange/requestPairList');
 
 const exchangeReducer = createReducer<ExchangeStore>({}, initialState)
   .on(setPairAndExchange, (state, { exchange, pair }: PairAndExchange) => {
