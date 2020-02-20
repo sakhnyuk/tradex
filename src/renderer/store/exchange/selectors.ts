@@ -100,17 +100,20 @@ export const selectTradeRow = (state: Store, id: number) => activeExchange(state
 export const selectOrderbookRow = (state: Store, side: string, id: number): number[] => {
   const asksOrBids = activeExchange(state).data[activePair(state)].orderBook[side];
 
-  if (!asksOrBids.length) return [0, 0, 0, 0];
+  if (!asksOrBids.length) return [];
+
+  let result = [];
 
   if (side === 'asks') {
     const { length } = asksOrBids;
-    return asksOrBids[length + id - 1000] || [0, 0, 0, 0];
-  }
-  if (side === 'bids') {
-    return asksOrBids[id];
+    result = asksOrBids[length + id - 1000];
   }
 
-  return [0, 0, 0, 0];
+  if (side === 'bids') {
+    result = asksOrBids[id];
+  }
+
+  return result || [];
 };
 
 export const selectMarginalBase = (state: Store) => selectPairInfo(state)?.base;

@@ -13,12 +13,13 @@ import {
   setActiveOrderType,
   setHistoryComponent,
   setSupportedIntervals,
+  setExchange,
 } from './reducer';
 
 import createWatchers from './createWatchersSaga';
 import Logger from '../../utils/logger';
 import API from '../../api';
-import { selectPairAndExchange, selectExchange } from './selectors';
+import { selectPairAndExchange, selectExchange, selectActivePair } from './selectors';
 import { setOnline, setOrderBookIsLoading, setTradesIsLoading } from '../core/reducer';
 import { Exchange } from '../../appConstant';
 
@@ -27,10 +28,15 @@ function* resubscribeSaga() {
 
   let webcaWatchers = yield fork(createWatchers(defaultPairAndExchange));
   while (true) {
-    const { payload } = yield take(setPairAndExchange);
+    // Catch changing Exchange or Trade account(in future) and recreate
+    // trade and orderbook watchers
+    const { payload: exchange } = yield take(setExchange);
+
+    // TODO: with trading features need to take pair from account instead exchange obj
+    const pair = yield select(selectActivePair);
 
     if (webcaWatchers) yield cancel(webcaWatchers);
-    webcaWatchers = yield fork(createWatchers(payload));
+    webcaWatchers = yield fork(createWatchers({ exchange, pair }));
   }
 }
 
