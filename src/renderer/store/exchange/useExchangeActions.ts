@@ -5,10 +5,11 @@ import * as act from './reducer';
 import { PairAndExchange, SetOrderTypes, SetSupportedComponents, SetSupportedIntervals, SetWatchlist } from './types';
 import { Exchange } from '../../appConstant';
 
-export const useExchangeActions = () => {
+export function useExchangeActions() {
   const dispatch = useDispatch();
 
   const actions = {
+    setExchange: useCallback((exchange: Exchange) => dispatch(act.setExchange(exchange)), [dispatch]),
     setPairAndExchange: useCallback((payload: PairAndExchange) => dispatch(act.setPairAndExchange(payload)), [
       dispatch,
     ]),
@@ -56,4 +57,4 @@ export const useExchangeActions = () => {
   };
 
   return { ...actions, dispatch };
-};
+}

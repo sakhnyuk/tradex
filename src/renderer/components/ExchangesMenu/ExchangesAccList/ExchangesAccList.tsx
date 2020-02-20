@@ -8,9 +8,9 @@ import Avatar from '@material-ui/core/Avatar';
 import { ListItemAvatar } from '@material-ui/core';
 
 import { useCoreActions } from '../../../store/core/useCoreActions';
-import { setPairAndExchange } from '../../../store/exchange/reducer';
 import { Exchange } from '../../../appConstant';
-import { selectPairAndExchange } from '../../../store/exchange/selectors';
+import { selectExchange } from '../../../store/exchange/selectors';
+import { useExchangeActions } from '../../../store/exchange/useExchangeActions';
 
 interface Props {
   listData: Exchange[];
@@ -18,16 +18,12 @@ interface Props {
 }
 
 const ExchangesList: React.FC<Props> = ({ isExplore, listData }) => {
-  const { setOpenSetting, dispatch } = useCoreActions();
-  const { exchange: activeExchange, pair: activePair } = useSelector(selectPairAndExchange);
+  const { setOpenSetting } = useCoreActions();
+  const { setExchange } = useExchangeActions();
+  const activeExchange = useSelector(selectExchange);
 
   const onClickExchangeHandler = (name: Exchange) => {
-    dispatch(
-      setPairAndExchange({
-        exchange: name,
-        pair: activePair,
-      }),
-    );
+    setExchange(name);
     setOpenSetting(false);
   };
 

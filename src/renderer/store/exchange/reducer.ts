@@ -56,6 +56,7 @@ const initialState: ExchangeStore = {
   ...exchangeData,
 };
 
+export const setExchange = createAction<Exchange>('exchange/setExchange');
 export const setPairAndExchange = createAction<PairAndExchange>('exchange/setExchangeAndPair');
 export const savePairAndExchange = createAction<PairAndExchange>('exchange/setExchangeAndPair');
 
@@ -84,6 +85,7 @@ export const fetchExchangeConfig = createAction('exchange/fetchExchangeConfig');
 export const requestPairList = createAction<Exchange>('exchange/requestPairList');
 
 const exchangeReducer = createReducer<ExchangeStore>({}, initialState)
+  .on(setExchange, (state, exchange) => ({ ...state, exchange }))
   .on(setPairAndExchange, (state, { exchange, pair }: PairAndExchange) => {
     let newState = state;
 
