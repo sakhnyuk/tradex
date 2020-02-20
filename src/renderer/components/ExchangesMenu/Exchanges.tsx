@@ -41,7 +41,7 @@ const Exchanges: React.FC<Props> = ({ isExplore }) => {
         )}
       </Tabs>
 
-      <div className={classes.dialog}>{isExplore && <ExchangeAccList isExplore listData={exchanges} />}</div>
+      <div className={classes.dialog}>{isExplore && <ExchangeAccList isExplore />}</div>
     </Dialog>
   );
 };

@@ -19,6 +19,7 @@ import styles from './style';
 import { selectCore } from '../../store/core/selectors';
 import { useCoreActions } from '../../store/core/useCoreActions';
 import { useExchangeActions } from '../../store/exchange/useExchangeActions';
+import { useExploreActions } from '../../store/explore/useExploreActions';
 
 const useStyles = makeStyles(styles);
 
@@ -63,7 +64,8 @@ const PairsBar: React.FC = () => {
   const sortBy = useSelector(selectCore.pairListSorting);
 
   const { setPairListSorting, setOpenPairsBar } = useCoreActions();
-  const { requestPairList, setPairAndExchange, setActiveMarket, toggleWatchlist } = useExchangeActions();
+  const { requestPairList, setActiveMarket, toggleWatchlist } = useExchangeActions();
+  const { setExplorePairAndExchange } = useExploreActions();
 
   const [searchText, setText] = useState('');
   const [searchedList, setSearchList] = useState<any[]>([]);
@@ -90,10 +92,10 @@ const PairsBar: React.FC = () => {
 
   const onPairClick = useCallback(
     (pair: string) => {
-      setPairAndExchange({ exchange, pair });
+      setExplorePairAndExchange({ exchange, pair });
       setOpenPairsBar(false);
     },
-    [exchange, setOpenPairsBar, setPairAndExchange],
+    [exchange, setExplorePairAndExchange, setOpenPairsBar],
   );
 
   const handleMarketChange = useCallback(

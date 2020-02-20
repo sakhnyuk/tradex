@@ -8,34 +8,45 @@ import Avatar from '@material-ui/core/Avatar';
 import { ListItemAvatar } from '@material-ui/core';
 
 import { useCoreActions } from '../../../store/core/useCoreActions';
-import { Exchange } from '../../../appConstant';
 import { selectExchange } from '../../../store/exchange/selectors';
-import { useExchangeActions } from '../../../store/exchange/useExchangeActions';
+import { useExploreActions } from '../../../store/explore/useExploreActions';
+import { exploreSelect } from '../../../store/explore/selectors';
+import { InitialExchangeData } from '../../../store/explore/types';
 
 interface Props {
-  listData: Exchange[];
   isExplore: boolean;
 }
 
-const ExchangesList: React.FC<Props> = ({ isExplore, listData }) => {
+const ExchangesList: React.FC<Props> = ({ isExplore }) => {
   const { setOpenSetting } = useCoreActions();
-  const { setExchange } = useExchangeActions();
+  const { setExplorePairAndExchange } = useExploreActions();
   const activeExchange = useSelector(selectExchange);
 
-  const onClickExchangeHandler = (name: Exchange) => {
-    setExchange(name);
+  const exchangesList = useSelector(exploreSelect.exchangesList);
+
+  const onClickExchangeHandler = (item: InitialExchangeData) => {
+    setExplorePairAndExchange({
+      exchange: item.name,
+      pair: item.activePair,
+    });
+
     setOpenSetting(false);
   };
 
   return (
     <div>
-      {listData.length &&
-        listData.map(name => (
-          <ListItem key={name} button selected={name === activeExchange} onClick={() => onClickExchangeHandler(name)}>
+      {exchangesList.length &&
+        exchangesList.map((item: InitialExchangeData) => (
+          <ListItem
+            key={item.name}
+            button
+            selected={item.name === activeExchange}
+            onClick={() => onClickExchangeHandler(item)}
+          >
             <ListItemAvatar>
-              <Avatar>{name[0]}</Avatar>
+              <Avatar>{item.name[0]}</Avatar>
             </ListItemAvatar>
-            <ListItemText primary={capitalize(name)} secondary={isExplore ? null : name} />
+            <ListItemText primary={capitalize(item.name)} secondary={isExplore ? null : item.name} />
           </ListItem>
         ))}
     </div>
