@@ -44,7 +44,7 @@ const ExchangesList: React.FC<Props> = ({ isExplore }) => {
             onClick={() => onClickExchangeHandler(item)}
           >
             <ListItemAvatar>
-              <Avatar>{item.name[0]}</Avatar>
+              <Avatar alt={item.name} src={`../assets/exchanges/${item.name}.png`} />
             </ListItemAvatar>
             <ListItemText primary={capitalize(item.name)} secondary={isExplore ? null : item.name} />
           </ListItem>
