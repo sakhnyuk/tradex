@@ -4,7 +4,7 @@ import set from 'lodash/fp/set';
 import { SetChartInterval, ChartStore, Layouts } from './types';
 
 const initialState: ChartStore = {
-  layout: 'topbotleftright',
+  layout: 'one',
   one: {
     default: '60', // component uses interval from tradingCore(acc) instead of this field in default variant
   },
