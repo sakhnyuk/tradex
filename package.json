@@ -60,6 +60,7 @@
     "style-loader": "^1.1.2",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
+    "url-loader": "^3.0.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
@@ -101,7 +102,8 @@
       "dist/renderer.prod.js",
       "dist/renderer.css",
       "dist/main.prod.js",
-      "renderer/charting_library/"
+      "renderer/charting_library/",
+      "assets"
     ],
     "dmg": {
       "contents": [
@@ -151,7 +153,7 @@
       "category": "Development"
     },
     "directories": {
-      "buildResources": "resources",
+      "buildResources": "assets",
       "output": "release"
     }
   },
