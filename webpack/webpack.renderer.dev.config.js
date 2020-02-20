@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const { spawn } = require('child_process');
@@ -30,6 +31,8 @@ module.exports = merge.smart(baseConfig, {
   },
   devServer: {
     port,
+    publicPath: 'http://localhost:2003/',
+    contentBase: path.join(__dirname, '..', 'src'),
     compress: true,
     noInfo: true,
     stats: 'errors-only',
