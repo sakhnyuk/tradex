@@ -1,10 +1,8 @@
-# Tradev Platform
-
-[![Coverage Status](https://coveralls.io/repos/github/sakhnyuk/tradev/badge.svg)](https://coveralls.io/github/sakhnyuk/tradev) [![dependencies Status](https://david-dm.org/sakhnyuk/tradev/status.svg)](https://david-dm.org/sakhnyuk/tradev) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/sakhnyuk/tradev/master/LICENSE)
+# Tradex Platform
 
 ## An All-in-One Crypto Trading App
 
-Desktop crossplatform client (MacOS and Windows) for trading on all major cryptocurrency exchanges from one place.
+Desktop cross platform client (MacOS and Windows) for explore and trading on all major cryptocurrency exchanges from one place.
 
 ## Motivation
 
@@ -23,29 +21,22 @@ Crypto enthusiasts are convinced the market for digital assets will soon be as l
 ## Features
 
 - **All-In-One:** Working with multiple exchanges within a single interface;
-- **All exchanges:** Working simultaneously with an unlimited number of accounts; range of tech analysis and forecasting tools; analysis results are saved even when the program is closed;
-- **Speed:** instantly switching between exchanges; all orders are executed by the terminal, without the need to use a browser;
+- **Speed:** instantly switching between exchanges
 - **Candlestick chart:** (available thanks to an integration with tradingview.com) with multiple display options and open orders displayed
-- **Margin trading:** available on Bitfinex and BitMEX
-- **API:** working directly with exchanges by API. For trade features need to use your account API key.
+- **API:** working directly with exchanges by API.
 - **Cross Platform:** support MacOS and Windows
-
-## Security
-
-API keys are kept locally in C:\Users\%%USER%%\AppData\Roaming\OneExBit (on windows) folder in the config file. To save keys to the file we use electron-store package. It creates the key-value pairs file.
 
 ## Support exchanges
 
-| Exchange     | Public data (charting) | Exchange trading | Margin trading |
-| ------------ | :--------------------: | :--------------: | :------------: |
-| Binance      |           ✅           |        ✅        | not supported  |
-| BitMEX       |           ✅           |        ✅        |       ✅       |
-| Bitfinex     |           ✅           |        ✅        |                |
-| CryptoBridge |           ✅           |        ✅        | not supported  |
-| HitBTC       |           ✅           |                  |                |
-| OKex         |           ✅           |                  |                |
-| Poloniex     |           ✅           |                  |                |
-| Crex24       |           ✅           |        ✅        | not supported  |
+| Exchange | Explore (Public data) |
+| -------- | :-------------------: |
+| Binance  |          ✅           |
+| BitMEX   |          ✅           |
+| Bitfinex |          ✅           |
+| HitBTC   |          ✅           |
+| OKex     |          ✅           |
+| Poloniex |          ✅           |
+| Crex24   |          ✅           |
 
 ## Getting Started
 
@@ -61,14 +52,14 @@ API keys are kept locally in C:\Users\%%USER%%\AppData\Roaming\OneExBit (on wind
 
 ## Overall structure overview
 
-There are two main folders in the app(./src): main and renderer. Two electron processes, one with node env which starts the app and one with browser, which renders the app. The later represents react SPA with redux/sagas state. It is single page which consist of trading view chart, info panel, and if you have api keys connected there are balances, history and order maker panels. Each one of them have its own component in `renderer/app/components` folder. All logic have its place in sagas middleware from `app/store` folder.
+There are two main folders in the app(./src): main and renderer. Two electron processes, one with node env which starts the app and one with browser, which renders the app. The later represents react SPA with redux/sagas state. It is single page which consist of trading view chart, trades, orderbook, pair list and etc. Each one of them have its own component in `renderer/app/components` folder. All logic have its place in sagas middleware from `app/store` folder.
 
 ### Installation
 
 1. Clone the repo
 
 ```
-git clone https://github.com/sakhnyuk/oneexbit-trading-platfrom
+git clone https://github.com/sakhnyuk/tradex
 ```
 
 2. Install NPM packages
@@ -89,17 +80,16 @@ yarn
 npm start dev  or  yarn dev
 ```
 
-4. Thereafter you can test what it is like in production with
+4. Build scripts not ready yet
 
 ```
-yarn start
+...
 ```
 
 Or package for mac or win with
 
 ```
-yarn package-mac
-yarn package-win
+...
 ```
 
 ## Contributing
