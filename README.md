@@ -1,22 +1,8 @@
-# Tradex Platform
+# Tradex Platform (WIP)
 
 ## An All-in-One Crypto Trading App
 
-Desktop cross platform client (MacOS and Windows) for explore and trading on all major cryptocurrency exchanges from one place.
-
-## Motivation
-
-Crypto enthusiasts are convinced the market for digital assets will soon be as large as the Forex market. However, most experts believe that a mass adoption of crypto trading and the arrival of large institutional investors is still far in the future. The reason is the extreme immaturity of the industry and high risks. Even though the largest crypto exchanges can boast daily trading volumes reaching billions of dollars, their levels of security, reliability and usability are still far below those of traditional stock exchanges.
-
-### Main problems
-
-- **Poor functionality:** Exchanges can be both overloaded by unnecessary features or very poor. They often lack key chart indicators and analytical tools, as well as important trading features: orders on chart, alerts, and advanced order types (trailing profit, stop loss, etc.)
-
-- **Lack of a standard interface:** Exchanges UI is not just difficult to use – it is not standardized, either. Each exchange has its own chart tools, order types, order placement, etc. As a result, traders have to waste hours on learning to use multiple interfaces.
-
-- **Difficult work on multiple accounts:** Trading on multiple exchanges requires keep open few browsers and a lot of tab, which slows down a computer and can disrupt trading operations.
-
-- **Phishing exchange web pages:** If a user enters login and password details on a phishing site, they will fall into the hands of criminals, who can then easily steal the user’s funds stored on the real exchange (sometimes even with an activated 2FA).
+Desktop cross platform client (MacOS and Windows) for explore trading data on all major cryptocurrency exchanges from one place.
 
 ## Features
 
