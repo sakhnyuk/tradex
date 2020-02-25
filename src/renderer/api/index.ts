@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+// @ts-ignore
 import webca from 'websocket-crypto-api';
 
 import { eventChannel } from 'redux-saga';

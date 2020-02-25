@@ -1,4 +1,6 @@
-const timezones: { [key: string]: string } = {
+import { Timezone, LanguageCode } from '../../charting_library/charting_library.min';
+
+const timezones: { [key: string]: 'exchange' | Timezone } = {
   0: 'Europe/London',
   '-120': 'Europe/Tallinn',
   '-60': 'Europe/Zurich',
@@ -58,4 +60,9 @@ export function getTimezone() {
     return timezones[offset.toString()];
   }
   return 'Etc/UTC';
+}
+
+export function getLanguageFromURL(): LanguageCode {
+  const result = navigator.language as LanguageCode;
+  return result || 'en';
 }
