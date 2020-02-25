@@ -1,10 +1,10 @@
 {
-  "name": "tradev",
+  "name": "tradex",
   "version": "0.0.1",
   "description": "Crossplatform crypto trading platform (Mac / PC) ",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sakhnyuk/tradev.git"
+    "url": "https://github.com/sakhnyuk/tradex.git"
   },
   "main": "index.js",
   "scripts": {
@@ -93,8 +93,8 @@
     "publish": {
       "provider": "github"
     },
-    "productName": "Tradev App",
-    "appId": "com.tradev.org",
+    "productName": "Tradex App",
+    "appId": "com.tradex.org",
     "files": [
       "package.json",
       "manifest.json",
@@ -136,7 +136,7 @@
         "sha256"
       ],
       "publisherName": [
-        "tradev"
+        "tradex"
       ]
     },
     "nsis": {

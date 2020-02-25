@@ -55,7 +55,7 @@ export const storeVersion = 20022020;
 
 export const isMac = process.platform === 'darwin';
 
-export const appName = 'Tradev App';
+export const appName = 'Tradex App';
 
 export const appRouting = {
   path: {
