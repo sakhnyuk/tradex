@@ -54,7 +54,7 @@ const getOptions = options => {
     interval,
     container_id: containerId,
     library_path: './charting_library/',
-    locale: getLanguageFromURL(),
+    locale: 'en',
     charts_storage_url: chartsStorageUrl,
     charts_storage_api_version: chartsStorageApiVersion,
     client_id: clientId,
