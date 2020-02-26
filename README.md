@@ -28,11 +28,13 @@ Desktop cross platform client (MacOS and Windows) for explore trading data on al
 
 ### Source code of app build by
 
-- [Typescript](https://www.typescriptlang.org/) - typed superset of JavaScript that compiles to plain JavaScript.
+- [NodeJS](https://nodejs.org/) (> v8.17.0) - JavaScript runtime with V8 engine
 
-- [ElectronJS](https://electronjs.org/) - cross platform desktop apps with JavaScript, HTML, and CSS
+- [Typescript](https://www.typescriptlang.org/) (v3.8.x) - typed superset of JavaScript that compiles to plain JavaScript.
 
-- [React](https://reactjs.org/) - base front-end library
+- [ElectronJS](https://electronjs.org/) (v8.x.x) - cross platform desktop apps with JavaScript, HTML, and CSS
+
+- [React](https://reactjs.org/) (16.12.x) - base front-end library
 
 - [Redux](https://redux.js.org/) / [redux-saga](https://github.com/redux-saga/redux-saga) - state management for React
 
@@ -48,7 +50,7 @@ There are two main folders in the app(./src): main and renderer. Two electron pr
 git clone https://github.com/sakhnyuk/tradex
 ```
 
-2. Install NPM packages
+2. Install NPM packages (inside project folder)
 
 ```
 npm install
