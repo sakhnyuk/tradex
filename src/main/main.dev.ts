@@ -134,9 +134,9 @@ const createWindow = async (): Promise<void> => {
   });
 };
 
-app.on('ready', () => {
-  createWindow();
-});
+app.allowRendererProcessReuse = true;
+
+app.whenReady().then(createWindow);
 
 app.on('before-quit', () => {
   if (mac) app.exit(0);
