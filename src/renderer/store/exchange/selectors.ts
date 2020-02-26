@@ -4,7 +4,7 @@ import { formatPrice } from '../../utils/setFormatPrice';
 import { selectCore } from '../core/selectors';
 
 import { Store } from '../types';
-import { PairObj, GroupedIntervals } from './types';
+import { PairObj, GroupedIntervals, Intervals } from './types';
 
 const activeExchange = (state: Store) => state.exchange[state.exchange.exchange];
 const activePair = (state: Store) => activeExchange(state).activePair;
@@ -29,10 +29,10 @@ export const selectSupportedIntervals = createSelector(
   intervals => {
     const groupedIntervals: GroupedIntervals = { minutes: [], hours: [], days: [] };
 
-    intervals.forEach((interval: number) => {
-      if (interval < 60) {
+    intervals.forEach((interval: Intervals) => {
+      if (+interval < 60) {
         groupedIntervals.minutes.push(interval);
-      } else if (interval >= 60 && interval < 1440) {
+      } else if (+interval >= 60 && +interval < 1440) {
         groupedIntervals.hours.push(interval);
       } else {
         groupedIntervals.days.push(interval);

@@ -5,7 +5,7 @@ import { Intervals } from '../../../../../store/exchange/types';
 import { useStyles, intervalDictionary } from '../../ChartHeader';
 
 interface Props {
-  anchorEl: Element;
+  anchorEl: Element | null;
   handleClose: () => void;
   intervals: Intervals[];
   onIntervalChange: (interval: Intervals) => void;

@@ -13,12 +13,16 @@ import TVChartContainer from '../TVChartContainer';
 
 const useStyles = makeStyles(styles);
 
+interface Props {
+  isExplore?: boolean;
+}
+
 // there in ternary it uses one of two functions from different stores
 // first preserve layouts for 1-4 charts in not default mode
 // second for main chart and placed in tradingcore reduxer for per account caching
 
 // and keys equals indexes to not rerender all charts everytime
-const FourChart = () => {
+const FourChart: React.FC<Props> = ({ isExplore }) => {
   const classes = useStyles();
 
   const layout = useSelector(chartSelector.layout);
@@ -35,17 +39,12 @@ const FourChart = () => {
             containerId={key}
             interval={layout !== 'one' ? layoutIntervals[key] : interval}
             defaultCase={layout === 'one'}
-            isAnalysis
+            isExplore={isExplore}
           />
         </Paper>
       ))}
     </div>
   );
-};
-
-FourChart.defaultProps = {
-  layout: 'default',
-  classes: {},
 };
 
 export default withStyles(styles)(FourChart);

@@ -3,22 +3,19 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import classnames from 'classnames';
-import Refresh from '@material-ui/icons/Refresh';
-import Fullscreen from '@material-ui/icons/Fullscreen';
+// import Refresh from '@material-ui/icons/Refresh';
 import IconButton from '@material-ui/core/IconButton';
 import { useSelector } from 'react-redux';
 import styles from './styles';
 import { SeriesStyle } from '../../../../charting_library/charting_library.min';
 import { useChartActions } from '../../../store/chart/useChartActions';
-import { useCoreActions } from '../../../store/core/useCoreActions';
 import { Intervals } from '../../../store/exchange/types';
 import { selectSupportedIntervals } from '../../../store/exchange/selectors';
 import { chartSelector } from '../../../store/chart/selectors';
 import { LayoutsIntervalsKeys, Layouts } from '../../../store/chart/types';
 import { IntervalMenu } from './components/IntervalMenu';
+import { CandlesMenu } from './components/CandlesMenu';
 
 export const useStyles = makeStyles(styles);
 
@@ -37,17 +34,10 @@ export const intervalDictionary = {
   360: '6H',
   480: '8H',
   720: '12H',
+  '1D': '1D',
+  '1W': '1W',
+  '1M': '1M',
 };
-
-const candleTypes = [
-  { name: 'Bars', code: 0 },
-  { name: 'Candles', code: 1 },
-  { name: 'Hollow candles', code: 9 },
-  { name: 'Heiken ashi', code: 8 },
-  { name: 'Line', code: 2 },
-  { name: 'Area', code: 3 },
-  { name: 'Baseline', code: 10 },
-];
 
 const renderSvg = {
   one: () => (
@@ -81,34 +71,12 @@ const renderSvg = {
   ),
 };
 
-const CandlesMenu = ({ setCandleType, anchorEl, handleClose }) => {
-  const classes = useStyles();
-
-  return (
-    <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-      {candleTypes.map(candleType => (
-        <MenuItem
-          classes={{ root: classes.menuItem }}
-          key={candleType.code}
-          onClick={() => setCandleType(candleType.code)}
-        >
-          {candleType.name}
-        </MenuItem>
-      ))}
-    </Menu>
-  );
-};
-
-const LayoutMenu = ({ anchorEl, setLayout, handleLayoutClose }) => {
-  return <Menu id="layout-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleLayoutClose} />;
-};
-
 interface Props {
   activeInterval: Intervals;
   containerId: LayoutsIntervalsKeys;
   setCandleType: (type: SeriesStyle) => void;
   showIndicatorsDialog: () => void;
-  isAnalysis: boolean;
+  isExplore?: boolean;
 }
 
 const ChartHeader: React.FC<Props> = ({
@@ -116,20 +84,18 @@ const ChartHeader: React.FC<Props> = ({
   showIndicatorsDialog,
   containerId,
   setCandleType,
-  isAnalysis,
+  isExplore,
 }) => {
   const classes = useStyles();
 
   const { setLayout, setChartInterval } = useChartActions();
-  const { setReloadChart } = useCoreActions();
   const supportedIntervals = useSelector(selectSupportedIntervals);
   const layout = useSelector(chartSelector.layout);
 
-  const [shouldBeOpened, setShouldBeOpened] = useState(true);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [candlesAnchorEl, setCandlesAnchorEl] = useState(null);
-  const [layoutAnchorEl, setLayoutAnchorEl] = useState(null);
-  const [intervals, setIntervals] = useState([]);
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+  const [candlesAnchorEl, setCandlesAnchorEl] = useState<Element | null>(null);
+  const [intervals, setIntervals] = useState<Intervals[]>([]);
+
   const { minutes, hours, days } = supportedIntervals;
 
   const handleIntervalChange = useCallback(
@@ -139,28 +105,24 @@ const ChartHeader: React.FC<Props> = ({
     [containerId, layout, setChartInterval],
   );
 
-  const handleLayoutOpen = event => {
-    setLayoutAnchorEl(event.currentTarget);
-  };
-
-  const handleLayoutClose = () => {
-    setLayoutAnchorEl(null);
-  };
-
-  const showCandlesMenu = event => {
+  const handleCandlesOpen = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     setCandlesAnchorEl(event.currentTarget);
   };
 
-  const handleOpen = (event, exactIntervals) => {
+  const handleCandlesClose = () => {
+    setCandlesAnchorEl(null);
+  };
+
+  const handleInntervalMenuOpen = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    exactIntervals: Intervals[],
+  ) => {
     setAnchorEl(event.currentTarget);
     setIntervals(exactIntervals);
   };
 
-  const handleClose = () => {
+  const handleIntervalMenuClose = () => {
     setAnchorEl(null);
-  };
-  const handleCandlesClose = () => {
-    setCandlesAnchorEl(null);
   };
 
   return (
@@ -168,23 +130,20 @@ const ChartHeader: React.FC<Props> = ({
       <div className={classes.chartHeaderLeft}>
         <IntervalMenu
           anchorEl={anchorEl}
-          handleClose={handleClose}
+          handleClose={handleIntervalMenuClose}
           intervals={intervals}
           onIntervalChange={handleIntervalChange}
         />
-        <CandlesMenu
-          anchorEl={candlesAnchorEl}
-          handleClose={handleCandlesClose}
-          setCandleType={setCandleType}
-          candleTypes={candleTypes}
-        />
+
+        <CandlesMenu anchorEl={candlesAnchorEl} handleClose={handleCandlesClose} setCandleType={setCandleType} />
+
         {minutes.length > 1 ? (
           <div
             className={classnames({
               [classes.menuButton]: true,
               [classes.active]: minutes.includes(activeInterval),
             })}
-            onClick={event => handleOpen(event, minutes)}
+            onClick={event => handleInntervalMenuOpen(event, minutes)}
           >
             <span>{minutes.includes(activeInterval) ? intervalDictionary[activeInterval] : 'm'}</span>
             <span className={classes.arrowBottom}>&#x25bc;</span>
@@ -209,7 +168,7 @@ const ChartHeader: React.FC<Props> = ({
               [classes.menuButton]: true,
               [classes.active]: hours.includes(activeInterval),
             })}
-            onClick={event => handleOpen(event, hours)}
+            onClick={event => handleInntervalMenuOpen(event, hours)}
           >
             <span>{hours.includes(activeInterval) ? intervalDictionary[activeInterval] : 'H'}</span>
             <span className={classes.arrowBottom}>&#x25bc;</span>
@@ -228,6 +187,7 @@ const ChartHeader: React.FC<Props> = ({
             </span>
           ))
         )}
+
         {days.map(dayInterval => (
           <span
             key={dayInterval}
@@ -240,12 +200,15 @@ const ChartHeader: React.FC<Props> = ({
             {dayInterval.toUpperCase()}
           </span>
         ))}
-        <span className={classes.menuButton} onClick={showCandlesMenu}>
+
+        <span className={classes.menuButton} onClick={handleCandlesOpen}>
           Candles
         </span>
+
         <span className={classes.divider} style={{ marginRight: 8 }}>
           |
         </span>
+
         <span
           className={classes.menuButton}
           onClick={() => {
@@ -257,14 +220,11 @@ const ChartHeader: React.FC<Props> = ({
       </div>
 
       <div className={classes.chartHeaderRight}>
-        {isAnalysis &&
+        {isExplore &&
           layouts.map(layoutItem => (
             <IconButton
               key={layoutItem}
-              onClick={() => {
-                setLayout(layoutItem);
-                handleLayoutClose();
-              }}
+              onClick={() => setLayout(layoutItem)}
               color="inherit"
               classes={{ root: classes.icon, label: classes.iconLabel }}
             >
@@ -283,53 +243,7 @@ const ChartHeader: React.FC<Props> = ({
         >
           <Refresh className={classes.fontSize} />
         </IconButton> */}
-
-        {/* <IconButton
-          onClick={() => {
-            // if already full screen; exit
-            // else go fullscreen
-            if (
-              document.fullscreenElement ||
-              document.webkitFullscreenElement ||
-              document.mozFullScreenElement ||
-              document.msFullscreenElement
-            ) {
-              if (document.exitFullscreen) {
-                document.exitFullscreen();
-              } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-              } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-              } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-              }
-            } else {
-              const element = document.querySelector(`#${containerId}`);
-              if (element.requestFullscreen) {
-                element.requestFullscreen();
-              } else if (element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
-              } else if (element.webkitRequestFullscreen) {
-                element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-              } else if (element.msRequestFullscreen) {
-                element.msRequestFullscreen();
-              }
-            }
-          }}
-          color="inherit"
-          classes={{ root: classes.icon, label: classes.iconLabel }}
-          disableRipple
-        >
-          <Fullscreen className={classes.fontSize} />
-        </IconButton> */}
       </div>
-
-      <LayoutMenu
-        classes={classes}
-        anchorEl={layoutAnchorEl}
-        setLayout={setLayout}
-        handleLayoutClose={handleLayoutClose}
-      />
     </div>
   );
 };

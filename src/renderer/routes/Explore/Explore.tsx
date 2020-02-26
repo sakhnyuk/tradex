@@ -24,7 +24,7 @@ const Explore = () => {
         <PairsBar />
       </div>
       <div className={classes.chartFullPage}>
-        <Chart />
+        <Chart isExplore />
       </div>
 
       <Paper className={classes.orderBook} elevation={3} variant="outlined" square>

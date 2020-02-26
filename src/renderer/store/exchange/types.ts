@@ -73,7 +73,7 @@ export interface SetWatchlist {
 // --------------
 
 export interface GroupedIntervals {
-  minutes: number[];
-  hours: number[];
-  days: number[];
+  minutes: Intervals[];
+  hours: Intervals[];
+  days: Intervals[];
 }

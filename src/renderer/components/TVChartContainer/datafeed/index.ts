@@ -22,7 +22,7 @@ const Datafeed: IBasicDataFeed = {
       try {
         cb(config);
       } catch (error) {
-        console.error('График срет нам в штаны на сеттаймауте в онРеди.');
+        console.error('Datafeed onReady Error');
       }
     }, 0);
   },
@@ -87,7 +87,7 @@ const Datafeed: IBasicDataFeed = {
           });
       }
     } catch (err) {
-      console.error('График срет нам в штаны');
+      console.error('Datafeed getBars Error');
     }
   },
   subscribeBars: (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) => {

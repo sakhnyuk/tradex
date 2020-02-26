@@ -9,7 +9,7 @@ import { saveState, loadState } from '../../utils/localStorage';
 import { selectCore } from '../../store/core/selectors';
 import * as exchangeSelector from '../../store/exchange/selectors';
 
-import { getTimezone, getLanguageFromURL } from '../../utils/chartUtils';
+import { getTimezone } from '../../utils/chartUtils';
 import ChartHeader from './ChartHeader';
 import { Intervals } from '../../store/exchange/types';
 import styles from './styles';
@@ -19,7 +19,6 @@ import {
   IChartingLibraryWidget,
   SeriesStyle,
   ChartingLibraryWidgetOptions,
-  LanguageCode,
 } from '../../../charting_library/charting_library.min';
 import { LayoutsIntervalsKeys } from '../../store/chart/types';
 
@@ -117,12 +116,12 @@ interface Props {
   containerId: LayoutsIntervalsKeys;
   interval: Intervals;
   defaultCase?: boolean;
-  isAnalysis: boolean;
+  isExplore?: boolean;
 }
 
 const TVChartContainer = (props: Props) => {
   const classes = useStyles();
-  const { interval, containerId, isAnalysis } = props;
+  const { interval, containerId, isExplore } = props;
   const exchange = useSelector(exchangeSelector.selectExchange);
   const symbol = useSelector(exchangeSelector.selectActivePair);
   const appTheme = useSelector(selectCore.theme);
@@ -226,7 +225,7 @@ const TVChartContainer = (props: Props) => {
         activeInterval={interval}
         showIndicatorsDialog={showIndicatorsDialog}
         containerId={containerId}
-        isAnalysis={isAnalysis}
+        isExplore={isExplore}
       />
       <div id={containerId} className={classes.root} />
     </>

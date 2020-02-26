@@ -43,8 +43,9 @@ export default {
 
     window.resetCache = resetCache;
   },
+
   unsubscribeBars() {
     socket.closeKline();
-    clearInterval(intervalId);
+    // clearInterval(intervalId);
   },
 };

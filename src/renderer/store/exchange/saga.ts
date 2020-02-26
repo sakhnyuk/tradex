@@ -1,6 +1,8 @@
 /* eslint-disable no-continue */
 /* eslint-disable max-len */
 import { take, put, call, fork, cancel, takeLatest, takeEvery, select, delay } from 'redux-saga/effects';
+import { Action } from 'redux-act';
+import { SagaIterator } from 'redux-saga';
 
 import {
   requestPairList,
@@ -36,7 +38,7 @@ function* resubscribeSaga() {
   }
 }
 
-function* pairListSaga({ payload: exchange }: any) {
+function* pairListSaga({ payload: exchange }: Action<Exchange> | { payload: Exchange }): SagaIterator {
   try {
     const [marketList, fullList] = yield call(API.public.fetchPairList, exchange);
     const markets = Object.keys(marketList);
