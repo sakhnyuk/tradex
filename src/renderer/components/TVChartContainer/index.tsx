@@ -21,6 +21,7 @@ import {
   ChartingLibraryWidgetOptions,
 } from '../../../charting_library/charting_library.min';
 import { LayoutsIntervalsKeys } from '../../store/chart/types';
+import { ChartOptions } from './types';
 
 declare global {
   interface Window {
@@ -30,7 +31,7 @@ declare global {
 
 const useStyles = makeStyles(styles);
 
-const getOptions = options => {
+const getOptions = (options: ChartOptions) => {
   const {
     exchange,
     symbol,
@@ -133,7 +134,7 @@ const TVChartContainer = (props: Props) => {
     if (!window.tvWidget) return;
 
     window.tvWidget.setSymbol(`${exchange}:${symbol}`, interval, () => {});
-    window.tvWidget.save(state => {
+    window.tvWidget.save((state) => {
       saveState(state, 'CHART_SETTINGS');
     });
   }, [exchange, interval, symbol]);
@@ -160,7 +161,7 @@ const TVChartContainer = (props: Props) => {
       'scalesProperties.textColor': theme.palette.text.primary,
     });
 
-    window.tvWidget.save(state => {
+    window.tvWidget.save((state) => {
       saveState(state, 'CHART_SETTINGS');
     });
   }, [appTheme, theme.palette.background.paper, theme.palette.divider, theme.palette.text.primary]);
@@ -185,7 +186,7 @@ const TVChartContainer = (props: Props) => {
       }
 
       tvWidget.subscribe('onAutoSaveNeeded', () => {
-        tvWidget.save(state => {
+        tvWidget.save((state) => {
           saveState(state, 'CHART_SETTINGS');
         });
       });

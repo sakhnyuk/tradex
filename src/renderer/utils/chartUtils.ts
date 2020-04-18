@@ -1,6 +1,6 @@
 import { Timezone, LanguageCode } from '../../charting_library/charting_library.min';
 
-const timezones: { [key: string]: 'exchange' | Timezone } = {
+const timezones: { [key: string]: Timezone } = {
   0: 'Europe/London',
   '-120': 'Europe/Tallinn',
   '-60': 'Europe/Zurich',
@@ -53,7 +53,7 @@ export function forSince(interval: string) {
   return secInterval[interval];
 }
 
-export function getTimezone() {
+export function getTimezone(): Timezone {
   const offset = new Date().getTimezoneOffset();
 
   if (Object.prototype.hasOwnProperty.call(timezones, offset)) {

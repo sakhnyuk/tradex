@@ -20,6 +20,7 @@ import { selectCore } from '../../store/core/selectors';
 import { useCoreActions } from '../../store/core/useCoreActions';
 import { useExchangeActions } from '../../store/exchange/useExchangeActions';
 import { useExploreActions } from '../../store/explore/useExploreActions';
+import { SortingPairs } from '../../store/core/types';
 
 const useStyles = makeStyles(styles);
 
@@ -36,7 +37,7 @@ const Markets: React.FC<MarketProps> = ({ markets, activeMarket, onClick }) => {
 
   return (
     <ListItem color="inherit" className={classes.markets}>
-      {markets.map(market => (
+      {markets.map((market) => (
         <Button
           key={market}
           variant="text"
@@ -154,13 +155,15 @@ const PairsBar: React.FC = () => {
       </div>
 
       <div className={classes.sortHeader}>
-        {sorters.map(name => (
+        {sorters.map((name) => (
           <div
             key={name}
             className={classes.cell}
             role="menuitem"
             tabIndex={0}
-            onClick={() => (sortBy === name ? setPairListSorting(`${name}Descending`) : setPairListSorting(name))}
+            onClick={() =>
+              sortBy === name ? setPairListSorting(`${name}Descending` as SortingPairs) : setPairListSorting(name)
+            }
           >
             {name} {sortBy === name && <span>&#x25B2;</span>}
             {sortBy === `${name}Descending` && <span>&#x25BC;</span>}

@@ -4,6 +4,7 @@ import webca from 'websocket-crypto-api';
 
 import { eventChannel } from 'redux-saga';
 import { exchanges, Exchange } from '../appConstant';
+import { LibrarySymbolInfo } from '../../charting_library/charting_library.min';
 
 class ReduxSagaWebca {
   webcas: { [key: string]: any } = {};
@@ -20,7 +21,7 @@ class ReduxSagaWebca {
 
   constructor() {
     // fill in webcas by key
-    exchanges.forEach(exch => {
+    exchanges.forEach((exch) => {
       this.webcas[exch] = new webca[exch]();
     });
 
@@ -54,7 +55,7 @@ class ReduxSagaWebca {
 
     const api = this.webcas[exchange];
 
-    const channel = eventChannel(emit => {
+    const channel = eventChannel((emit) => {
       api.onTrade(pair, (data: string[][]) => {
         emit(data);
       });
@@ -73,7 +74,7 @@ class ReduxSagaWebca {
     if (this._orderbookChannel) this._orderbookChannel.close();
     const api = this.webcas[exchange];
 
-    const channel = eventChannel(emit => {
+    const channel = eventChannel((emit) => {
       api.onDepthUpdate(pair, (data: any) => {
         emit(data);
       });
@@ -93,7 +94,7 @@ class ReduxSagaWebca {
     if (this._klinesChannel) this._klinesChannel.close();
     const api = this.webcas[exchange];
 
-    const channel = eventChannel(emit => {
+    const channel = eventChannel((emit) => {
       api.onKline(pair, (data: any) => {
         emit(data);
       });
@@ -117,7 +118,7 @@ class ReduxSagaWebca {
     return this.webcas[exchange].getPairs();
   };
 
-  fetchOHLCV = async (symbolInfo: any, resolution: string, from: number, to: number) => {
+  fetchOHLCV = async (symbolInfo: LibrarySymbolInfo, resolution: string, from: number, to: number) => {
     // we got symbolInfo for example = binance:BTC/USDT
     // So we shuold split it
 

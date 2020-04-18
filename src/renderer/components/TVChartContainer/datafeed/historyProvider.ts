@@ -2,18 +2,19 @@ import logger from '../../../utils/logger';
 import API from '../../../api';
 import { forSince } from '../../../utils/chartUtils';
 import { saveState } from '../../../utils/localStorage';
+import { LibrarySymbolInfo } from '../../../../charting_library/charting_library.min';
 
 const history = {};
 
 export default {
   history,
 
-  getBars(symbolInfo, resolution, from, to, first) {
+  getBars(symbolInfo: LibrarySymbolInfo, resolution: string, from: number, to: number, first: boolean) {
     // trying to get time, which I should use for getting more candels(old)
     const secFromInterval = forSince(resolution);
     return API.public
       .fetchOHLCV(symbolInfo, resolution, from, to)
-      .then(data => {
+      .then((data) => {
         if (data.length) {
           if (first) {
             saveState(data, symbolInfo.full_name + resolution);
@@ -31,7 +32,7 @@ export default {
 
         return [];
       })
-      .catch(error => {
+      .catch((error) => {
         logger.error(error, '09');
       });
   },

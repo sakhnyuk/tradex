@@ -7,6 +7,7 @@ import { loadState } from '../../../utils/localStorage';
 
 import { forSince, getTimezone } from '../../../utils/chartUtils';
 import { IBasicDataFeed } from '../../../../charting_library/charting_library.min';
+import { LibrarySymbolInfo } from '../../../../charting_library/datafeed-api';
 
 const supportedResolutions = ['1', '3', '5', '15', '30', '60', '120', '240', '1D', '1W', '1M'];
 
@@ -17,7 +18,7 @@ const config = {
 };
 
 const Datafeed: IBasicDataFeed = {
-  onReady: cb => {
+  onReady: (cb) => {
     setTimeout(() => {
       try {
         cb(config);
@@ -32,7 +33,7 @@ const Datafeed: IBasicDataFeed = {
 
     const resolut = new webca[splitData[0]]().getSupportedInterval();
 
-    const symbolStub = {
+    const symbolStub: LibrarySymbolInfo = {
       name: symbolName,
       description: `${splitData[1]}/${splitData[2]}`,
       type: 'crypto',
@@ -45,10 +46,12 @@ const Datafeed: IBasicDataFeed = {
       has_intraday: true,
       has_weekly_and_monthly: true,
       intraday_multipliers: resolut,
-      supported_resolution: supportedResolutions,
+      supported_resolutions: supportedResolutions,
       volume_precision: 8,
       data_status: 'streaming',
       full_name: symbolName,
+      format: 'price',
+      listed_exchange: splitData[0],
     };
 
     if (splitData[2].match(/USDT|USD|EUR|JPY|AUD|GBP|KRW|CNY/)) {
@@ -75,13 +78,13 @@ const Datafeed: IBasicDataFeed = {
       } else {
         historyProvider
           .getBars(symbolInfo, resolution, from, to, firstDataRequest)
-          .then(bars =>
+          .then((bars) =>
             onHistoryCallback(bars, {
               noData: bars.length === 0,
               nextTime: bars.length ? bars[0].time : 0,
             }),
           )
-          .catch(err => {
+          .catch((err) => {
             logger.error(err, '10');
             onErrorCallback(err);
           });
@@ -96,7 +99,7 @@ const Datafeed: IBasicDataFeed = {
   unsubscribeBars: () => {
     updater.unsubscribeBars();
   },
-  calculateHistoryDepth: resolution => {
+  calculateHistoryDepth: (resolution) => {
     if (resolution === '1W' || resolution === 'W') {
       return {
         resolutionBack: 'M',
@@ -109,13 +112,13 @@ const Datafeed: IBasicDataFeed = {
         intervalBack: 6,
       };
     }
-    if (resolution >= 60) {
+    if (resolution === '60') {
       return {
         resolutionBack: 'D',
         intervalBack: 5,
       };
     }
-    if (resolution >= 30) {
+    if (resolution === '30') {
       return {
         resolutionBack: 'D',
         intervalBack: 5,
