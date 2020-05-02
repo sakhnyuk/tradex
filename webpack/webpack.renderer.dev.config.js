@@ -16,7 +16,6 @@ module.exports = merge.smart(baseConfig, {
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       reportFiles: ['src/renderer/**/*'],
-      eslint: true,
     }),
     new ErrorOverlayPlugin(),
     new webpack.HotModuleReplacementPlugin({
