@@ -53,7 +53,7 @@ const getOptions = (options: ChartOptions) => {
     datafeed: Datafeed,
     interval,
     container_id: containerId,
-    library_path: './charting_library/',
+    library_path: '../charting_library/',
     locale: 'en',
     charts_storage_url: chartsStorageUrl,
     charts_storage_api_version: chartsStorageApiVersion,

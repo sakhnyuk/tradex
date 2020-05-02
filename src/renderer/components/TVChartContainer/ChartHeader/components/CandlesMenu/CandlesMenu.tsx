@@ -25,7 +25,7 @@ export const CandlesMenu: React.FC<Props> = ({ setCandleType, anchorEl, handleCl
 
   return (
     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-      {candleTypes.map(candleType => (
+      {candleTypes.map((candleType) => (
         <MenuItem
           classes={{ root: classes.menuItem }}
           key={candleType.code}

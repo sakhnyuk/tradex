@@ -7,21 +7,11 @@ const baseConfig = require('./webpack.base.config');
 
 module.exports = merge.smart(baseConfig, {
   target: 'electron-main',
+
   entry: {
     main: './src/main/main.dev.ts',
   },
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        loader: 'ts-loader',
-        options: {
-          transpileOnly: true,
-        },
-      },
-    ],
-  },
+
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       reportFiles: ['src/main/**/*'],

@@ -143,13 +143,13 @@ const ChartHeader: React.FC<Props> = ({
               [classes.menuButton]: true,
               [classes.active]: minutes.includes(activeInterval),
             })}
-            onClick={event => handleInntervalMenuOpen(event, minutes)}
+            onClick={(event) => handleInntervalMenuOpen(event, minutes)}
           >
             <span>{minutes.includes(activeInterval) ? intervalDictionary[activeInterval] : 'm'}</span>
             <span className={classes.arrowBottom}>&#x25bc;</span>
           </div>
         ) : (
-          minutes.map(minuteInterval => (
+          minutes.map((minuteInterval) => (
             <span
               key={minuteInterval}
               className={classnames({
@@ -168,13 +168,13 @@ const ChartHeader: React.FC<Props> = ({
               [classes.menuButton]: true,
               [classes.active]: hours.includes(activeInterval),
             })}
-            onClick={event => handleInntervalMenuOpen(event, hours)}
+            onClick={(event) => handleInntervalMenuOpen(event, hours)}
           >
             <span>{hours.includes(activeInterval) ? intervalDictionary[activeInterval] : 'H'}</span>
             <span className={classes.arrowBottom}>&#x25bc;</span>
           </div>
         ) : (
-          hours.map(hourInterval => (
+          hours.map((hourInterval) => (
             <span
               key={hourInterval}
               className={classnames({
@@ -188,7 +188,7 @@ const ChartHeader: React.FC<Props> = ({
           ))
         )}
 
-        {days.map(dayInterval => (
+        {days.map((dayInterval) => (
           <span
             key={dayInterval}
             className={classnames({
@@ -221,7 +221,7 @@ const ChartHeader: React.FC<Props> = ({
 
       <div className={classes.chartHeaderRight}>
         {isExplore &&
-          layouts.map(layoutItem => (
+          layouts.map((layoutItem) => (
             <IconButton
               key={layoutItem}
               onClick={() => setLayout(layoutItem)}

@@ -26,16 +26,16 @@ export default {
       window.updateCbs = [updateCb];
     }
 
-    window.updateChartPrice = close => {
+    window.updateChartPrice = (close) => {
       if (!Object.keys(lastCandle).length) {
         return;
       }
 
-      window.updateCbs.forEach(cb => cb({ ...lastCandle, close }));
+      window.updateCbs.forEach((cb) => cb({ ...lastCandle, close }));
     };
 
     socket = new webca[exchange]();
-    socket.onKline(symbol, resolution, data => {
+    socket.onKline(symbol, resolution, (data) => {
       if (data) {
         lastCandle = data;
       }

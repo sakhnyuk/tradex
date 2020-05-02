@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const { spawn } = require('child_process');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const baseConfig = require('./webpack.renderer.config');
 
@@ -11,9 +12,17 @@ const port = 2003;
 
 module.exports = merge.smart(baseConfig, {
   plugins: [
+    new ForkTsCheckerWebpackPlugin({
+      reportFiles: ['src/renderer/**/*'],
+    }),
     new ErrorOverlayPlugin(),
     new webpack.HotModuleReplacementPlugin({
       multiStep: false,
+    }),
+
+    new webpack.NamedModulesPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     }),
   ],
   entry: {
@@ -51,8 +60,8 @@ module.exports = merge.smart(baseConfig, {
           env: process.env,
           stdio: 'inherit',
         })
-          .on('close', code => process.exit(code))
-          .on('error', spawnError => console.error(spawnError));
+          .on('close', (code) => process.exit(code))
+          .on('error', (spawnError) => console.error(spawnError));
       }
     },
   },

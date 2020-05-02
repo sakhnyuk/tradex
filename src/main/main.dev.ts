@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { app, BrowserWindow, ipcMain, dialog, BrowserWindowConstructorOptions } from 'electron';
-import path from 'path';
-import url from 'url';
+import { app, BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import isDev from 'electron-is-dev';
 import log from 'electron-log';
 import windowStateKeeper, { State } from 'electron-window-state';
@@ -51,7 +49,7 @@ const installExtensions = async (): Promise<void | any[]> => {
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
 
-  return Promise.all(extensions.map(name => installer.default(installer[name], forceDownload))).catch(console.log);
+  return Promise.all(extensions.map((name) => installer.default(installer[name], forceDownload))).catch(console.log);
 };
 
 // main window creator ---------
@@ -92,13 +90,7 @@ const createWindow = async (): Promise<void> => {
     process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
     mainWindow.loadURL(`http://localhost:2003`);
   } else {
-    mainWindow.loadURL(
-      url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true,
-      }),
-    );
+    mainWindow.loadURL(`file://${__dirname}/index.html`);
   }
 
   mainWindow.on('enter-full-screen', (event: Electron.Event) => {
@@ -117,12 +109,12 @@ const createWindow = async (): Promise<void> => {
     }
   });
 
-  if (isDev) {
-    // Open DevTools, see https://github.com/electron/electron/issues/12438 for why we wait for dom-ready
-    mainWindow.webContents.once('dom-ready', () => {
-      mainWindow!.webContents.openDevTools();
-    });
-  }
+  // if (isDev) {
+  // Open DevTools, see https://github.com/electron/electron/issues/12438 for why we wait for dom-ready
+  mainWindow.webContents.once('dom-ready', () => {
+    mainWindow!.webContents.openDevTools();
+  });
+  // }
 
   mainWindow.on('close', (event: Event) => {
     if (mainWindow === null) return;
