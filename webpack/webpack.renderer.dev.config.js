@@ -11,9 +11,12 @@ const baseConfig = require('./webpack.renderer.config');
 const port = 2003;
 
 module.exports = merge.smart(baseConfig, {
+  devtool: 'source-map',
+
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       reportFiles: ['src/renderer/**/*'],
+      eslint: true,
     }),
     new ErrorOverlayPlugin(),
     new webpack.HotModuleReplacementPlugin({
@@ -44,9 +47,13 @@ module.exports = merge.smart(baseConfig, {
     contentBase: path.join(__dirname, '..', 'src'),
     compress: true,
     noInfo: true,
-    stats: 'errors-only',
+    // stats: 'errors-only',
     inline: true,
     hot: true,
+    overlay: {
+      warnings: true,
+      errors: true,
+    },
     headers: { 'Access-Control-Allow-Origin': '*' },
     historyApiFallback: {
       verbose: true,
