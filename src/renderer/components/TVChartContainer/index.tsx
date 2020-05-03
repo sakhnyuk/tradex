@@ -48,6 +48,7 @@ const getOptions = (options: ChartOptions) => {
   } = options;
 
   const widgetOptions: ChartingLibraryWidgetOptions = {
+    // debug: true, // DEBUG CHART
     timezone: getTimezone(),
     symbol: `${exchange}:${symbol}`,
     datafeed: Datafeed,
@@ -181,7 +182,7 @@ const TVChartContainer = (props: Props) => {
         cacheSettings.charts[0].panes[0].sources[0].state.shortName = `${exchange}:${symbol}`;
         cacheSettings.charts[0].panes[0].sources[0].state.interval = interval;
 
-        // tvWidget.load(cacheSettings); // FIXME: warnings on load settings TODO:
+        tvWidget.load(cacheSettings); // FIXME: warnings on load settings TODO:
         applyTheme();
       }
 
