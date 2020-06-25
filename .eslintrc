@@ -84,7 +84,7 @@
     ],
     "no-underscore-dangle": ["error", { "allow": ["__typename"] }],
     "no-param-reassign": ["error", { "props": false }],
-    "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 1 }],
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxBOF": 1 }],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "arrow-spacing": "error",
     "react/destructuring-assignment": ["warn", "always"],
