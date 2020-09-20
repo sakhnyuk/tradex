@@ -88,9 +88,9 @@ const createWindow = async (): Promise<void> => {
 
   if (isDev) {
     process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
-    mainWindow.loadURL(`http://localhost:2003`);
+    mainWindow?.loadURL(`http://localhost:2003`);
   } else {
-    mainWindow.loadURL(`file://${__dirname}/index.html`);
+    mainWindow?.loadURL(`file://${__dirname}/index.html`);
   }
 
   mainWindow.on('enter-full-screen', (event: Electron.Event) => {
