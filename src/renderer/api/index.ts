@@ -1,19 +1,19 @@
 /* eslint-disable no-underscore-dangle */
-// @ts-ignore
-import webca from 'websocket-crypto-api';
-
-import { eventChannel } from 'redux-saga';
-import { exchanges, Exchange } from '../appConstant';
-import { LibrarySymbolInfo } from '../../charting_library/charting_library.min';
+import { eventChannel, EventChannel } from 'redux-saga';
+import { ExchangeApiClass } from 'renderer/api/exchangesApi/exchanges/baseInteface';
+import { LibrarySymbolInfo } from 'charting_library/charting_library.min';
+import webca from './exchangesApi/exchanges';
+import { Exchange, exchanges } from '../appConstant';
+import { OnDepthUpdateRes, OnKlineRes, OnTradeRes } from './exchangesApi/types';
 
 class ReduxSagaWebca {
-  webcas: { [key: string]: any } = {};
+  instances: { [key: string]: ExchangeApiClass } = {};
 
-  _tradesChannel: any = null;
+  _tradesChannel: EventChannel<OnTradeRes> | null = null;
 
-  _orderbookChannel: any = null;
+  _orderbookChannel: EventChannel<OnDepthUpdateRes> | null = null;
 
-  _klinesChannel: any = null;
+  _klinesChannel: EventChannel<OnKlineRes> | null = null;
 
   public: any;
 
@@ -21,8 +21,8 @@ class ReduxSagaWebca {
 
   constructor() {
     // fill in webcas by key
-    exchanges.forEach((exch) => {
-      this.webcas[exch] = new webca[exch]();
+    exchanges.forEach((exchange) => {
+      this.instances[exchange] = new webca[exchange]();
     });
 
     // public subscription methods and some public fetch methods
@@ -30,40 +30,26 @@ class ReduxSagaWebca {
       tradesChannel: this.tradesChannel,
       orderbookChannel: this.orderbookChannel,
       klinesChannel: this.klinesChannel,
-      fetchExchangeConfig: this.fetchExchangeConfig,
       fetchPairList: this.fetchPairList,
       fetchOHLCV: this.fetchOHLCV,
-    };
-
-    // private api calls
-    this.private = {
-      fetchClosedOrders: this.fetchClosedOrders,
-      fetchOpenedOrders: this.fetchOpenedOrders,
-      fetchBalances: this.fetchBalances,
-      createOrder: this.createOrder,
-      cancelOrder: this.cancelOrder,
-      fetchOrder: this.fetchOrder,
-      putLeverage: this.putLeverage,
-      fetchPositions: this.fetchPositions,
     };
   }
 
   // PUBLIC METHODS
-
   tradesChannel = ({ exchange, pair }: { exchange: Exchange; pair: string }) => {
     if (this._tradesChannel) this._tradesChannel.close();
 
-    const api = this.webcas[exchange];
+    const api = this.instances[exchange];
 
-    const channel = eventChannel((emit) => {
-      api.onTrade(pair, (data: string[][]) => {
+    const channel = eventChannel<OnTradeRes>((emit) => {
+      api.onTrade(pair, (data: OnTradeRes) => {
         emit(data);
       });
-      const unsubscribe = () => {
+
+      // Returning unsubscribe callback
+      return () => {
         api.closeTrade();
       };
-
-      return unsubscribe;
     });
 
     this._tradesChannel = channel;
@@ -72,116 +58,57 @@ class ReduxSagaWebca {
 
   orderbookChannel = ({ exchange, pair }: { exchange: Exchange; pair: string }) => {
     if (this._orderbookChannel) this._orderbookChannel.close();
-    const api = this.webcas[exchange];
+    const api = this.instances[exchange];
 
-    const channel = eventChannel((emit) => {
-      api.onDepthUpdate(pair, (data: any) => {
+    const channel = eventChannel<OnDepthUpdateRes>((emit) => {
+      api.onDepthUpdate(pair, (data: OnDepthUpdateRes) => {
         emit(data);
       });
 
-      const unsubscribe = () => {
+      // Returning unsubscribe callback
+      return () => {
         api.closeOB();
       };
-
-      return unsubscribe;
     });
 
     this._orderbookChannel = channel;
     return channel;
   };
 
-  klinesChannel({ exchange, pair }: { exchange: Exchange; pair: string }) {
+  klinesChannel = ({ exchange, pair }: { exchange: Exchange; pair: string }) => {
     if (this._klinesChannel) this._klinesChannel.close();
-    const api = this.webcas[exchange];
+    const api = this.instances[exchange];
 
-    const channel = eventChannel((emit) => {
-      api.onKline(pair, (data: any) => {
+    const channel = eventChannel<OnKlineRes>((emit) => {
+      api.onKline(pair, 60, (data: OnKlineRes) => {
         emit(data);
       });
 
-      const unsubscribe = () => {
+      // Returning unsubscribe callback
+      return () => {
         api.closeKline();
       };
-
-      return unsubscribe;
     });
 
     this._klinesChannel = channel;
     return channel;
   }
 
-  fetchExchangeConfig = async (exchange: Exchange) => {
-    return this.webcas[exchange].getExchangeConfig();
-  };
-
   fetchPairList = async (exchange: Exchange) => {
-    return this.webcas[exchange].getPairs();
+    return this.instances[exchange].getPairs();
   };
 
   fetchOHLCV = async (symbolInfo: LibrarySymbolInfo, resolution: string, from: number, to: number) => {
     // we got symbolInfo for example = binance:BTC/USDT
-    // So we shuold split it
-
-    console.info('TODO type this -', symbolInfo);
-
+    // So we should split it
     const [exchange, base, quote] = symbolInfo.name.split(/[:/]/);
     const pair = `${base}/${quote}`;
 
     try {
-      const candles = await this.webcas[exchange].getKline(pair, resolution, from, to);
-
-      return candles;
+      return await this.instances[exchange].getKline(pair, resolution, from, to);
     } catch (error) {
       throw new Error(`exchangeApi fetchOHLCV ${error.message}`);
     }
-  };
-
-  // PRIVATE METHODS
-
-  fetchBalances = async ({
-    exchange,
-    apiKey,
-    apiSecret,
-    isMargin,
-  }: {
-    exchange: Exchange;
-    apiKey: string;
-    apiSecret: string;
-    isMargin: boolean;
-  }) => {
-    const balances = await this.webcas[exchange].getBalance({ apiKey, apiSecret });
-    return isMargin ? balances.margin : balances.exchange;
-  };
-
-  fetchClosedOrders = async ({ exchange, apiKey, apiSecret, pair }: any) => {
-    return this.webcas[exchange].getClosedOrders({ apiKey, apiSecret }, { pair });
-  };
-
-  fetchPositions = async ({ exchange, apiKey, apiSecret, pair }: any) => {
-    return this.webcas[exchange].getPositions({ apiKey, apiSecret }, { pair });
-  };
-
-  putLeverage = ({ exchange, apiKey, apiSecret, pair, leverage }: any) => {
-    return this.webcas[exchange].setLeverage({ apiKey, apiSecret }, { pair, leverage });
-  };
-
-  fetchOpenedOrders = ({ exchange, apiKey, apiSecret }: any) => {
-    return this.webcas[exchange].getOpenOrders({ apiKey, apiSecret });
-  };
-
-  cancelOrder = ({ exchange, apiKey, apiSecret, orderId, pair }: any) => {
-    return this.webcas[exchange].cancelOrder({ apiKey, apiSecret }, { pair, orderId });
-  };
-
-  createOrder = async ({ exchange, apiKey, apiSecret, type, pair, side, volume, price, stopPx, trailValue }: any) => {
-    return this.webcas[exchange].createOrder(
-      { apiKey, apiSecret },
-      { type, pair, side, volume, price, stopPx, trailValue },
-    );
-  };
-
-  fetchOrder = async ({ exchange, apiKey, apiSecret, orderId, pair, status }: any) => {
-    return this.webcas[exchange].getAllOrders({ apiKey, apiSecret }, { pair, status, orderId });
   };
 }
 

@@ -1,5 +1,5 @@
 export const insertTotalAsks = (asks: number[][]) => {
-  const newAsks = [];
+  const newAsks: number[][] = [];
   let quoteTotal = 0;
   let baseTotal = 0;
   for (let index = asks.length - 1; index >= 0; index--) {
@@ -14,7 +14,7 @@ export const insertTotalAsks = (asks: number[][]) => {
 };
 
 export const insertTotalBids = (bids: number[][]) => {
-  const newBids = [];
+  const newBids: number[][] = [];
   let quoteTotal = 0;
   let baseTotal = 0;
   for (let index = 0; index < bids.length; index++) {

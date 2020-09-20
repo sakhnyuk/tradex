@@ -26,6 +26,9 @@ import { ChartOptions } from './types';
 declare global {
   interface Window {
     tvWidget: IChartingLibraryWidget | undefined;
+    updateCbs: any[];
+    resetCache: any;
+    updateChartPrice: any;
   }
 }
 

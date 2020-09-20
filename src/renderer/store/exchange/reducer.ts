@@ -1,6 +1,7 @@
 import merge from 'lodash/fp/merge';
 import set from 'lodash/fp/set';
 import { createAction, createReducer } from 'redux-act';
+import { OnTradeRes } from 'renderer/api/exchangesApi/types';
 import insertOrderBookUpdates from '../../utils/insertOrderBookUpdates';
 import { exchangePairs, Exchange } from '../../appConstant';
 import { insertTotalAsks, insertTotalBids } from '../../utils/insertTotal';
@@ -76,7 +77,7 @@ export const setWatchlist = createAction<SetWatchlist>('exchange/setWatchlist');
 
 export const setPrice = createAction<number>('exchange/setPrice');
 export const setIsPriceRising = createAction<boolean>('exchange/setIsPriceRising');
-export const updateTrades = createAction<string[][]>('exchange/updateTrades');
+export const updateTrades = createAction<OnTradeRes[]>('exchange/updateTrades');
 export const setOrderBook = createAction<any>('exchange/setOrderBook');
 export const updateOrderbook = createAction<any>('exchange/updateOrderbook');
 
@@ -178,7 +179,7 @@ const exchangeReducer = createReducer<ExchangeStore>({}, initialState)
     );
   })
 
-  .on(updateTrades, (state, trades: string[][]) => {
+  .on(updateTrades, (state, trades) => {
     const pair = state[state.exchange].activePair;
     const oldTrades = state[state.exchange].data[pair].trades;
 

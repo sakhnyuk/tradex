@@ -1,26 +1,22 @@
 import { take, put, call, all, fork, cancel, cancelled, delay } from 'redux-saga/effects';
+import { EventChannel } from 'redux-saga';
+import { OnDepthUpdateRes, OnTradeRes } from 'renderer/api/exchangesApi/types';
 import API from '../../api';
 
 import { updateTrades, updateOrderbook, setPrice, setOrderBook, setIsPriceRising } from './reducer';
 import { setOrderBookIsLoading, setTradesIsLoading } from '../core/reducer';
 import { PairAndExchange } from './types';
 
-declare global {
-  interface Window {
-    updateChartPrice: any;
-  }
-}
-
 // prevent empty updates
 const isEmpty = (updates: { asks: string[][]; bids: string[][] }) => !updates.asks.length && !updates.bids.length;
 
-const createBatchTrades = (channel: any) =>
+const createBatchTrades = (channel: EventChannel<OnTradeRes>) =>
   function* batchTrades() {
-    const trades = [];
+    const trades: OnTradeRes[] = [];
 
     try {
       while (true) {
-        const data = yield take(channel);
+        const data: OnTradeRes = yield take(channel);
         trades.unshift(data);
       }
     } finally {
@@ -39,7 +35,7 @@ const createBatchTrades = (channel: any) =>
     }
   };
 
-const createBatchOrderbook = (channel: any) =>
+const createBatchOrderbook = (channel: EventChannel<OnDepthUpdateRes>) =>
   function* batchOrderbook() {
     let updates = { asks: [], bids: [] };
 
@@ -76,8 +72,8 @@ const createBgWorker = (timer: number, task: () => void) =>
 
 export default (pairAndExchange: PairAndExchange) => {
   return function* createWatchers() {
-    const tradesChannel = yield call(API.public.tradesChannel, pairAndExchange);
-    const orderbookChannel = yield call(API.public.orderbookChannel, pairAndExchange);
+    const tradesChannel: EventChannel<OnTradeRes> = yield call(API.public.tradesChannel, pairAndExchange);
+    const orderbookChannel: EventChannel<OnDepthUpdateRes> = yield call(API.public.orderbookChannel, pairAndExchange);
 
     yield all([
       fork(createBgWorker(1000, createBatchTrades(tradesChannel))),

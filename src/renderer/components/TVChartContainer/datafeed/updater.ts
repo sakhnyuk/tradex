@@ -1,10 +1,11 @@
 // api for realtime update candles
 
-import webca from 'websocket-crypto-api';
-import { LibrarySymbolInfo, SubscribeBarsCallback } from '../../../../charting_library/datafeed-api';
+import { Exchange } from 'renderer/appConstant';
+import { ExchangeApiClass } from 'renderer/api/exchangesApi/exchanges/baseInteface';
+import { LibrarySymbolInfo, SubscribeBarsCallback } from 'charting_library/datafeed-api';
+import api from '../../../api/exchangesApi/exchanges';
 
-const intervalId = null;
-let socket = null;
+let socket: ExchangeApiClass | null = null;
 
 export default {
   subscribeBars(
@@ -16,7 +17,7 @@ export default {
   ) {
     const splitSymbol = symbolInfo.name.split(/[:/]/);
     const symbol = `${splitSymbol[1]}/${splitSymbol[2]}`;
-    const exchange = splitSymbol[0].toLowerCase();
+    const exchange = splitSymbol[0].toLowerCase() as Exchange;
 
     let lastCandle = {};
 
@@ -26,7 +27,7 @@ export default {
       window.updateCbs = [updateCb];
     }
 
-    window.updateChartPrice = (close) => {
+    window.updateChartPrice = (close: number) => {
       if (!Object.keys(lastCandle).length) {
         return;
       }
@@ -34,7 +35,7 @@ export default {
       window.updateCbs.forEach((cb) => cb({ ...lastCandle, close }));
     };
 
-    socket = new webca[exchange]();
+    socket = new api[exchange]();
     socket.onKline(symbol, resolution, (data) => {
       if (data) {
         lastCandle = data;
@@ -45,7 +46,8 @@ export default {
   },
 
   unsubscribeBars() {
-    socket.closeKline();
-    // clearInterval(intervalId);
+    if (socket) {
+      socket.closeKline();
+    }
   },
 };

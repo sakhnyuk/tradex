@@ -44,7 +44,7 @@ function* pairListSaga({ payload: exchange }: Action<Exchange> | { payload: Exch
     const markets = Object.keys(marketList);
     markets.push('watchlist');
 
-    Object.keys(marketList).forEach(market => marketList[market].sort((a: any, b: any) => b.volume - a.volume));
+    Object.keys(marketList).forEach((market) => marketList[market].sort((a: any, b: any) => b.volume - a.volume));
 
     yield put(setPairList(fullList));
     yield put(setFilteredPairList(marketList));
@@ -104,19 +104,19 @@ function* setConfigSaga(config: any, exchange: Exchange) {
 
 function* exchangeConfigSaga() {
   // fill state on start (prevent bugs)
-  const startExchange = yield select(selectExchange);
-  try {
-    const { exchange: normal, margin, intervals } = yield call(API.public.fetchExchangeConfig, startExchange);
-    yield put(setSupportedIntervals({ exchange: startExchange, intervals }));
+  // const startExchange = yield select(selectExchange);
+  // try {
+  //   const { exchange: normal, margin, intervals } = yield call(API.public.fetchExchangeConfig, startExchange);
+  //   yield put(setSupportedIntervals({ exchange: startExchange, intervals }));
 
-    if (margin.isActive) {
-      yield setConfigSaga(margin, startExchange);
-    } else {
-      yield setConfigSaga(normal, startExchange);
-    }
-  } catch (error) {
-    Logger.error(error, '41');
-  }
+  //   if (margin.isActive) {
+  //     yield setConfigSaga(margin, startExchange);
+  //   } else {
+  //     yield setConfigSaga(normal, startExchange);
+  //   }
+  // } catch (error) {
+  //   Logger.error(error, '41');
+  // }
 
   // start worker
   while (true) {
@@ -145,7 +145,7 @@ function* exchangeConfigSaga() {
   }
 }
 
-export default function*() {
+export default function* () {
   yield takeEvery(setPairAndExchange, setLoadersSaga);
   yield fork(exchangeConfigSaga);
   yield takeLatest(requestPairList, pairListSaga);

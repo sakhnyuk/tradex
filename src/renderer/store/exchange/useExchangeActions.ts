@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { OnTradeRes } from 'renderer/api/exchangesApi/types';
 import * as act from './reducer';
 import { PairAndExchange, SetOrderTypes, SetSupportedComponents, SetSupportedIntervals, SetWatchlist } from './types';
 import { Exchange } from '../../appConstant';
@@ -50,7 +51,7 @@ export function useExchangeActions() {
     setIsPriceRising: useCallback((isPriceRising: boolean) => dispatch(act.setIsPriceRising(isPriceRising)), [
       dispatch,
     ]),
-    updateTrades: useCallback((trades: string[][]) => dispatch(act.updateTrades(trades)), [dispatch]),
+    updateTrades: useCallback((trades: OnTradeRes[]) => dispatch(act.updateTrades(trades)), [dispatch]),
     setOrderBook: useCallback((payload: any) => dispatch(act.setOrderBook(payload)), [dispatch]),
     updateOrderbook: useCallback((payload: any) => dispatch(act.updateOrderbook(payload)), [dispatch]),
     requestPairList: useCallback((exchange: Exchange) => dispatch(act.requestPairList(exchange)), [dispatch]),

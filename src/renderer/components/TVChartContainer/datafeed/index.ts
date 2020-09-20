@@ -1,18 +1,17 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import webca from 'websocket-crypto-api';
+/* eslint-disable @typescript-eslint/camelcase,no-unused-expressions */
+import { Exchange } from 'renderer/appConstant';
+import { KlineResItem } from 'renderer/api/exchangesApi/types';
+import { DatafeedConfiguration, IBasicDataFeed, LibrarySymbolInfo } from 'charting_library/charting_library.min';
 import logger from '../../../utils/logger';
 import historyProvider from './historyProvider';
 import updater from './updater';
 import { loadState } from '../../../utils/localStorage';
-
 import { forSince, getTimezone } from '../../../utils/chartUtils';
-import { IBasicDataFeed } from '../../../../charting_library/charting_library.min';
-import { LibrarySymbolInfo } from '../../../../charting_library/datafeed-api';
+import api from '../../../api/exchangesApi/exchanges/index'
 
 const supportedResolutions = ['1', '3', '5', '15', '30', '60', '120', '240', '1D', '1W', '1M'];
 
-const config = {
-  timezone: getTimezone(),
+const config: DatafeedConfiguration = {
   supported_resolutions: supportedResolutions,
   supports_marks: true,
 };
@@ -27,11 +26,13 @@ const Datafeed: IBasicDataFeed = {
       }
     }, 0);
   },
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   searchSymbols: () => {},
   resolveSymbol: (symbolName, onSymbolResolvedCallback) => {
     const splitData = symbolName.split(/[:/]/);
+    const exchange = splitData[0].toLowerCase() as Exchange;
 
-    const resolut = new webca[splitData[0]]().getSupportedInterval();
+    const resolut = new api[exchange]().getSupportedInterval();
 
     const symbolStub: LibrarySymbolInfo = {
       name: symbolName,
@@ -73,12 +74,12 @@ const Datafeed: IBasicDataFeed = {
         if (nowTime - cacheCandles[cacheCandles.length - 1].time > interval * 1000) {
           delete window.localStorage[symbolInfo.full_name + resolution];
           window.resetCache?.();
-          window.tvWidget.chart().resetData();
+          window.tvWidget && window?.tvWidget.chart().resetData();
         }
       } else {
         historyProvider
           .getBars(symbolInfo, resolution, from, to, firstDataRequest)
-          .then((bars) =>
+          .then((bars: KlineResItem[]) =>
             onHistoryCallback(bars, {
               noData: bars.length === 0,
               nextTime: bars.length ? bars[0].time : 0,
