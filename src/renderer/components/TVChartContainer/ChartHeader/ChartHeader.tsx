@@ -7,8 +7,8 @@ import classnames from 'classnames';
 // import Refresh from '@material-ui/icons/Refresh';
 import IconButton from '@material-ui/core/IconButton';
 import { useSelector } from 'react-redux';
+import { SeriesStyle } from 'charting_library/charting_library.min';
 import styles from './styles';
-import { SeriesStyle } from '../../../../charting_library/charting_library.min';
 import { useChartActions } from '../../../store/chart/useChartActions';
 import { Intervals } from '../../../store/exchange/types';
 import { selectSupportedIntervals } from '../../../store/exchange/selectors';
@@ -20,6 +20,8 @@ import { CandlesMenu } from './components/CandlesMenu';
 export const useStyles = makeStyles(styles);
 
 const layouts: Layouts[] = ['one', 'leftright', 'topbot', 'topbotleftright'];
+
+// TODO: Add resolution from API
 export const intervalDictionary = {
   1: '1m',
   3: '3m',

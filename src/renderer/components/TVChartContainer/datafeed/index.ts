@@ -29,6 +29,7 @@ const Datafeed: IBasicDataFeed = {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   searchSymbols: () => {},
   resolveSymbol: (symbolName, onSymbolResolvedCallback) => {
+    console.log('resolveSymbol');
     const splitData = symbolName.split(/[:/]/);
     const exchange = splitData[0].toLowerCase() as Exchange;
 
@@ -46,8 +47,8 @@ const Datafeed: IBasicDataFeed = {
       pricescale: 100000000,
       has_intraday: true,
       has_weekly_and_monthly: true,
-      intraday_multipliers: resolut,
-      supported_resolutions: supportedResolutions,
+      intraday_multipliers: resolut, // TODO: Add resolution from API
+      supported_resolutions: supportedResolutions,  // TODO: Add resolution from API
       volume_precision: 8,
       data_status: 'streaming',
       full_name: symbolName,
@@ -127,7 +128,7 @@ const Datafeed: IBasicDataFeed = {
     }
     return {
       resolutionBack: 'D',
-      intervalBack: 0.25,
+      intervalBack: 1,
     };
   },
 };
