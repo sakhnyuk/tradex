@@ -1,6 +1,6 @@
-version: 2.1
+version: 2
 jobs:
-   build_windows:
+  build_windows:
     docker:
       - image: electronuserland/builder:wine
     steps:
@@ -18,10 +18,8 @@ jobs:
       - run: echo $KEYSTORE | base64 --decode - > keystore.p12
       - run: security import keystore.p12 -k build.keychain -P $KEYCHAIN_PASSWORD -T /usr/bin/codesign
       - run: yarn && yarn release --mac
-
-
 workflows:
-  version: 2.1
+  version: 2
   build:
     jobs:
       - build_windows
