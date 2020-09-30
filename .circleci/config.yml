@@ -5,7 +5,7 @@ jobs:
       - image: electronuserland/builder:wine
     steps:
       - checkout
-      - run: yarn && yarn release --win
+      - run: yarn && package-win
 
   build_macos:
     macos:
@@ -17,7 +17,7 @@ jobs:
       - run: security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
       - run: echo $KEYSTORE | base64 --decode - > keystore.p12
       - run: security import keystore.p12 -k build.keychain -P $KEYCHAIN_PASSWORD -T /usr/bin/codesign
-      - run: yarn && yarn release --mac
+      - run: yarn && yarn package-mac
 workflows:
   version: 2
   build:
