@@ -3,7 +3,7 @@ import { OnDepthUpdateRes, OnKlineRes, OnTradeRes } from 'renderer/api/exchanges
 
 export interface ExchangeApiClass {
   getSupportedInterval: () => string[];
-  setupWebSocket: (eventHandler: (res: any) => void, path: string, type: SocketType) => void;
+  setupWebSocket: (eventHandler: (res:  any) => void, path: string, type: SocketType) => void;
   closeWebSocket?: () => void;
   onTrade: (symbol: string, eventHandler: (data: OnTradeRes) => void) => void;
   onDepthUpdate: (symbol: string, eventHandler: (data: OnDepthUpdateRes) => void) => ReWS | undefined;

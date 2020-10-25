@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 
 import { setExplorePairAndExchange } from './reducer';
 import { SetExplorePairAndExchange } from './types';
@@ -7,12 +7,8 @@ import { SetExplorePairAndExchange } from './types';
 export function useExploreActions() {
   const dispatch = useDispatch();
 
-  const actions = {
-    setExplorePairAndExchange: useCallback(
+  return useMemo(() => ({
+    setExplorePairAndExchange:
       (payload: SetExplorePairAndExchange) => dispatch(setExplorePairAndExchange(payload)),
-      [dispatch],
-    ),
-  };
-
-  return { ...actions, dispatch };
+  }), [dispatch]);
 }

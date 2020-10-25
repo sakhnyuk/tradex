@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import * as act from './reducer';
@@ -8,34 +8,22 @@ import { SortingPairs } from './types';
 export const useCoreActions = () => {
   const dispatch = useDispatch();
 
-  const actions = {
-    setOnline: useCallback((isOnline: boolean) => dispatch(act.setOnline(isOnline)), [dispatch]),
-    setReloadChart: useCallback((reloadChart: boolean) => dispatch(act.setReloadChart(reloadChart)), [dispatch]),
-    setTheme: useCallback((theme: TypeTheme) => dispatch(act.setTheme(theme)), [dispatch]),
-    setOpenSetting: useCallback((settingOpen: boolean) => dispatch(act.setOpenSetting(settingOpen)), [dispatch]),
-    setOpenPairsBar: useCallback((pairsBarOpen: boolean) => dispatch(act.setOpenPairsBar(pairsBarOpen)), [dispatch]),
-    setPageSetting: useCallback((settingPage: string) => dispatch(act.setPageSetting(settingPage)), [dispatch]),
-    setIcons: useCallback((icons: { [key: string]: string }) => dispatch(act.setIcons(icons)), [dispatch]),
-    setShowAllAccounts: useCallback((showAllAccounts: boolean) => dispatch(act.setShowAllAccounts(showAllAccounts)), [
-      dispatch,
-    ]),
-    setShowAllPositions: useCallback(
+  return useMemo(() => ({
+    setOnline: (isOnline: boolean) => dispatch(act.setOnline(isOnline)),
+    setReloadChart: (reloadChart: boolean) => dispatch(act.setReloadChart(reloadChart)),
+    setTheme: (theme: TypeTheme) => dispatch(act.setTheme(theme)),
+    setOpenSetting: (settingOpen: boolean) => dispatch(act.setOpenSetting(settingOpen)),
+    setOpenPairsBar: (pairsBarOpen: boolean) => dispatch(act.setOpenPairsBar(pairsBarOpen)),
+    setPageSetting: (settingPage: string) => dispatch(act.setPageSetting(settingPage)),
+    setIcons: (icons: { [key: string]: string }) => dispatch(act.setIcons(icons)),
+    setShowAllAccounts: (showAllAccounts: boolean) => dispatch(act.setShowAllAccounts(showAllAccounts)),
+    setShowAllPositions:
       (showAllPositions: boolean) => dispatch(act.setShowAllPositions(showAllPositions)),
-      [dispatch],
-    ),
-    setShowAllPairs: useCallback((showAllPairs: boolean) => dispatch(act.setShowAllPairs(showAllPairs)), [dispatch]),
-    setOrderBookIsLoading: useCallback(
+    setShowAllPairs: (showAllPairs: boolean) => dispatch(act.setShowAllPairs(showAllPairs)),
+    setOrderBookIsLoading:
       (orderBookIsLoading: boolean) => dispatch(act.setOrderBookIsLoading(orderBookIsLoading)),
-      [dispatch],
-    ),
-    setTradesIsLoading: useCallback((tradesIsLoading: boolean) => dispatch(act.setTradesIsLoading(tradesIsLoading)), [
-      dispatch,
-    ]),
-    setPairListSorting: useCallback(
+    setTradesIsLoading: (tradesIsLoading: boolean) => dispatch(act.setTradesIsLoading(tradesIsLoading)),
+    setPairListSorting:
       (pairListSorting: SortingPairs) => dispatch(act.setPairListSorting(pairListSorting)),
-      [dispatch],
-    ),
-  };
-
-  return { ...actions, dispatch };
+  }), [dispatch]);
 };

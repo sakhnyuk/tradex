@@ -1,7 +1,7 @@
 import { createAction, createReducer } from 'redux-act';
 import set from 'lodash/fp/set';
 
-import { SetChartInterval, ChartStore, Layouts } from './types';
+import { ChartStore, Layouts, SetChartInterval } from './types';
 
 const initialState: ChartStore = {
   layout: 'one',
@@ -33,14 +33,12 @@ const chartReducer = createReducer<ChartStore>({}, initialState)
     if (layout === 'leftright' || layout === 'topbot') {
       if (id === 'left' || id === 'top') {
         const leftright = set(['leftright', 'left'], interval, state);
-        const topbot = set(['topbot', 'top'], interval, leftright);
-        return topbot;
+        return set(['topbot', 'top'], interval, leftright);
       }
 
       if (id === 'right' || id === 'bot') {
         const leftright = set(['leftright', 'right'], interval, state);
-        const topbot = set(['topbot', 'bot'], interval, leftright);
-        return topbot;
+        return set(['topbot', 'bot'], interval, leftright);
       }
     }
 
