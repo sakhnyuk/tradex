@@ -78,6 +78,7 @@ const createWindow = async (): Promise<void> => {
     webPreferences: {
       nodeIntegration: true, // important option for node api in react app
       webSecurity: false, // CORS off
+      contextIsolation: false,
     },
   };
 
