@@ -4,6 +4,8 @@
 
 Desktop cross platform client (MacOS and Windows) for explore trading data on all major cryptocurrency exchanges from one place.
 
+![CleanShot 2022-05-27 at 17 59 42@2x](https://user-images.githubusercontent.com/32235469/170714467-94474d67-328b-4e99-a835-99edb7cce137.png)
+
 ## Features
 
 - **All-In-One:** Working with multiple exchanges within a single interface;
