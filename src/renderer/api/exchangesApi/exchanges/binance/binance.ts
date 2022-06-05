@@ -43,9 +43,9 @@ export class Binance implements ExchangeApiClass {
     '1M': '1M',
   } as { [key: string]: string };
 
-  stableCoins = ['USD', 'USDT', 'PAX', 'SDC'];
+  stableCoins = ['USD', 'USDT', 'PAX', 'SDC', 'BUSD'];
 
-  getSupportedInterval = () => Object.keys(this.times)
+  getSupportedInterval = () => Object.keys(this.times);
 
   setupWebSocket(eventHandler: (res: any) => void, path: string, type: SocketType) {
     const socket = this.sockets[type];
@@ -188,9 +188,7 @@ export class Binance implements ExchangeApiClass {
     return socket;
   }
 
-  onKline(symbol: string,
-          interval: number | string,
-          eventHandler: (data: OnKlineRes) => void): ReWS | undefined {
+  onKline(symbol: string, interval: number | string, eventHandler: (data: OnKlineRes) => void): ReWS | undefined {
     const splitSymbol = symbol.split(/[:/]/);
     const newSymbol = splitSymbol[0] + splitSymbol[1];
 
@@ -265,7 +263,6 @@ export class Binance implements ExchangeApiClass {
 
   async getKline(pair = 'BTC/USDT', interval: number | string = 60, start = 0, end?: number): Promise<KlineResItem[]> {
     let endTime = 0;
-    console.log(start);
 
     if (!end) {
       endTime = new Date().getTime() / 1000;

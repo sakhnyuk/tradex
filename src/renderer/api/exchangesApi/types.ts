@@ -1,3 +1,7 @@
+/**
+ * @deprecated
+ * Use OrderBookUpdateInfo instead
+ */
 export interface OnDepthUpdateRes {
   asks: [number, number][];
   bids: [number, number][];
@@ -6,6 +10,10 @@ export interface OnDepthUpdateRes {
   symbol: string;
 }
 
+/**
+ * @deprecated
+ * Move to TradeInfoModel
+ */
 export interface OnTradeRes {
   id: number;
   side: 'sell' | 'buy';
@@ -16,6 +24,10 @@ export interface OnTradeRes {
   exchange: string;
 }
 
+/**
+ * @deprecated
+ * Move to CandleInfoModel
+ */
 export interface OnKlineRes {
   close: number;
   high: number;
@@ -25,6 +37,10 @@ export interface OnKlineRes {
   volume: number;
 }
 
+/**
+ * @deprecated
+ * Use PairInfoModel
+ */
 export interface PairData {
   symbol: string;
   volume: number;
@@ -44,6 +60,10 @@ export interface PairsMapped {
   STABLE: PairData[];
 }
 
+/**
+ * @deprecated
+ * Use CandleInfoModel instead
+ */
 export interface KlineResItem {
   time: number;
   open: number;

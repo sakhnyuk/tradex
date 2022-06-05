@@ -3,7 +3,7 @@ import { createStyles, Theme } from '@material-ui/core';
 const style = (theme: Theme) =>
   createStyles({
     macHeader: {
-      height: 24,
+      height: 28,
       '-webkit-app-region': 'drag', // Electron drag window
       background: theme.appColors.background.topHeader,
       color: theme.palette.text.primary,
