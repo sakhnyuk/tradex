@@ -124,18 +124,6 @@ export class BinanceAdapter implements ExchangeEntity {
 
   public getStableCoins = (): string[] => this.stableCoins;
 
-  public connect = (): void => {
-    this.sockets.trade.reconnect();
-    this.sockets.orderbook.reconnect();
-    this.sockets.kline.reconnect();
-  };
-
-  public disconnect = (): void => {
-    this.closeTrade();
-    this.closeOrderBook();
-    this.closeCandle;
-  };
-
   public onTradeUpdate = async (
     symbol = this.defaultTicker,
     eventHandler: (res: TradeInfoModel) => void,
