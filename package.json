@@ -37,6 +37,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/react-virtualized": "^9.21.10",
+    "@types/signals": "^1.0.1",
     "@types/webpack-env": "^1.15.2",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
@@ -98,6 +99,7 @@
     "redux-saga": "^1.1.3",
     "reflect-metadata": "^0.1.13",
     "reselect": "^4.0.0",
+    "signals": "^1.0.0",
     "typedi": "^0.10.0"
   },
   "build": {

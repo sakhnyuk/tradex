@@ -1,5 +1,5 @@
 import ReWS from 'reconnecting-websocket';
-import { ExchangeEntity } from 'core/ports';
+import { ExchangeProvider } from 'core/ports';
 import {
   CandleInfoModel,
   OrderBookUpdateInfo,
@@ -24,7 +24,7 @@ import {
 } from './BinanceTypes';
 import { parseTotalAsks } from '../../lib/parseOrderBookItem';
 
-export class BinanceAdapter implements ExchangeEntity {
+export class BinanceAdapter implements ExchangeProvider {
   private readonly name = 'Binance';
 
   private readonly key = this.name.toLowerCase();

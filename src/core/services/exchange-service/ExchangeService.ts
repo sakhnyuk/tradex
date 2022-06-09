@@ -1,6 +1,7 @@
-import { Service } from 'typedi';
-import { ExchangeEntity, ExchangesDataProvider, Logger } from 'core/ports';
-import { Exchange } from 'core/adapters';
+import { Inject, Service } from 'typedi';
+import signals from 'signals';
+import { ExchangeProvider, ExchangesDataProvider, Logger } from 'core/ports';
+import { ExchangeName } from 'core/adapters';
 import { ExchangeUpdateHandler, SymbolUpdateHandler } from 'core/types';
 
 /**
@@ -11,36 +12,37 @@ import { ExchangeUpdateHandler, SymbolUpdateHandler } from 'core/types';
  */
 @Service()
 export class ExchangeService {
-  private currentExchange: ExchangeEntity;
+  @Inject('Logger')
+  private logger!: Logger;
+
+  @Inject('ExchangesDataProvider')
+  private exchangesProvider!: ExchangesDataProvider;
+
+  private currentExchange: ExchangeProvider;
 
   private activeSymbol: TradeSymbol;
 
-  private updateExchangeListeners: ExchangeUpdateHandler[] = [];
+  private activeExchangeChanged: signals.Signal<ExchangeProvider> = new signals.Signal();
 
-  private updateSymbolListeners: SymbolUpdateHandler[] = [];
+  private activeSymbolChanged: signals.Signal<TradeSymbol> = new signals.Signal();
 
-  constructor(private exchangesProvider: ExchangesDataProvider, private logger: Logger) {
+  constructor() {
     this.currentExchange = this.exchangesProvider.getDefaultExchange();
     this.activeSymbol = this.currentExchange.getDefaultSymbol();
+
+    this.activeExchangeChanged.memorize = true;
+    this.activeSymbolChanged.memorize = true;
   }
 
-  get exchangeName(): string {
-    return this.currentExchange.getName();
+  get exchangeName(): ExchangeName {
+    return this.currentExchange.getName() as ExchangeName;
   }
 
-  private emitUpdateExchangeEvent(exchange: ExchangeEntity): void {
-    this.updateExchangeListeners.forEach((handler) => handler(exchange));
-  }
-
-  private emitUpdateSymbolEvent(symbol: TradeSymbol): void {
-    this.updateSymbolListeners.forEach((handler) => handler(symbol));
-  }
-
-  public getSupportedExchanges(): Record<string, ExchangeEntity> {
+  public getSupportedExchanges(): Record<string, ExchangeProvider> {
     return this.exchangesProvider.getAllSupportedExchanges();
   }
 
-  public getCurrentExchange(): ExchangeEntity {
+  public getCurrentExchange(): ExchangeProvider {
     return this.currentExchange;
   }
 
@@ -48,15 +50,15 @@ export class ExchangeService {
     return this.activeSymbol;
   }
 
-  public addExchangeUpdateListener(handler: ExchangeUpdateHandler): void {
-    this.updateExchangeListeners.push(handler);
+  public onExchangeUpdate(handler: ExchangeUpdateHandler): void {
+    this.activeExchangeChanged.add(handler);
   }
 
-  public addSymbolUpdateListener(handler: SymbolUpdateHandler): void {
-    this.updateSymbolListeners.push(handler);
+  public onSymbolUpdate(handler: SymbolUpdateHandler): void {
+    this.activeSymbolChanged.add(handler);
   }
 
-  public setActiveExchange(exchangeName: Exchange): void {
+  public setActiveExchange(exchangeName: ExchangeName): void {
     const newExchange = this.exchangesProvider.getExchange(exchangeName);
 
     if (!newExchange) {
@@ -65,8 +67,8 @@ export class ExchangeService {
     }
 
     this.currentExchange = newExchange;
-    this.emitUpdateExchangeEvent(newExchange);
-    this.emitUpdateSymbolEvent(newExchange.getDefaultSymbol());
+    this.activeExchangeChanged.dispatch(newExchange);
+    this.activeSymbolChanged.dispatch(newExchange.getDefaultSymbol());
   }
 
   public setActiveSymbol(symbol: TradeSymbol): void {

@@ -1,6 +1,6 @@
 import { CandleInfoModel, OrderBookUpdateInfo, PairListModel, TradeInfoModel } from 'core/models';
 
-export interface ExchangeEntity {
+export interface ExchangeProvider {
   /**
    * Returns name of the Exchange
    */

@@ -1,3 +1,3 @@
-export enum Exchange {
+export enum ExchangeName {
   BINANCE = 'binance',
 }

@@ -1,15 +1,18 @@
-import { ExchangeEntity, ExchangesDataProvider, Logger } from 'core/ports';
-import { Service } from 'typedi';
+import { ExchangeProvider, ExchangesDataProvider, Logger } from 'core/ports';
+import { Inject, Service } from 'typedi';
 import { BinanceAdapter } from './entities/binance/BinanceAdapter';
-import { Exchange } from './types';
+import { ExchangeName } from './types';
 
-@Service()
+@Service({ name: 'ExchangesDataProvider' })
 export class ExchangesProviderAdapter implements ExchangesDataProvider {
-  private exchanges: Record<Exchange, ExchangeEntity>;
+  @Inject('Logger')
+  private logger!: Logger;
 
-  private readonly defaultExchangeName = Exchange.BINANCE;
+  private exchanges: Record<ExchangeName, ExchangeProvider>;
 
-  constructor(private logger: Logger) {
+  private readonly defaultExchangeName = ExchangeName.BINANCE;
+
+  constructor() {
     this.exchanges = {
       binance: new BinanceAdapter(),
     };
@@ -19,7 +22,7 @@ export class ExchangesProviderAdapter implements ExchangesDataProvider {
     return Object.values(this.exchanges).map((exchange) => exchange.getName());
   };
 
-  public getExchange = (exchangeName: string): ExchangeEntity => {
+  public getExchange = (exchangeName: string): ExchangeProvider => {
     const exchangeAdapter = this.exchanges[exchangeName];
 
     if (!exchangeAdapter) {
@@ -31,11 +34,11 @@ export class ExchangesProviderAdapter implements ExchangesDataProvider {
     return exchangeAdapter;
   };
 
-  public getDefaultExchange = (): ExchangeEntity => {
+  public getDefaultExchange = (): ExchangeProvider => {
     return this.exchanges[this.defaultExchangeName];
   };
 
-  public getAllSupportedExchanges = (): Record<Exchange, ExchangeEntity> => {
+  public getAllSupportedExchanges = (): Record<ExchangeName, ExchangeProvider> => {
     return this.exchanges;
   };
 }

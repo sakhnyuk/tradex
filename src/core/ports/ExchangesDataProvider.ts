@@ -1,8 +1,8 @@
-import { ExchangeEntity } from 'core/ports';
+import { ExchangeProvider } from 'core/ports';
 
 export interface ExchangesDataProvider {
   getExchangesNameList: () => string[];
-  getExchange: (exchangeName: string) => ExchangeEntity;
-  getDefaultExchange: () => ExchangeEntity;
-  getAllSupportedExchanges: () => Record<string, ExchangeEntity>;
+  getExchange: (exchangeName: string) => ExchangeProvider;
+  getDefaultExchange: () => ExchangeProvider;
+  getAllSupportedExchanges: () => Record<string, ExchangeProvider>;
 }

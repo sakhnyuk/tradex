@@ -14,9 +14,8 @@ enum LogType {
 /**
  * App level logger
  * Use this to log any kind of messages
- * Only error messages are logged on production
  */
-@Service()
+@Service({ name: 'Logger' })
 export class LoggerService implements Logger {
   private static logText(type: LogType): (...args: any[]) => void {
     const styles: { [x in LogType]: string } = {
