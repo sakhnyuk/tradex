@@ -22,7 +22,6 @@ import {
   Sockets,
   SocketType,
 } from './BinanceTypes';
-import { parseTotalAsks } from '../../lib/parseOrderBookItem';
 
 export class BinanceAdapter implements ExchangeProvider {
   private readonly name = 'Binance';
@@ -165,16 +164,13 @@ export class BinanceAdapter implements ExchangeProvider {
     let SnapshotAccepted = false;
 
     const handler = (res: OrderBookUpdateDto): void => {
-      const asksBook: [number, number][] = res.a.map((r) => [+r[0], +r[1]]);
-      const bidsBook: [number, number][] = res.a.map((r) => [+r[0], +r[1]]);
-
-      const asksModelsList = parseTotalAsks(asksBook);
-      const bidsModelsList = parseTotalAsks(bidsBook);
+      const asksBook: [Price, TradeVolume][] = res.a.map((r) => [+r[0], +r[1]]);
+      const bidsBook: [Price, TradeVolume][] = res.b.map((r) => [+r[0], +r[1]]);
 
       if (SnapshotAccepted) {
         const data: OrderBookUpdateInfo = {
-          asks: asksModelsList.orderBookList,
-          bids: bidsModelsList.orderBookList,
+          asks: asksBook,
+          bids: bidsBook,
           type: OrderBookUpdateType.UPDATE,
           exchange: this.key,
           symbol,
@@ -182,8 +178,8 @@ export class BinanceAdapter implements ExchangeProvider {
 
         eventHandler(data);
       } else {
-        uBuffer.asks = asksModelsList.orderBookList;
-        uBuffer.bids = bidsModelsList.orderBookList;
+        uBuffer.asks = asksBook;
+        uBuffer.bids = bidsBook;
       }
     };
 
@@ -337,15 +333,12 @@ export class BinanceAdapter implements ExchangeProvider {
     const res = await fetch(this.getOrderBookUrl(symbol));
     const resData: OrderBookSnapshotDto = await res.json();
 
-    const asksBook: [number, number][] = resData.asks.map((r) => [+r[0], +r[1]]);
-    const bidsBook: [number, number][] = resData.bids.map((r) => [+r[0], +r[1]]);
-
-    const asksModelsList = parseTotalAsks(asksBook);
-    const bidsModelsList = parseTotalAsks(bidsBook);
+    const asksBook: [Price, TradeVolume][] = resData.asks.map((r) => [+r[0], +r[1]]);
+    const bidsBook: [Price, TradeVolume][] = resData.bids.map((r) => [+r[0], +r[1]]);
 
     const data: OrderBookUpdateInfo = {
-      asks: asksModelsList.orderBookList,
-      bids: bidsModelsList.orderBookList,
+      asks: asksBook,
+      bids: bidsBook,
       type: OrderBookUpdateType.SNAPSHOT,
       exchange: this.key,
       symbol,
