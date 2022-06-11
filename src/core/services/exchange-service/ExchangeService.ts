@@ -1,8 +1,7 @@
 import { Inject, Service } from 'typedi';
 import signals from 'signals';
 import { ExchangeProvider, ExchangesDataProvider, Logger } from 'core/ports';
-import { ExchangeName } from 'core/adapters';
-import { ExchangeUpdateHandler, SymbolUpdateHandler } from 'core/types';
+import { ExchangeName, ExchangeUpdateHandler, SymbolUpdateHandler } from 'core/types';
 
 /**
  * ExchangeService responsible to
@@ -12,12 +11,6 @@ import { ExchangeUpdateHandler, SymbolUpdateHandler } from 'core/types';
  */
 @Service()
 export class ExchangeService {
-  @Inject('Logger')
-  private logger!: Logger;
-
-  @Inject('ExchangesDataProvider')
-  private exchangesProvider!: ExchangesDataProvider;
-
   private currentExchange: ExchangeProvider;
 
   private activeSymbol: TradeSymbol;
@@ -26,7 +19,10 @@ export class ExchangeService {
 
   private activeSymbolChanged: signals.Signal<TradeSymbol> = new signals.Signal();
 
-  constructor() {
+  constructor(
+    @Inject('ExchangesDataProvider') private exchangesProvider: ExchangesDataProvider,
+    @Inject('Logger') private logger: Logger,
+  ) {
     this.currentExchange = this.exchangesProvider.getDefaultExchange();
     this.activeSymbol = this.currentExchange.getDefaultSymbol();
 

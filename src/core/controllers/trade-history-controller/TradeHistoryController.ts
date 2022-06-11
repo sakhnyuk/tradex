@@ -7,15 +7,12 @@ import { TradeInfoAddedHandler } from 'core/types';
 
 @Service()
 export class TradeHistoryController {
-  @Inject()
-  private exchangeService!: ExchangeService;
-
   @Inject('Logger')
   private logger!: Logger;
 
   private tradeAdded: signals.Signal<TradeInfoModel> = new signals.Signal();
 
-  constructor() {
+  constructor(private exchangeService: ExchangeService) {
     this.exchangeService.onExchangeUpdate(async (exchange) => {
       exchange.onTradeUpdate(this.exchangeService.getCurrentSymbol(), this.pushTradeInfo);
     });

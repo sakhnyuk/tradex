@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
-const webpack = require('webpack');
-const merge = require('webpack-merge');
-const CopyPlugin = require('copy-webpack-plugin');
+import path from 'path';
+import webpack from 'webpack';
+import { merge } from 'webpack-merge';
+import CopyPlugin from 'copy-webpack-plugin';
+import rendererConfig from './webpack.renderer.config';
 
-const baseConfig = require('./webpack.renderer.config');
-
-module.exports = merge.smart(baseConfig, {
+const config = merge(rendererConfig, {
   mode: 'production',
 
   target: 'electron-preload',
@@ -30,6 +29,8 @@ module.exports = merge.smart(baseConfig, {
     }),
 
     // Add assets to dist folder for resoling images in prod
-    new CopyPlugin([{ from: 'src/assets', to: 'assets' }]),
+    new CopyPlugin({ patterns: [{ from: 'src/assets', to: 'assets' }] }),
   ],
 });
+
+export default config;

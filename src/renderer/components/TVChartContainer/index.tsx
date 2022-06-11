@@ -208,7 +208,9 @@ const TVChartContainer = (props: Props) => {
         }
       };
     } catch (err) {
-      console.error('Error loadTradingView() - ', err.message);
+      if (err instanceof Error) {
+        console.error('Error loadTradingView() - ', err.message);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

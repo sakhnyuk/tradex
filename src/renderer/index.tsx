@@ -1,33 +1,14 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
-import { Provider } from 'react-redux';
+import { createRoot } from 'react-dom/client';
+// import { AppContainer } from 'react-hot-loader';
+// import { Provider } from 'react-redux';
 
-import { App } from './App';
-import { configureStore } from './store/configureStore';
+// import { App } from './App';
+// import { configureStore } from './store/configureStore';
 
-const store = configureStore();
+// const store = configureStore();
 
-render(
-  <AppContainer>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </AppContainer>,
-  document.getElementById('root'),
-);
+const container = document.getElementById('root');
+const root = createRoot(container!);
 
-if (module.hot) {
-  module.hot.accept('./', () => {
-    // eslint-disable-next-line global-require
-    const NextApp = require('./App').default;
-    render(
-      <AppContainer>
-        <Provider store={store}>
-          <NextApp />
-        </Provider>
-      </AppContainer>,
-      document.getElementById('root'),
-    );
-  });
-}
+root.render(<div>Hello</div>);

@@ -1,8 +1,7 @@
-import { ExchangeName } from 'core/adapters';
 import { ExchangeService } from 'core/services';
 import { Inject, Service } from 'typedi';
 import signals from 'signals';
-import { ExchangeNameUpdateHandler } from 'core/types';
+import { ExchangeName, ExchangeNameUpdateHandler } from 'core/types';
 
 /**
  * Provides data of supported exchanges and handler to switch active exchange

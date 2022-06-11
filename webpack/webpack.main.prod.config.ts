@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const webpack = require('webpack');
-const merge = require('webpack-merge');
-const TerserPlugin = require('terser-webpack-plugin');
+import webpack from 'webpack';
+import { merge } from 'webpack-merge';
+import TerserPlugin from 'terser-webpack-plugin';
+import baseConfig from './webpack.base.config';
 
-const baseConfig = require('./webpack.base.config');
-
-module.exports = merge.smart(baseConfig, {
+const config: webpack.Configuration = merge(baseConfig, {
   target: 'electron-main',
 
   devtool: 'source-map',
@@ -23,8 +21,6 @@ module.exports = merge.smart(baseConfig, {
       : [
           new TerserPlugin({
             parallel: true,
-            sourceMap: true,
-            cache: true,
           }),
         ],
   },
@@ -42,3 +38,5 @@ module.exports = merge.smart(baseConfig, {
     }),
   ],
 });
+
+export default config;

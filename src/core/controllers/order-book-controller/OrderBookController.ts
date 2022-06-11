@@ -1,25 +1,19 @@
-import { parseTotalAsks, parseTotalBids } from 'core/adapters/exchange-provider/lib/parseOrderBookItem';
+import signals from 'signals';
+import { Inject, Service } from 'typedi';
 import { OrderBookModel, OrderBookParsedDto, OrderBookUpdateInfo } from 'core/models';
 import { ExchangeProvider, Logger } from 'core/ports';
 import { ExchangeService } from 'core/services';
 import { OrderBookUpdateHandler, OrderBookUpdateType } from 'core/types';
-import signals from 'signals';
-import { Inject, Service } from 'typedi';
+import { parseTotalAsks, parseTotalBids } from './parseOrderBookItem';
 import { insertOrderBookUpdates } from './insertOrderBookUpdates';
 
 @Service()
 export class OrderBookController {
-  @Inject()
-  private exchangeService!: ExchangeService;
-
-  @Inject('Logger')
-  private logger!: Logger;
-
   private orderBookUpdated: signals.Signal<OrderBookModel> = new signals.Signal();
 
   private orderBook: OrderBookModel = new OrderBookModel({});
 
-  constructor() {
+  constructor(private exchangeService: ExchangeService, @Inject('Logger') private logger: Logger) {
     this.exchangeService.onExchangeUpdate(async (exchange) => {
       exchange.onOrderBookUpdate(this.exchangeService.getCurrentSymbol(), this.pushOrderBookUpdate);
     });

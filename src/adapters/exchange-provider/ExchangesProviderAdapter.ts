@@ -1,7 +1,7 @@
 import { ExchangeProvider, ExchangesDataProvider, Logger } from 'core/ports';
+import { ExchangeName } from 'core/types';
 import { Inject, Service } from 'typedi';
 import { BinanceAdapter } from './entities/binance/BinanceAdapter';
-import { ExchangeName } from './types';
 
 @Service({ name: 'ExchangesDataProvider' })
 export class ExchangesProviderAdapter implements ExchangesDataProvider {

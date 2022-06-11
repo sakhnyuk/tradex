@@ -11,7 +11,7 @@ export interface ParsedOrderBookValues {
  * @param asks - [price, base]
  * @returns
  */
-export const parseTotalAsks = (asks: [number, number][]): ParsedOrderBookValues => {
+export const parseTotalAsks = (asks: [Price, TradeVolume][]): ParsedOrderBookValues => {
   const newAsks: OrderBookItemDto[] = [];
   let quoteTotal = 0;
   let baseTotal = 0;
@@ -41,7 +41,7 @@ export const parseTotalAsks = (asks: [number, number][]): ParsedOrderBookValues 
  * @param bids - [price, base]
  * @returns
  */
-export const parseTotalBids = (bids: [number, number][]): ParsedOrderBookValues => {
+export const parseTotalBids = (bids: [Price, TradeVolume][]): ParsedOrderBookValues => {
   const newBids: OrderBookItemDto[] = [];
   let quoteTotal = 0;
   let baseTotal = 0;

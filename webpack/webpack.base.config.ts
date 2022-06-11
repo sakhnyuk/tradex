@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
+import * as path from 'path';
+import * as webpack from 'webpack';
 
 const isProd = process.env.NODE_ENV === 'production';
 
-module.exports = {
+const config: webpack.Configuration = {
   mode: 'development',
 
   output: {
@@ -16,10 +16,14 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: 'ts-loader',
-        options: {
-          transpileOnly: true,
-        },
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
       },
     ],
   },
@@ -35,3 +39,5 @@ module.exports = {
   devtool: 'source-map',
   plugins: [],
 };
+
+export default config;

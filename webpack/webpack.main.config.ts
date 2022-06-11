@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const webpack = require('webpack');
-const merge = require('webpack-merge');
+import webpack from 'webpack';
+import { merge } from 'webpack-merge';
+import baseConfig from './webpack.base.config';
 
-const baseConfig = require('./webpack.base.config');
-
-module.exports = merge.smart(baseConfig, {
+const config: webpack.Configuration = merge(baseConfig, {
   devtool: 'source-map',
 
   target: 'electron-main',
@@ -19,3 +18,5 @@ module.exports = merge.smart(baseConfig, {
     }),
   ],
 });
+
+export default config;

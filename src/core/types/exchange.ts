@@ -1,10 +1,13 @@
-import { ExchangeName } from 'core/adapters';
 import { OrderBookModel, PairListModel, TradeInfoModel } from 'core/models';
 import { ExchangeProvider } from 'core/ports';
 
 export enum ExchangeConnectionStatus {
   CONNECTED = 'connected',
   DISCONNECTED = 'disconnected',
+}
+
+export enum ExchangeName {
+  BINANCE = 'binance',
 }
 
 export type ExchangeUpdateHandler = (exchange: ExchangeProvider) => void;

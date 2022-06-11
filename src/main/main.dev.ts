@@ -49,7 +49,7 @@ const installExtensions = async (): Promise<void | any[]> => {
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
 
-  return Promise.all(extensions.map((name) => installer.default(installer[name], forceDownload))).catch(console.log);
+  return Promise.all(extensions.map((name) => installer.default(installer[name], forceDownload))).catch(log.info);
 };
 
 // main window creator ---------
