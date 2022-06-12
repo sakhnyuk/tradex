@@ -1,5 +1,5 @@
 import { ExchangeService } from 'core/services';
-import { Inject, Service } from 'typedi';
+import { Service } from 'typedi';
 import signals from 'signals';
 import { ExchangeName, ExchangeNameUpdateHandler, SymbolUpdateHandler } from 'core/types';
 
@@ -15,15 +15,12 @@ export class ExchangeController {
 
   constructor(private exchangeService: ExchangeService) {
     this.activeExchange = this.exchangeService.exchangeName;
-    this.activePair = this.exchangeService.getCurrentSymbol();
+    this.activePair = this.exchangeService.getCurrentExchange().getDefaultSymbol();
 
-    // this.exchangeService.onExchangeUpdate(() => {
-    //   this.activeExchange = this.exchangeService.exchangeName;
-    // });
-
-    // this.exchangeService.onSymbolUpdate((symbol) => {
-    //   this.activePair = symbol;
-    // });
+    this.exchangeService.onExchangeUpdate((exchange) => {
+      this.activeExchange = this.exchangeService.exchangeName;
+      this.exchangeChanged.dispatch(exchange.getName());
+    });
   }
 
   public getActiveExchangeName = (): ExchangeName => {
@@ -47,6 +44,7 @@ export class ExchangeController {
   };
 
   public setActivePair = (pair: TradeSymbol): void => {
-    this.exchangeService.setActiveSymbol(pair);
+    this.activePair = pair;
+    this.pairChanged.dispatch(pair);
   };
 }

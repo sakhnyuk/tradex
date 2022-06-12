@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Paper } from '@mui/material';
 
-import Header from '../../components/AppHeader/Header';
+import Header from 'app/components/AppHeader';
+import PairsBar from 'app/components/PairsBar';
 // import Trades from '../../components/Trades';
 // import OrderBook from '../../components/OrderBook';
 // import Exchanges from '../../components/ExchangesMenu';
@@ -15,7 +16,7 @@ const Explore = () => {
         <Header />
       </div>
 
-      <div>{/* <PairsBar /> */}</div>
+      <PairsBar />
 
       <div className="m-1 col-[1/2] row-[2/4]">{/* <Chart isExplore /> */}</div>
 

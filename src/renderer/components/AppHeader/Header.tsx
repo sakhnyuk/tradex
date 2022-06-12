@@ -1,13 +1,13 @@
-/* eslint-disable max-len */
 import React from 'react';
 import { AppBar, Box, Button, Grid, ListItem, ListItemText } from '@mui/material';
 import { Toolbar } from '@mui/material';
 import PriceComp from '../PriceComp';
 import { formatPrice, formatQuantity } from 'app/utils/setFormatPrice';
-import { useStores } from 'app/store';
+import { useViewControllers } from 'app/view-controllers';
+import { observer } from 'mobx-react-lite';
 
-const Header = () => {
-  const { exchange } = useStores();
+const Header = observer(() => {
+  const { exchangeViewController, pairViewController } = useViewControllers();
 
   return (
     <div className="flex flex-col shadow-xs">
@@ -19,10 +19,10 @@ const Header = () => {
         <Toolbar disableGutters className="min-h-fit">
           <Button
             className=" border-l-2 border-solid border-ui-default h-12 rounded-none relative py-1 px-8 whitespace-nowrap"
-            onClick={() => {}}
+            onClick={() => pairViewController.setPairsBarOpen(true)}
             color="inherit"
           >
-            {exchange.activePair}
+            {pairViewController.activePair}
           </Button>
 
           <Button
@@ -30,8 +30,8 @@ const Header = () => {
             onClick={() => {}}
             color="inherit"
           >
-            exchange
-            <span className="absolute right-3 bottom-0 text-typo-secondary text-[10px]">{exchange.activeExchange}</span>
+            {exchangeViewController.activeExchange}
+            <span className="absolute right-3 bottom-0 text-typo-secondary text-[10px]">exchange</span>
           </Button>
 
           <Grid container alignItems="center" className="pl-20 text-typo-primary">
@@ -109,6 +109,6 @@ const Header = () => {
       </AppBar>
     </div>
   );
-};
+});
 
 export default Header;

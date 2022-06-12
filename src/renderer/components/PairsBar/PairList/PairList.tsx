@@ -1,21 +1,19 @@
+import 'react-virtualized/styles.css';
 import React from 'react';
 import { AutoSizer, List } from 'react-virtualized';
-import get from 'lodash/get';
-import StarOutlined from '@material-ui/icons/StarOutlined';
-import StarBorder from '@material-ui/icons/StarBorder';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import { ListItem, ListItemText, makeStyles } from '@material-ui/core';
-
+import StarOutlined from '@mui/icons-material/StarOutline';
+import StarBorder from '@mui/icons-material/StarBorder';
 import { formatQuantity } from '../../../utils/setFormatPrice';
 import ListItemTextWithPrice from './ListItemTextWithPrice';
-import styles from '../style';
+import { PairInfoModel } from 'core/models';
+import { IconButton, ListItem, ListItemText, Typography } from '@mui/material';
+import { observer } from 'mobx-react-lite';
 
 interface PairListProps {
-  list: any;
-  setPair: (pair: string) => void;
-  toggleWatchlist: (watch: { [key: string]: string }) => void;
-  watchlist: any[];
+  list: PairInfoModel[];
+  setPair: (pair: TradeSymbol) => void;
+  toggleWatchlist: (watch: PairInfoModel) => void;
+  watchlist: PairInfoModel[];
 }
 
 interface RowRenderer {
@@ -24,12 +22,8 @@ interface RowRenderer {
   style: any;
 }
 
-const useStyles = makeStyles(styles);
-
 // Render your list
-const PairList: React.FC<PairListProps> = ({ list, setPair, toggleWatchlist, watchlist }) => {
-  const classes = useStyles();
-
+const PairList: React.FC<PairListProps> = observer(({ list, setPair, toggleWatchlist, watchlist }) => {
   const rowRenderer = ({
     index, // Index of row
     key, // Unique key within array of rendered rows
@@ -38,33 +32,33 @@ const PairList: React.FC<PairListProps> = ({ list, setPair, toggleWatchlist, wat
     const pair = list[index];
 
     return (
-      <div className={classes.menuItemContainer} key={key} style={style}>
-        <ListItem button className={classes.menuItem} onClick={() => setPair(get(pair, 'symbol', ''))}>
+      <div className="w-full flex" key={key} style={style}>
+        <ListItem button className="pr-0 pl-2 py-1" onClick={() => setPair(pair.symbol)}>
           <ListItemText
             classes={{
-              primary: classes.primary,
-              secondary: classes.price,
+              primary: 'text-sm',
+              secondary: 'text-sx',
             }}
-            primary={get(pair, 'symbol', '')}
-            secondary={`Vol: ${formatQuantity(get(pair, 'volume', ''))}`}
+            primary={pair.symbol}
+            secondary={`Vol: ${formatQuantity(pair.volume)}`}
           />
           <ListItemTextWithPrice pair={pair} />
 
           <IconButton
-            className={classes.watchlistIcon}
-            onClick={e => {
+            className="w-12 h-12 hover:bg-transparent"
+            onClick={(e) => {
               e.stopPropagation();
               toggleWatchlist(pair);
             }}
-            onMouseDown={e => {
+            onMouseDown={(e) => {
               e.preventDefault();
               e.stopPropagation();
             }}
           >
-            {watchlist.some(watchlistPair => watchlistPair.symbol === pair.symbol) ? (
-              <StarOutlined classes={{ root: classes.iconSize }} />
+            {watchlist.some((watchlistPair) => watchlistPair.symbol === pair.symbol) ? (
+              <StarOutlined classes={{ root: 'text-lg' }} />
             ) : (
-              <StarBorder classes={{ root: classes.iconSize }} />
+              <StarBorder classes={{ root: 'text-lg' }} />
             )}
           </IconButton>
         </ListItem>
@@ -74,19 +68,18 @@ const PairList: React.FC<PairListProps> = ({ list, setPair, toggleWatchlist, wat
 
   return (
     <AutoSizer>
-      {({ width, height }: { height: number; width: number }) => (
+      {({ width, height }) => (
         <List
           width={width}
           height={height}
-          rowCount={list?.length || 0}
+          rowCount={list.length}
           rowHeight={55}
           rowRenderer={rowRenderer}
-          className={classes.list}
-          noRowsRenderer={() => <Typography className={classes.noPair}>There are no pairs</Typography>}
+          noRowsRenderer={() => <Typography className="mt-1 ml-2">There are no pairs</Typography>}
         />
       )}
     </AutoSizer>
   );
-};
+});
 
 export default PairList;

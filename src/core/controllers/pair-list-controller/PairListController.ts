@@ -11,15 +11,12 @@ import type { Logger } from 'core/ports';
  */
 @Service()
 export class PairListController {
-  @Inject()
-  private exchangeService!: ExchangeService;
-
   @Inject('Logger')
   private logger!: Logger;
 
   pairListChanged: signals.Signal<PairListModel> = new signals.Signal();
 
-  constructor() {
+  constructor(@Inject() private exchangeService: ExchangeService) {
     this.exchangeService.onExchangeUpdate(async (exchange) => {
       const newPairList = await exchange.getPairs();
       this.logger.info('PairListUpdated', newPairList.getDto());

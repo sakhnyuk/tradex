@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { ipcRenderer } from 'electron';
-import { useStores } from 'app/store';
+import { useViewControllers } from 'app/view-controllers';
 
 /**
  * Internet connection checker. Dispatching online status
@@ -8,7 +8,7 @@ import { useStores } from 'app/store';
  * When ON - turn on socket and rest
  */
 export const useOnline = () => {
-  const { core } = useStores();
+  const { core } = useViewControllers();
 
   useEffect(() => {
     const update = () => {

@@ -1,37 +1,29 @@
+import { ListItemText } from '@mui/material';
+import { useViewControllers } from 'app/view-controllers';
+import clsx from 'clsx';
+import { PairInfoModel } from 'core/models';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
-import get from 'lodash/get';
-import { useSelector } from 'react-redux';
-
-import ListItemText from '@material-ui/core/ListItemText';
 import { formatPrice } from '../../../utils/setFormatPrice';
-import * as exchSel from '../../../store-old/exchange/selectors';
-import styles from '../style';
 
 interface Props {
-  pair: {
-    symbol: string;
-  };
+  pair: PairInfoModel;
 }
 
-const useStyles = makeStyles(styles);
-
-const ListItemTextWithPrice: React.FC<Props> = ({ pair }) => {
-  const classes = useStyles();
-  const price = useSelector(exchSel.selectPrice);
-  const activePair = useSelector(exchSel.selectActivePair);
+const ListItemTextWithPrice: React.FC<Props> = observer(({ pair }) => {
+  const { pairViewController } = useViewControllers();
 
   return (
     <ListItemText
-      className={classes.leftItem}
+      className="text-right pr-1 pl-0"
       classes={{
-        primary: classes.price,
-        secondary: get(pair, 'priceChangePercent', 0) > 0 ? classes.percentage : classes.percentageRed,
+        primary: 'text-xs',
+        secondary: clsx('text-right px-0 text-xs', pair.priceChangePercent > 0 ? 'text-typo-green' : 'text-typo-red'),
       }}
-      primary={formatPrice(pair.symbol === activePair ? price : get(pair, 'price', ''))}
-      secondary={`${get(pair, 'priceChangePercent', 0).toFixed(2)}%`}
+      primary={formatPrice(pair.price)}
+      secondary={`${pair.priceChangePercent.toFixed(2)}%`}
     />
   );
-};
+});
 
 export default ListItemTextWithPrice;

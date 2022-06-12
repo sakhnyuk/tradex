@@ -18,4 +18,24 @@ export class PairListMappedModel extends Model<PairListMappedDto> {
   get STABLE(): PairInfoModel[] {
     return Model.instantiateDtos<PairInfoDto, PairInfoModel>(this.dto.STABLE, PairInfoModel);
   }
+
+  get markets(): string[] {
+    return Object.keys(this.dto);
+  }
+
+  public getListByMarket = (market: string): PairInfoModel[] => {
+    switch (market) {
+      case 'BTC':
+        return this.BTC;
+
+      case 'ALT':
+        return this.ALT;
+
+      case 'STABLE':
+        return this.STABLE;
+
+      default:
+        return [];
+    }
+  };
 }

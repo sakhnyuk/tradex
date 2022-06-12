@@ -2,15 +2,18 @@ const { colors } = require('@mui/material');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
+  content: ['./src/renderer/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
     colors: {
+      transparent: 'transparent',
       primary: '#3F51B5',
       typo: {
         disabled: 'rgba(0, 0, 0, 0.38)',
         primary: 'rgba(0, 0, 0, 0.87)',
         secondary: 'rgba(0, 0, 0, 0.6)',
         active: '#3F51B5',
+        red: 'rgb(233, 90, 90)',
+        gree: 'rgb(102, 204, 98)',
       },
       ui: {
         default: '#fafafa',
@@ -34,5 +37,4 @@ module.exports = {
   corePlugins: {
     preflight: false,
   },
-  important: '#root',
 };

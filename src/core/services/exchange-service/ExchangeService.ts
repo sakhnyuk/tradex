@@ -14,21 +14,14 @@ import type { ExchangesDataProvider, Logger } from 'core/ports';
 export class ExchangeService {
   private currentExchange: ExchangeProvider;
 
-  private activeSymbol: TradeSymbol;
-
   private activeExchangeChanged: signals.Signal<ExchangeProvider> = new signals.Signal();
-
-  private activeSymbolChanged: signals.Signal<TradeSymbol> = new signals.Signal();
 
   constructor(
     @Inject('ExchangesDataProvider') private exchangesProvider: ExchangesDataProvider,
     @Inject('Logger') private logger: Logger,
   ) {
     this.currentExchange = this.exchangesProvider.getDefaultExchange();
-    this.activeSymbol = this.currentExchange.getDefaultSymbol();
-
     this.activeExchangeChanged.memorize = true;
-    this.activeSymbolChanged.memorize = true;
   }
 
   get exchangeName(): ExchangeName {
@@ -43,16 +36,8 @@ export class ExchangeService {
     return this.currentExchange;
   }
 
-  public getCurrentSymbol(): TradeSymbol {
-    return this.activeSymbol;
-  }
-
   public onExchangeUpdate(handler: ExchangeUpdateHandler): void {
     this.activeExchangeChanged.add(handler);
-  }
-
-  public onSymbolUpdate(handler: SymbolUpdateHandler): void {
-    this.activeSymbolChanged.add(handler);
   }
 
   public setActiveExchange(exchangeName: ExchangeName): void {
@@ -65,10 +50,5 @@ export class ExchangeService {
 
     this.currentExchange = newExchange;
     this.activeExchangeChanged.dispatch(newExchange);
-    this.activeSymbolChanged.dispatch(newExchange.getDefaultSymbol());
-  }
-
-  public setActiveSymbol(symbol: TradeSymbol): void {
-    this.activeSymbol = symbol;
   }
 }

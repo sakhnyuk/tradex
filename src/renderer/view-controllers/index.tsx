@@ -3,15 +3,19 @@ import Container, { Inject, Service } from 'typedi';
 import { ExchangesProviderAdapter } from '../../adapters/exchange-provider';
 import { LoggerService } from '../../adapters/logger';
 
-import { CoreStore } from './CoreStore';
-import { ExchangeStore } from './ExchangeStore';
+import { CoreViewController } from './CoreStore';
+import { ExchangeViewController } from './ExchangeViewController';
+import { PairViewController } from './PairViewController';
 
 @Service()
 export class Store {
-  core = new CoreStore();
+  core = new CoreViewController();
 
   @Inject()
-  exchange!: ExchangeStore;
+  exchangeViewController!: ExchangeViewController;
+
+  @Inject()
+  pairViewController!: PairViewController;
 }
 
 Container.set('Logger', new LoggerService());
@@ -23,8 +27,8 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export const StoresProvider: React.FC<Props> = ({ children }: Props) => {
+export const ViewControllerProvider: React.FC<Props> = ({ children }: Props) => {
   return <StoresContext.Provider value={store}>{children}</StoresContext.Provider>;
 };
 
-export const useStores = () => React.useContext(StoresContext);
+export const useViewControllers = () => React.useContext(StoresContext);

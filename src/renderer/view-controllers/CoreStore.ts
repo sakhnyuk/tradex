@@ -1,7 +1,9 @@
 import { action, makeObservable, observable } from 'mobx';
 import { ThemeType } from 'app/theme';
+import { Service } from 'typedi';
 
-export class CoreStore {
+@Service()
+export class CoreViewController {
   @observable theme: ThemeType = ThemeType.LIGHT;
   @observable isOnline = true;
 

@@ -1,10 +1,11 @@
 import { CandleInfoModel, OrderBookUpdateInfo, PairListModel, TradeInfoModel } from 'core/models';
+import { ExchangeName } from 'core/types';
 
 export interface ExchangeProvider {
   /**
    * Returns name of the Exchange
    */
-  getName: () => string;
+  getName: () => ExchangeName;
   getKey: () => string;
   getSupportedTimeframes: () => string[];
   getDefaultSymbol: () => TradeSymbol;
