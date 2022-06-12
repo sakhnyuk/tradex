@@ -1,8 +1,7 @@
-import createMuiTheme, { Theme } from '@material-ui/core/styles/createMuiTheme';
+import { createTheme, Theme } from '@mui/material/styles';
+import { AppThemeOptions, ThemeType } from './types';
 
-import { AppThemeOptions, TypeTheme } from './interface';
-
-declare module '@material-ui/core/styles/createMuiTheme' {
+declare module '@mui/material/styles' {
   interface Theme {
     appColors: AppThemeOptions;
   }
@@ -12,8 +11,8 @@ declare module '@material-ui/core/styles/createMuiTheme' {
   }
 }
 
-export const createTheme = (currentTheme: TypeTheme): Theme => {
-  return createMuiTheme({
+export const createMuiTheme = (currentTheme: ThemeType): Theme => {
+  return createTheme({
     appColors: {
       useNextVariants: true,
       fontTableColor: currentTheme === 'dark' ? '#bbb' : '#444',
@@ -38,15 +37,8 @@ export const createTheme = (currentTheme: TypeTheme): Theme => {
         topHeader: currentTheme === 'dark' ? '#222' : '#3F51B5',
         settings: currentTheme === 'dark' ? '#333' : '#fff',
       },
-      spacingUnit: 4,
-    },
-    props: {
-      MuiPaper: {
-        square: true,
-      },
     },
     palette: {
-      type: currentTheme,
       primary: {
         main: currentTheme === 'dark' ? '#222222' : '#3F51B5',
       },
@@ -62,5 +54,6 @@ export const createTheme = (currentTheme: TypeTheme): Theme => {
         primary: currentTheme === 'dark' ? '#fff' : '#222',
       },
     },
+    spacing: 4,
   });
 };

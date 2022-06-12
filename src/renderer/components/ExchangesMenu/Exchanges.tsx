@@ -8,8 +8,8 @@ import Tabs from '@material-ui/core/Tabs';
 import { useSelector } from 'react-redux';
 
 import ExchangeAccList from './ExchangesAccList';
-import { useCoreActions } from '../../store/core/useCoreActions';
-import { selectCore } from '../../store/core/selectors';
+import { useCoreActions } from '../../store-old/core/useCoreActions';
+import { selectCore } from '../../store-old/core/selectors';
 import { appRouting, exchanges } from '../../appConstant';
 import styles from './styles';
 

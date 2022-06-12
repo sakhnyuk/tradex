@@ -1,28 +1,45 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { Outlet } from 'react-router-dom';
+import Box from '@mui/material/Box';
 
-import MacHeader from '../components/Header/MacOS';
-import WinHeader from '../components/Header/Windows';
 import LeftMenu from '../components/LeftMenu';
-import { isMac } from '../appConstant';
-import { Router } from '../routes/Router';
-import styles from './styles';
-
-const useStyles = makeStyles(styles);
+import { MacHeader } from 'app/components/Header';
 
 export const AppLayout = () => {
-  const classes = useStyles();
-
   return (
-    <div className={classes.root}>
-      {isMac ? <MacHeader /> : <WinHeader />}
-      <div className={classes.container}>
-        <div className={classes.leftMenu}>
-          <LeftMenu />
-        </div>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'flex-start',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        width: '100vw',
+        height: '100vh',
+      }}
+    >
+      <MacHeader />
 
-        <Router />
-      </div>
-    </div>
-  )
-}
+      <Box
+        sx={{
+          flex: 1,
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          flexDirection: 'row',
+        }}
+      >
+        <Box
+          sx={{
+            height: '100%',
+            width: 64,
+            background: 'background.paper',
+          }}
+        >
+          <LeftMenu />
+        </Box>
+
+        <Outlet />
+      </Box>
+    </Box>
+  );
+};

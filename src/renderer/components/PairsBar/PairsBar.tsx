@@ -12,15 +12,15 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Typography from '@material-ui/core/Typography';
-import * as exchSel from '../../store/exchange/selectors';
+import * as exchSel from '../../store-old/exchange/selectors';
 
 import PairList from './PairList';
 import styles from './style';
-import { selectCore } from '../../store/core/selectors';
-import { useCoreActions } from '../../store/core/useCoreActions';
-import { useExchangeActions } from '../../store/exchange/useExchangeActions';
-import { useExploreActions } from '../../store/explore/useExploreActions';
-import { SortingPairs } from '../../store/core/types';
+import { selectCore } from '../../store-old/core/selectors';
+import { useCoreActions } from '../../store-old/core/useCoreActions';
+import { useExchangeActions } from '../../store-old/exchange/useExchangeActions';
+import { useExploreActions } from '../../store-old/explore/useExploreActions';
+import { SortingPairs } from '../../store-old/core/types';
 
 const useStyles = makeStyles(styles);
 

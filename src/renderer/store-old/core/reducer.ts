@@ -2,7 +2,7 @@ import { createAction, createReducer } from 'redux-act';
 
 import { storeVersion } from '../../appConstant';
 import { CoreReducer, SetToCore, SortingPairs } from './types';
-import { TypeTheme } from '../../theme/interface';
+import { TypeTheme } from '../../theme/types';
 
 const initialState: CoreReducer = {
   isMac: process.platform === 'darwin',

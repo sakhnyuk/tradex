@@ -6,12 +6,12 @@ import { useSelector } from 'react-redux';
 
 import Datafeed from './datafeed';
 import { saveState, loadState } from '../../utils/localStorage';
-import { selectCore } from '../../store/core/selectors';
-import * as exchangeSelector from '../../store/exchange/selectors';
+import { selectCore } from '../../store-old/core/selectors';
+import * as exchangeSelector from '../../store-old/exchange/selectors';
 
 import { getTimezone } from '../../utils/chartUtils';
 import ChartHeader from './ChartHeader';
-import { Intervals } from '../../store/exchange/types';
+import { Intervals } from '../../store-old/exchange/types';
 import styles from './styles';
 
 import {
@@ -20,7 +20,7 @@ import {
   SeriesStyle,
   ChartingLibraryWidgetOptions,
 } from '../../../charting_library/charting_library.min';
-import { LayoutsIntervalsKeys } from '../../store/chart/types';
+import { LayoutsIntervalsKeys } from '../../store-old/chart/types';
 import { ChartOptions } from './types';
 
 declare global {

@@ -51,7 +51,7 @@ const installExtensions = async (): Promise<void | any[]> => {
 // main window creator ---------
 const createWindow = async (): Promise<void> => {
   if (isDev) {
-    await installExtensions();
+    // await installExtensions();
   }
 
   const mainWindowState: State = windowStateKeeper({

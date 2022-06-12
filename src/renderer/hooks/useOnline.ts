@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { ipcRenderer } from 'electron';
-import { useCoreActions } from '../store/core';
+import { useStores } from 'app/store';
 
 /**
  * Internet connection checker. Dispatching online status
@@ -8,12 +8,12 @@ import { useCoreActions } from '../store/core';
  * When ON - turn on socket and rest
  */
 export const useOnline = () => {
-  const { setOnline } = useCoreActions();
+  const { core } = useStores();
 
   useEffect(() => {
     const update = () => {
       ipcRenderer.send('status-changed', navigator.onLine);
-      setOnline(navigator.onLine);
+      core.setIsOnline(navigator.onLine);
     };
     window.addEventListener('online', update);
     window.addEventListener('offline', update);
@@ -24,5 +24,5 @@ export const useOnline = () => {
       window.removeEventListener('online', update);
       window.removeEventListener('offline', update);
     };
-  }, [setOnline]);
+  }, []);
 };

@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, shallowEqual } from 'react-redux';
 import { formatPrice, formatQuantity } from '../../../utils/setFormatPrice';
 
-import { selectOrderbookRow, selectOrderbook } from '../../../store/exchange/selectors';
-import { Store } from '../../../store/types';
+import { selectOrderbookRow, selectOrderbook } from '../../../store-old/exchange/selectors';
+import { Store } from '../../../store-old/types';
 import styles from '../style';
 
 const useStyles = makeStyles(styles);

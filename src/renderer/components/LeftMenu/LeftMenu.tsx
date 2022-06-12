@@ -1,47 +1,71 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { useSelector, useDispatch } from 'react-redux';
-import { push } from 'connected-react-router';
-import ShowChart from '@material-ui/icons/ShowChart';
-import Paper from '@material-ui/core/Paper';
-import Settings from '@material-ui/icons/Settings';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-
-import styles from './styles';
-import { appRouting } from '../../appConstant';
-
-const useStyles = makeStyles(styles);
+import { NavLink } from 'react-router-dom';
+import Paper from '@mui/material/Paper';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import ShowChartIcon from '@mui/icons-material/ShowChart';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { RouteLabels, RoutePaths } from 'app/services/navigation';
 
 const LeftMenu: React.FC = () => {
-  const dispatch = useDispatch();
-  const classes = useStyles();
-  const pathname = useSelector((state: any) => state.router.location.pathname);
-
-  const pushToPage = (page: string): (() => void) => () => {
-    dispatch(push(page));
-  };
-
   return (
-    <Paper className={classes.root}>
-      <BottomNavigationAction
-        classes={{
-          root: `${classes.menuButton} ${pathname === appRouting.path.EXPLORE ? classes.active : ''}`,
-        }}
-        onClick={pushToPage(appRouting.path.EXPLORE)}
-        showLabel
-        label={appRouting.labels.EXPLORE}
-        icon={<ShowChart />}
-      />
+    <Paper
+      square
+      sx={{
+        height: '100%',
+        width: 64,
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        flexDirection: 'column',
+        background: 'background.paper',
+        color: 'text.primary',
+      }}
+    >
+      <NavLink to={RoutePaths.EXPLORE}>
+        {({ isActive }) => (
+          <BottomNavigationAction
+            sx={{
+              color: (theme) => (isActive ? theme.appColors.active : 'text.default'),
+              width: 64,
+              maxWidth: 64,
+              minWidth: 64,
+              minHeight: 64,
+              maxHeight: 64,
+              height: 64,
 
-      <BottomNavigationAction
-        classes={{
-          root: `${classes.menuButton} ${pathname === appRouting.path.SETTINGS ? classes.active : ''}`,
-        }}
-        onClick={pushToPage(appRouting.path.SETTINGS)}
-        showLabel
-        label="Settings"
-        icon={<Settings />}
-      />
+              '&:hover': {
+                background: 'appColors.hover',
+              },
+            }}
+            showLabel
+            label={RouteLabels[RoutePaths.EXPLORE]}
+            icon={<ShowChartIcon />}
+          />
+        )}
+      </NavLink>
+
+      <NavLink to={RoutePaths.SETTINGS}>
+        {({ isActive }) => (
+          <BottomNavigationAction
+            sx={{
+              color: (theme) => (isActive ? theme.appColors.active : 'text.default'),
+              width: 64,
+              maxWidth: 64,
+              minWidth: 64,
+              minHeight: 64,
+              maxHeight: 64,
+              height: 64,
+
+              '&:hover': {
+                background: 'appColors.hover',
+              },
+            }}
+            showLabel
+            label={RouteLabels[RoutePaths.SETTINGS]}
+            icon={<SettingsIcon />}
+          />
+        )}
+      </NavLink>
     </Paper>
   );
 };

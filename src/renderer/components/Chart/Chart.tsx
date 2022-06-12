@@ -6,9 +6,9 @@ import Paper from '@material-ui/core/Paper';
 
 // import TVChartContainer from '../TVChartContainer';
 import styles from './styles';
-import { chartSelector } from '../../store/chart/selectors';
-import { useChartActions } from '../../store/chart/useChartActions';
-import { LayoutsIntervalsKeys } from '../../store/chart/types';
+import { chartSelector } from '../../store-old/chart/selectors';
+import { useChartActions } from '../../store-old/chart/useChartActions';
+import { LayoutsIntervalsKeys } from '../../store-old/chart/types';
 import TVChartContainer from '../TVChartContainer';
 
 const useStyles = makeStyles(styles);

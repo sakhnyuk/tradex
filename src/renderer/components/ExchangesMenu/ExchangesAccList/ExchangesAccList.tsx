@@ -7,11 +7,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import { ListItemAvatar } from '@material-ui/core';
 
-import { useCoreActions } from '../../../store/core/useCoreActions';
-import { selectExchange } from '../../../store/exchange/selectors';
-import { useExploreActions } from '../../../store/explore/useExploreActions';
-import { exploreSelect } from '../../../store/explore/selectors';
-import { InitialExchangeData } from '../../../store/explore/types';
+import { useCoreActions } from '../../../store-old/core/useCoreActions';
+import { selectExchange } from '../../../store-old/exchange/selectors';
+import { useExploreActions } from '../../../store-old/explore/useExploreActions';
+import { exploreSelect } from '../../../store-old/explore/selectors';
+import { InitialExchangeData } from '../../../store-old/explore/types';
 
 interface Props {
   isExplore: boolean;

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import ListItemText from '@material-ui/core/ListItemText';
 import { formatPrice } from '../../../utils/setFormatPrice';
-import * as exchSel from '../../../store/exchange/selectors';
+import * as exchSel from '../../../store-old/exchange/selectors';
 import styles from '../style';
 
 interface Props {

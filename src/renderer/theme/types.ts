@@ -1,8 +1,12 @@
 export type TypeTheme = 'dark' | 'light';
 
+export enum ThemeType {
+  DARK = 'dark',
+  LIGHT = 'light',
+}
+
 export interface AppThemeOptions {
   useNextVariants: boolean;
-  spacingUnit: number;
   fontTableColor: React.CSSProperties['color'];
   hover: React.CSSProperties['color'];
   orderTextColor: React.CSSProperties['color'];

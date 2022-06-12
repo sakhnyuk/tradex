@@ -1,4 +1,4 @@
-import { TypeTheme } from '../../theme/interface';
+import { TypeTheme } from '../../theme/types';
 
 export type SortingPairs =
   | 'Volume'

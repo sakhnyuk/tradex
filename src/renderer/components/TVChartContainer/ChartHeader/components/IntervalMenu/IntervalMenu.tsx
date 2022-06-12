@@ -1,7 +1,7 @@
 import React from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { Intervals } from '../../../../../store/exchange/types';
+import { Intervals } from '../../../../../store-old/exchange/types';
 import { useStyles, intervalDictionary } from '../../ChartHeader';
 
 interface Props {
@@ -20,7 +20,7 @@ export const IntervalMenu: React.FC<Props> = ({ anchorEl, handleClose, intervals
 
   return (
     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-      {intervals.map(interval => (
+      {intervals.map((interval) => (
         <MenuItem classes={{ root: classes.menuItem }} key={interval} onClick={() => handleIntervalChange(interval)}>
           {intervalDictionary[interval]}
         </MenuItem>

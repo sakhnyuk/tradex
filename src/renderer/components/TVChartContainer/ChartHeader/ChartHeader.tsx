@@ -9,11 +9,11 @@ import IconButton from '@material-ui/core/IconButton';
 import { useSelector } from 'react-redux';
 import { SeriesStyle } from 'charting_library/charting_library.min';
 import styles from './styles';
-import { useChartActions } from '../../../store/chart/useChartActions';
-import { Intervals } from '../../../store/exchange/types';
-import { selectSupportedIntervals } from '../../../store/exchange/selectors';
-import { chartSelector } from '../../../store/chart/selectors';
-import { LayoutsIntervalsKeys, Layouts } from '../../../store/chart/types';
+import { useChartActions } from '../../../store-old/chart/useChartActions';
+import { Intervals } from '../../../store-old/exchange/types';
+import { selectSupportedIntervals } from '../../../store-old/exchange/selectors';
+import { chartSelector } from '../../../store-old/chart/selectors';
+import { LayoutsIntervalsKeys, Layouts } from '../../../store-old/chart/types';
 import { IntervalMenu } from './components/IntervalMenu';
 import { CandlesMenu } from './components/CandlesMenu';
 

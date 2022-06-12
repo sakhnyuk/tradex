@@ -6,7 +6,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 import Table from '@material-ui/core/Table';
 
-import * as selectExchange from '../../../store/exchange/selectors';
+import * as selectExchange from '../../../store-old/exchange/selectors';
 import styles from '../style';
 
 const useStyles = makeStyles(styles);

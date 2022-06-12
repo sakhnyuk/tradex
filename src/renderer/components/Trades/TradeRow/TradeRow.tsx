@@ -7,10 +7,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { useSelector } from 'react-redux';
 import { formatPrice, formatQuantity } from '../../../utils/setFormatPrice';
-import * as select from '../../../store/exchange/selectors';
+import * as select from '../../../store-old/exchange/selectors';
 
 import styles from '../style';
-import { Store } from '../../../store/types';
+import { Store } from '../../../store-old/types';
 
 const useStyles = makeStyles(styles);
 

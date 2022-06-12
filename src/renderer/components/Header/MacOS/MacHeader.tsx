@@ -1,13 +1,19 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import styles from './styles';
+import Box from '@mui/material/Box';
 
-const useStyles = makeStyles(styles);
-
-const MacHeader = () => {
-  const classes = useStyles();
-
-  return <div className={classes.macHeader} />;
+export const MacHeader = () => {
+  return (
+    <Box
+      sx={{
+        height: 28,
+        WebkitAppRegion: 'drag', // Electron drag window
+        background: (theme) => theme.appColors.background.topHeader,
+        color: 'text.primary',
+        textAlign: 'center',
+        fontSize: 14,
+        fontWeight: 500,
+        lineHeight: 1.5,
+      }}
+    />
+  );
 };
-
-export default MacHeader;

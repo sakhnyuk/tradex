@@ -20,15 +20,6 @@ const config: webpack.Configuration = merge(rendererConfig, {
   entry: {
     renderer: [require.resolve('../src/renderer/index.tsx')],
   },
-  resolve: {
-    alias: {
-      'core/ports': '/src/core/ports',
-      'core/services': '/src/core/services',
-      'core/adapters': '/src/core/adapters',
-      'core/models': '/src/core/models',
-      'core/types': '/src/core/types',
-    },
-  },
 
   devServer: {
     port,

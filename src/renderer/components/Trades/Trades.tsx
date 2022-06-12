@@ -13,7 +13,7 @@ import TradeRow from './TradeRow';
 // import Loader from '../Loader';
 
 import styles from './style';
-import { selectCore } from '../../store/core/selectors';
+import { selectCore } from '../../store-old/core/selectors';
 
 const useStyles = makeStyles(styles);
 

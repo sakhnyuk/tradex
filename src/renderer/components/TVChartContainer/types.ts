@@ -1,6 +1,6 @@
 import { Theme } from '@material-ui/core';
-import { LayoutsIntervalsKeys } from '../../store/chart/types';
-import { Intervals } from '../../store/exchange/types';
+import { LayoutsIntervalsKeys } from '../../store-old/chart/types';
+import { Intervals } from '../../store-old/exchange/types';
 
 export interface ChartOptions {
   exchange: string;

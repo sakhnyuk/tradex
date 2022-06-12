@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectStringPrice, selectIsPriceRising } from '../../store/exchange/selectors';
+import { selectStringPrice, selectIsPriceRising } from '../../store-old/exchange/selectors';
 
 interface Props {
   classes?: any;
