@@ -13,6 +13,7 @@ const config: webpack.Configuration = merge(baseConfig, {
       app: '/src/renderer',
       core: '/src/core',
       main: '/src/main',
+      adapters: '/src/adapters',
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },
@@ -34,7 +35,7 @@ const config: webpack.Configuration = merge(baseConfig, {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
 
       {

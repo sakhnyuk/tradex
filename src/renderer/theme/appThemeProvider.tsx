@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import { createMuiTheme } from 'app/theme';
 import { useStores } from 'app/store';
 
@@ -9,6 +9,11 @@ type Props = {
 
 export const AppThemeProvider: React.FC<Props> = ({ children }) => {
   const { core } = useStores();
+  const theme = createMuiTheme(core.theme);
 
-  return <ThemeProvider theme={createMuiTheme(core.theme)}>{children}</ThemeProvider>;
+  return (
+    <ThemeProvider theme={theme}>
+      <StyledEngineProvider injectFirst>{children}</StyledEngineProvider>
+    </ThemeProvider>
+  );
 };

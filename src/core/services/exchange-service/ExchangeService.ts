@@ -1,7 +1,8 @@
 import { Inject, Service } from 'typedi';
 import signals from 'signals';
-import { ExchangeProvider, ExchangesDataProvider, Logger } from 'core/ports';
+import { ExchangeProvider } from 'core/ports';
 import { ExchangeName, ExchangeUpdateHandler, SymbolUpdateHandler } from 'core/types';
+import type { ExchangesDataProvider, Logger } from 'core/ports';
 
 /**
  * ExchangeService responsible to

@@ -10,67 +10,26 @@ import Header from '../../components/AppHeader/Header';
 
 const Explore = () => {
   return (
-    <Box
-      sx={{
-        width: '100%',
-        height: '100%',
-        display: 'grid',
-        gridTemplateColumns: '1fr 320px',
-        gridTemplateRows: '48px 1fr 250px',
-        backgroundColor: (theme) => theme.palette.background.default,
-      }}
-    >
-      <Box
-        sx={{
-          gridColumn: '1/3',
-          gridRow: '1/2',
-          mb: 1,
-        }}
-      >
+    <div className="w-full h-full grid grid-cols-[1fr_320px] grid-rows-[48px_1fr_250px] bg-ui-default">
+      <div className="grid col-[1/3] row-[1/2] mb-1">
         <Header />
-      </Box>
+      </div>
 
       <div>{/* <PairsBar /> */}</div>
 
-      <Box
-        sx={{
-          gridColumn: '1/2',
-          gridRow: '2/4',
-          m: 1,
-        }}
-      >
-        {/* <Chart isExplore /> */}
-      </Box>
+      <div className="m-1 col-[1/2] row-[2/4]">{/* <Chart isExplore /> */}</div>
 
-      <Paper
-        sx={{
-          gridColumn: '2/3',
-          gridRow: '2/3',
-          my: 1,
-          mr: 1,
-        }}
-        variant="outlined"
-        square
-      >
+      <Paper className="my-1 mr-1 col-[2/3] row-[2/3]" variant="outlined" square>
         {/* <OrderBook /> */}
       </Paper>
 
-      <Paper
-        sx={{
-          gridColumn: '2/3',
-          gridRow: '3/4',
-          mb: 1,
-          mr: 1,
-        }}
-        variant="outlined"
-        square
-      >
+      <Paper className="mb-1 mr-1 col-[2/3] row-[3/4]" variant="outlined" square>
         {/* <Trades /> */}
       </Paper>
 
       {/* Exchanges list menu */}
       {/* <Exchanges /> */}
-    </Box>
+    </div>
   );
 };
 

@@ -5,38 +5,18 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { RouteLabels, RoutePaths } from 'app/services/navigation';
+import clsx from 'clsx';
 
 const LeftMenu: React.FC = () => {
   return (
-    <Paper
-      square
-      sx={{
-        height: '100%',
-        width: 64,
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        flexDirection: 'column',
-        background: 'background.paper',
-        color: 'text.primary',
-      }}
-    >
+    <Paper square className="h-full w-16 flex justify-start items-start flex-col bg-ui-paper text-textColor-primary">
       <NavLink to={RoutePaths.EXPLORE}>
         {({ isActive }) => (
           <BottomNavigationAction
-            sx={{
-              color: (theme) => (isActive ? theme.appColors.active : 'text.default'),
-              width: 64,
-              maxWidth: 64,
-              minWidth: 64,
-              minHeight: 64,
-              maxHeight: 64,
-              height: 64,
-
-              '&:hover': {
-                background: 'appColors.hover',
-              },
-            }}
+            className={clsx(
+              'w-16 h-16 min-w-fit p-0 hover:bg-grey-100 transition',
+              isActive ? 'text-typo-active' : 'text-typo-secondary',
+            )}
             showLabel
             label={RouteLabels[RoutePaths.EXPLORE]}
             icon={<ShowChartIcon />}
@@ -47,19 +27,10 @@ const LeftMenu: React.FC = () => {
       <NavLink to={RoutePaths.SETTINGS}>
         {({ isActive }) => (
           <BottomNavigationAction
-            sx={{
-              color: (theme) => (isActive ? theme.appColors.active : 'text.default'),
-              width: 64,
-              maxWidth: 64,
-              minWidth: 64,
-              minHeight: 64,
-              maxHeight: 64,
-              height: 64,
-
-              '&:hover': {
-                background: 'appColors.hover',
-              },
-            }}
+            className={clsx(
+              'w-16 h-16 min-w-fit p-0 hover:bg-grey-100 transition',
+              isActive ? 'text-typo-active' : 'text-typo-secondary',
+            )}
             showLabel
             label={RouteLabels[RoutePaths.SETTINGS]}
             icon={<SettingsIcon />}

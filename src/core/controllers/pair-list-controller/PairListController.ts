@@ -1,9 +1,10 @@
 import { Inject, Service } from 'typedi';
 import signals from 'signals';
 import { PairListModel } from 'core/models';
-import { ExchangeProvider, Logger } from 'core/ports';
+import { ExchangeProvider } from 'core/ports';
 import { ExchangeService } from 'core/services';
 import { PairListUpdateHandler } from 'core/types';
+import type { Logger } from 'core/ports';
 
 /**
  * Stateless controller for getting and update pair list.
@@ -29,6 +30,10 @@ export class PairListController {
   private get currentExchange(): ExchangeProvider {
     return this.exchangeService.getCurrentExchange();
   }
+
+  public getCurrentSymbol = (): TradeSymbol => {
+    return this.exchangeService.getCurrentSymbol();
+  };
 
   public getPairList = (): Promise<PairListModel> => {
     return this.currentExchange.getPairs();

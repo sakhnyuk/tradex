@@ -3,108 +3,111 @@ import React from 'react';
 import { AppBar, Box, Button, Grid, ListItem, ListItemText } from '@mui/material';
 import { Toolbar } from '@mui/material';
 import PriceComp from '../PriceComp';
-import { styles } from './style';
-
-// import classnames from 'classnames';
-// import Grid from '@material-ui/core/Grid';
-// import ListItem from '@material-ui/core/ListItem';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import { makeStyles } from '@material-ui/core/styles';
-// import AppBar from '@material-ui/core/AppBar';
-// import Toolbar from '@material-ui/core/Toolbar';
-// import Button from '@material-ui/core/Button';
-// import { useSelector } from 'react-redux';
-
-// import PriceComp from '../PriceComp';
+import { formatPrice, formatQuantity } from 'app/utils/setFormatPrice';
+import { useStores } from 'app/store';
 
 const Header = () => {
+  const { exchange } = useStores();
+
   return (
-    <Box sx={styles.headerContainer}>
-      <AppBar position="relative" elevation={0} sx={styles.appBar}>
-        <Toolbar disableGutters sx={styles.toolbarHeader}>
-          <Button sx={styles.pairButton} onClick={() => {}} color="inherit">
-            ticker
+    <div className="flex flex-col shadow-xs">
+      <AppBar
+        className="z-auto w-full bg-ui-paper text-typo-primary header-transition"
+        position="relative"
+        elevation={0}
+      >
+        <Toolbar disableGutters className="min-h-fit">
+          <Button
+            className=" border-l-2 border-solid border-ui-default h-12 rounded-none relative py-1 px-8 whitespace-nowrap"
+            onClick={() => {}}
+            color="inherit"
+          >
+            {exchange.activePair}
           </Button>
 
-          <Button sx={styles.pairButton} onClick={() => {}} color="inherit">
+          <Button
+            className=" border-l-2 border-solid border-ui-default h-12 rounded-none relative py-1 px-8 whitespace-nowrap"
+            onClick={() => {}}
+            color="inherit"
+          >
             exchange
-            <Box sx={styles.accountName}>explore</Box>
+            <span className="absolute right-3 bottom-0 text-typo-secondary text-[10px]">{exchange.activeExchange}</span>
           </Button>
 
-          {/* <Grid container alignItems="center" className={classes.tickerInfo}>
+          <Grid container alignItems="center" className="pl-20 text-typo-primary">
             <Grid item>
-              <ListItem className={classes.item}>
+              <ListItem className="p-0 pl-4">
                 <ListItemText
                   primary="Last Price"
                   secondary={<PriceComp />}
                   classes={{
-                    primary: classes.itemTitle,
-                    secondary: classes.itemWhite,
-                    multiline: classes.itemMultiline,
+                    primary: 'text-left text-xs p-0',
+                    secondary: 'text-left text-sm p-0 text-typo-primary',
+                    multiline: 'py-1 m-0',
                   }}
                 />
               </ListItem>
             </Grid>
 
             <Grid item>
-              <ListItem className={classes.item}>
+              <ListItem className="p-0 pl-4">
                 <ListItemText
                   primary="24h Change"
-                  secondary={pairInfo ? percentageData : null}
+                  secondary={'10%'}
                   classes={{
-                    primary: classes.itemTitle,
-                    secondary: pairInfo ? percentageColor : '',
-                    multiline: classes.itemMultiline,
+                    primary: 'text-left text-xs p-0',
+                    secondary: 'text-left text-sm p-0 text-typo-primary',
+                    multiline: 'py-1 m-0',
                   }}
                 />
               </ListItem>
             </Grid>
 
             <Grid item>
-              <ListItem className={classes.item}>
+              <ListItem className="p-0 pl-4">
                 <ListItemText
                   primary="24h High"
-                  secondary={formatPrice(pairInfo?.high)}
+                  secondary={formatPrice(1000)}
                   classes={{
-                    primary: classes.itemTitle,
-                    secondary: classes.itemWhite,
-                    multiline: classes.itemMultiline,
+                    primary: 'text-left text-xs p-0',
+                    secondary: 'text-left text-sm p-0 text-typo-primary',
+                    multiline: 'py-1 m-0',
                   }}
                 />
               </ListItem>
             </Grid>
 
             <Grid item>
-              <ListItem className={classes.item}>
+              <ListItem className="p-0 pl-4">
                 <ListItemText
                   primary="24h Low"
-                  secondary={formatPrice(pairInfo?.low)}
+                  secondary={formatPrice(950)}
                   classes={{
-                    primary: classes.itemTitle,
-                    secondary: classes.itemWhite,
-                    multiline: classes.itemMultiline,
+                    primary: 'text-left text-xs p-0',
+                    secondary: 'text-left text-sm p-0 text-typo-primary',
+                    multiline: 'py-1 m-0',
                   }}
                 />
               </ListItem>
             </Grid>
 
             <Grid item>
-              <ListItem className={classes.item}>
+              <ListItem className="p-0 pl-4">
                 <ListItemText
                   primary="24h Volume"
-                  secondary={`${formatQuantity(pairInfo?.volume || 0)} ${splitData[1]}`}
+                  secondary={`${formatQuantity(2000)} USDT`}
                   classes={{
-                    primary: classes.itemTitle,
-                    secondary: classes.itemWhite,
-                    multiline: classes.itemMultiline,
+                    primary: 'text-left text-xs p-0',
+                    secondary: 'text-left text-sm p-0 text-typo-primary',
+                    multiline: 'py-1 m-0',
                   }}
                 />
               </ListItem>
             </Grid>
-          </Grid> */}
+          </Grid>
         </Toolbar>
       </AppBar>
-    </Box>
+    </div>
   );
 };
 

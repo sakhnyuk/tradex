@@ -1,9 +1,10 @@
 import signals from 'signals';
 import { TradeInfoModel } from 'core/models';
-import { ExchangeProvider, Logger } from 'core/ports';
+import { ExchangeProvider } from 'core/ports';
 import { ExchangeService } from 'core/services';
 import { Inject, Service } from 'typedi';
 import { TradeInfoAddedHandler } from 'core/types';
+import type { Logger } from 'core/ports';
 
 @Service()
 export class TradeHistoryController {

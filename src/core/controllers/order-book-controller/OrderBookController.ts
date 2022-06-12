@@ -1,11 +1,12 @@
 import signals from 'signals';
 import { Inject, Service } from 'typedi';
 import { OrderBookModel, OrderBookParsedDto, OrderBookUpdateInfo } from 'core/models';
-import { ExchangeProvider, Logger } from 'core/ports';
+import { ExchangeProvider } from 'core/ports';
 import { ExchangeService } from 'core/services';
 import { OrderBookUpdateHandler, OrderBookUpdateType } from 'core/types';
 import { parseTotalAsks, parseTotalBids } from './parseOrderBookItem';
 import { insertOrderBookUpdates } from './insertOrderBookUpdates';
+import type { Logger } from 'core/ports';
 
 @Service()
 export class OrderBookController {

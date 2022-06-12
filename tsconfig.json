@@ -66,7 +66,8 @@
     "paths": {
       "app/*": ["./src/renderer/*"],
       "core/*": ["./src/core/*"],
-      "main/*": ["./src/main/*"]
+      "main/*": ["./src/main/*"],
+      "adapters/*": ["./src/adapters"]
     }
   },
   "ts-node": {
@@ -76,5 +77,5 @@
       "target": "es5"
     }
   },
-  "include": ["./**/*.ts", "./**/*.tsx"]
+  "include": ["./**/*.ts", "./**/*.tsx", "src/index.js"]
 }

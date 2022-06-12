@@ -51,7 +51,7 @@ export const createMuiTheme = (currentTheme: ThemeType): Theme => {
         default: currentTheme === 'dark' ? '#000' : '#fafafa',
       },
       text: {
-        primary: currentTheme === 'dark' ? '#fff' : '#222',
+        // primary: currentTheme === 'dark' ? '#fff' : '#222',
       },
     },
     spacing: 4,
