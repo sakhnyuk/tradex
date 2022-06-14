@@ -13,7 +13,7 @@ module.exports = {
         secondary: 'rgba(0, 0, 0, 0.6)',
         active: '#3F51B5',
         red: 'rgb(233, 90, 90)',
-        gree: 'rgb(102, 204, 98)',
+        green: 'rgb(102, 204, 98)',
       },
       ui: {
         default: '#fafafa',

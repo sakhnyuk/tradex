@@ -17,6 +17,11 @@ export class TradeHistoryController {
     this.exchangeService.onExchangeUpdate(async (exchange) => {
       exchange.onTradeUpdate(this.exchangeService.getCurrentPair(), this.pushTradeInfo);
     });
+
+    this.exchangeService.onPairUpdate(async (pair) => {
+      this.currentExchange.closeTrade();
+      this.currentExchange.onTradeUpdate(pair, this.pushTradeInfo);
+    });
   }
 
   private get currentExchange(): ExchangeProvider {

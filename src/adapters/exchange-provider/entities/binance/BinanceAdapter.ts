@@ -60,7 +60,7 @@ export class BinanceAdapter implements ExchangeProvider {
   private getOrderBookUrl = (symbol: TradeSymbol, limit = 1000): string =>
     `https://www.${this.BASE_URL}/api/v1/depth?symbol=${symbol}&limit=${limit}`;
 
-  private getTradesUrl = (symbol: string, limit = 20): string =>
+  private getTradesUrl = (symbol: string, limit = 100): string =>
     `https://www.${this.BASE_URL}/api/v1/trades?symbol=${symbol}&limit=${limit}`;
 
   private getPairsUrl = (): string => `${this.BASE_API_URL}/api/v1/ticker/24hr`;

@@ -1,37 +1,37 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import moment from 'moment';
-
-import { makeStyles } from '@material-ui/core/styles';
-
-import { useSelector } from 'react-redux';
 import { formatPrice, formatQuantity } from '../../../utils/setFormatPrice';
-import * as select from '../../../store-old/exchange/selectors';
-
-import styles from '../style';
-import { Store } from '../../../store-old/types';
-
-const useStyles = makeStyles(styles);
+import { observer } from 'mobx-react-lite';
+import { useViewControllers } from 'app/view-controllers';
+import clsx from 'clsx';
 
 interface Props {
   style: any;
   index: number;
+  key: number;
 }
 
-const TradeRow: React.FC<Props> = ({ style, index }) => {
-  const classes = useStyles();
+const TradeRow: React.FC<Props> = observer(({ style, index }) => {
+  const { tradesViewController } = useViewControllers();
 
-  const data = useSelector((state: Store) => select.selectTradeRow(state, index));
+  const data = tradesViewController.trades[index];
 
   return data?.id ? (
-    <div key={data.id} className={classes.row} style={style}>
-      <div className={data.side === 'sell' ? classes.priceSell : classes.priceBuy}>{formatPrice(data.price)}</div>
-      <div className={classes.cell}>{formatQuantity(data.amount)}</div>
-      <div className={classes.cell}>{formatQuantity(data.price * data.amount)}</div>
-      <div className={classes.cell}>{moment(data.timestamp).format('HH:mm:ss')}</div>
+    <div
+      key={data.id}
+      className="h-auto w-auto p-0 flex justify-between hover:font-semibold hover:cursor-pointer"
+      style={style}
+    >
+      <div className={clsx('py-[2px] pr-1 pl-2 text-xs', data.side === 'sell' ? 'text-typo-red' : 'text-typo-green')}>
+        {formatPrice(data.price)}
+      </div>
+      <div className="py-[2px] px-1 text-center text-xs text-typo-primary">{formatQuantity(data.amount)}</div>
+      <div className="py-[2px] px-1 text-center text-xs text-typo-primary">
+        {formatQuantity(data.price * data.amount)}
+      </div>
+      <div className="py-[2px] px-1 text-center text-xs text-typo-primary">{moment(data.time).format('HH:mm:ss')}</div>
     </div>
   ) : null;
-};
+});
 
 export default TradeRow;

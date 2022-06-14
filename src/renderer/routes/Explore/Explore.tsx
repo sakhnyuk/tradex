@@ -3,7 +3,8 @@ import { Box, Paper } from '@mui/material';
 
 import Header from 'app/components/AppHeader';
 import PairsBar from 'app/components/PairsBar';
-// import Trades from '../../components/Trades';
+import Trades from 'app/components/Trades';
+
 // import OrderBook from '../../components/OrderBook';
 // import Exchanges from '../../components/ExchangesMenu';
 // import PairsBar from '../../components/PairsBar';
@@ -25,7 +26,7 @@ const Explore = () => {
       </Paper>
 
       <Paper className="mb-1 mr-1 col-[2/3] row-[3/4]" variant="outlined" square>
-        {/* <Trades /> */}
+        <Trades />
       </Paper>
 
       {/* Exchanges list menu */}

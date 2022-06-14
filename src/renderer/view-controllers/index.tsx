@@ -6,6 +6,7 @@ import { LoggerService } from '../../adapters/logger';
 import { CoreViewController } from './CoreStore';
 import { ExchangeViewController } from './ExchangeViewController';
 import { PairViewController } from './PairViewController';
+import { TradesViewController } from './TradesViewController';
 
 @Service()
 export class Store {
@@ -16,6 +17,9 @@ export class Store {
 
   @Inject()
   pairViewController!: PairViewController;
+
+  @Inject()
+  tradesViewController!: TradesViewController;
 }
 
 Container.set('Logger', new LoggerService());

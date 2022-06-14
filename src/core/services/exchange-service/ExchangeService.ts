@@ -60,6 +60,9 @@ export class ExchangeService {
       return;
     }
 
+    this.currentExchange.closeCandle();
+    this.currentExchange.closeOrderBook();
+    this.currentExchange.closeTrade();
     this.currentExchange = newExchange;
     this.currentExchangeChanged.dispatch(newExchange);
     this.currentPairChanged.dispatch(newExchange.getDefaultSymbol());
