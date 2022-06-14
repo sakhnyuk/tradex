@@ -15,11 +15,11 @@ export class ExchangeViewController {
     makeObservable(this);
     this.activeExchange = this.exchangeController.getActiveExchangeName();
     this.supportedExchanges = this.exchangesListController.exchangesList;
-    this.exchangeController.onExchangeUpdate(this.updateActiveExchange);
+    this.exchangeController.addExchangeUpdateListener(this.updateActiveExchange);
   }
 
   @action
-  updateActiveExchange = (exchangeName: ExchangeName) => {
+  private updateActiveExchange = (exchangeName: ExchangeName) => {
     this.activeExchange = exchangeName;
   };
 

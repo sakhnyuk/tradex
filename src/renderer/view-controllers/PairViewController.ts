@@ -18,9 +18,9 @@ export class PairViewController {
     makeObservable(this);
 
     this.activePair = this.exchangeController.getActivePair();
-    this.exchangeController.onPairUpdate(this.updateActivePair);
-    this.exchangeController.onExchangeUpdate(this.getPairList);
-    this.pairListController.onPairListUpdate(this.updatePairList);
+    this.exchangeController.addPairUpdateListener(this.updateActivePair);
+    this.exchangeController.addExchangeUpdateListener(this.getPairList);
+    this.pairListController.addPairListUpdateListener(this.updatePairList);
   }
 
   @action

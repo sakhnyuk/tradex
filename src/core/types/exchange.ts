@@ -12,7 +12,7 @@ export enum ExchangeName {
 
 export type ExchangeUpdateHandler = (exchange: ExchangeProvider) => void;
 export type ExchangeNameUpdateHandler = (exchange: ExchangeName) => void;
-export type SymbolUpdateHandler = (symbol: TradeSymbol) => void;
+export type PairUpdateHandler = (symbol: TradeSymbol) => void;
 export type PairListUpdateHandler = (pairList: PairListModel) => void;
 export type TradeInfoAddedHandler = (tradeInfo: TradeInfoModel) => void;
 export type OrderBookUpdateHandler = (orderBook: OrderBookModel) => void;

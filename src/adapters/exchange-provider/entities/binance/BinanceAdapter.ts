@@ -10,7 +10,7 @@ import {
   PairListModel,
   TradeInfoModel,
 } from 'core/models';
-import { OrderBookUpdateType, TradeSide } from 'core/types';
+import { ExchangeName, OrderBookUpdateType, TradeSide } from 'core/types';
 import {
   BinanceTradeDto,
   BinanceTradeStream,
@@ -24,7 +24,7 @@ import {
 } from './BinanceTypes';
 
 export class BinanceAdapter implements ExchangeProvider {
-  private readonly name = 'Binance';
+  private readonly name = ExchangeName.BINANCE;
 
   private readonly key = this.name.toLowerCase();
 
@@ -54,6 +54,8 @@ export class BinanceAdapter implements ExchangeProvider {
   };
 
   private defaultTimeframe = this.chartTimeframes[60];
+
+  private getExchangeInfoUrl = () => `${this.BASE_API_URL}/api/v3/exchangeInfo`;
 
   private getOrderBookUrl = (symbol: TradeSymbol, limit = 1000): string =>
     `https://www.${this.BASE_URL}/api/v1/depth?symbol=${symbol}&limit=${limit}`;
@@ -113,7 +115,7 @@ export class BinanceAdapter implements ExchangeProvider {
     return this.sockets[type];
   }
 
-  public getName = (): string => this.name;
+  public getName = (): ExchangeName => this.name;
 
   public getKey = (): string => this.key;
 
@@ -244,15 +246,13 @@ export class BinanceAdapter implements ExchangeProvider {
     const fullList: Record<TradeSymbol, PairInfoModel> = {};
 
     resData.forEach((pair) => {
-      const base =
-        pair.symbol.indexOf('USDT') === -1
-          ? pair.symbol.substring(pair.symbol.length - 3)
-          : pair.symbol.substring(pair.symbol.length - 4);
+      const regex = /(USDT|ETH|BTC|BNB|BUSD|DAI|PAX|USDC|UST|EUR|TRY|GBP|AUD|RUB|BRL|IDR)/;
+      const splittedSymbol = pair.symbol.split(regex)?.filter(Boolean) || ['', ''];
+      const [target, base] = splittedSymbol;
 
-      const target =
-        base === 'USDT'
-          ? pair.symbol.substring(0, pair.symbol.length - 4)
-          : pair.symbol.substring(0, pair.symbol.length - 3);
+      if (splittedSymbol.length !== 2 || !base || !target) {
+        return;
+      }
 
       const symbol = `${target}/${base}`;
 
@@ -271,11 +271,11 @@ export class BinanceAdapter implements ExchangeProvider {
 
       if (data.price !== 0) {
         if (base === 'BTC') {
-          pairs[base].push(data);
+          pairs[base].push(symbol);
         } else if (this.stableCoins.indexOf(base) !== -1) {
-          pairs.STABLE.push(data);
+          pairs.STABLE.push(symbol);
         } else {
-          pairs.ALT.push(data);
+          pairs.ALT.push(symbol);
         }
 
         fullList[symbol] = new PairInfoModel(data);

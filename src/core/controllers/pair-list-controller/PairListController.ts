@@ -24,19 +24,15 @@ export class PairListController {
     });
   }
 
-  private get currentExchange(): ExchangeProvider {
-    return this.exchangeService.getCurrentExchange();
+  private get exchangeRepository(): ExchangeProvider {
+    return this.exchangeService.getCurrentExchangeRepository();
   }
 
-  public getCurrentSymbol = (): TradeSymbol => {
-    return this.exchangeService.getCurrentSymbol();
-  };
-
   public getPairList = (): Promise<PairListModel> => {
-    return this.currentExchange.getPairs();
+    return this.exchangeRepository.getPairs();
   };
 
-  public onPairListUpdate = (handler: PairListUpdateHandler): void => {
+  public addPairListUpdateListener = (handler: PairListUpdateHandler): void => {
     this.pairListChanged.add(handler);
   };
 }

@@ -15,13 +15,17 @@ export class OrderBookController {
   private orderBook: OrderBookModel = new OrderBookModel({});
 
   constructor(private exchangeService: ExchangeService, @Inject('Logger') private logger: Logger) {
-    this.exchangeService.onExchangeUpdate(async (exchange) => {
-      exchange.onOrderBookUpdate(this.exchangeService.getCurrentSymbol(), this.pushOrderBookUpdate);
+    this.exchangeService.onExchangeUpdate((exchange) => {
+      exchange.onOrderBookUpdate(this.exchangeService.getCurrentPair(), this.pushOrderBookUpdate);
+    });
+
+    this.exchangeService.onPairUpdate((pair) => {
+      this.exchangeRepository.onOrderBookUpdate(pair, this.pushOrderBookUpdate);
     });
   }
 
-  private get currentExchange(): ExchangeProvider {
-    return this.exchangeService.getCurrentExchange();
+  private get exchangeRepository(): ExchangeProvider {
+    return this.exchangeService.getCurrentExchangeRepository();
   }
 
   private pushOrderBookUpdate = (orderBookInfo: OrderBookUpdateInfo): void => {
@@ -58,12 +62,12 @@ export class OrderBookController {
     this.orderBookUpdated.dispatch(this.orderBook);
   };
 
-  public onOrderBookUpdate = (handler: OrderBookUpdateHandler): void => {
+  public addOrderBookUpdateListener = (handler: OrderBookUpdateHandler): void => {
     this.orderBookUpdated.add(handler);
   };
 
   public initOrderBook = (handler: OrderBookUpdateHandler): void => {
-    this.onOrderBookUpdate(handler);
-    this.currentExchange.onOrderBookUpdate(this.exchangeService.getCurrentSymbol(), this.pushOrderBookUpdate);
+    this.addOrderBookUpdateListener(handler);
+    this.exchangeRepository.onOrderBookUpdate(this.exchangeService.getCurrentPair(), this.pushOrderBookUpdate);
   };
 }

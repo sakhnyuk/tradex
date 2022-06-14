@@ -61,7 +61,6 @@ const PairsBar: React.FC = observer(() => {
   }, []);
 
   const onPairClick = useCallback((pair: TradeSymbol) => {
-    console.log(pair);
     pairViewController.setActivePair(pair);
     pairViewController.setPairsBarOpen(false);
   }, []);
@@ -136,7 +135,8 @@ const PairsBar: React.FC = observer(() => {
 
       <List id="drawerList" className="h-full overflow-hidden p-0 outline-none">
         <PairList
-          list={pairViewController.pairList?.mapped.getListByMarket(pairViewController.activeMarket) || []}
+          pairListModel={pairViewController.pairList}
+          activeMarket={pairViewController.activeMarket}
           setPair={(pair: TradeSymbol) => onPairClick(pair)}
           toggleWatchlist={() => {}}
           watchlist={[]}

@@ -15,12 +15,12 @@ export class TradeHistoryController {
 
   constructor(private exchangeService: ExchangeService) {
     this.exchangeService.onExchangeUpdate(async (exchange) => {
-      exchange.onTradeUpdate(this.exchangeService.getCurrentSymbol(), this.pushTradeInfo);
+      exchange.onTradeUpdate(this.exchangeService.getCurrentPair(), this.pushTradeInfo);
     });
   }
 
   private get currentExchange(): ExchangeProvider {
-    return this.exchangeService.getCurrentExchange();
+    return this.exchangeService.getCurrentExchangeRepository();
   }
 
   private pushTradeInfo = (tradeInfo: TradeInfoModel): void => {
@@ -28,11 +28,11 @@ export class TradeHistoryController {
   };
 
   public initTrades = (handler: TradeInfoAddedHandler): void => {
-    this.currentExchange.onTradeUpdate(this.exchangeService.getCurrentSymbol(), this.pushTradeInfo);
-    this.onAddTrade(handler);
+    this.addTradeUpdateListener(handler);
+    this.currentExchange.onTradeUpdate(this.exchangeService.getCurrentPair(), this.pushTradeInfo);
   };
 
-  public onAddTrade = (handler: TradeInfoAddedHandler): void => {
+  public addTradeUpdateListener = (handler: TradeInfoAddedHandler): void => {
     this.tradeAdded.add(handler);
   };
 }

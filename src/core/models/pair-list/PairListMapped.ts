@@ -1,29 +1,29 @@
-import { Model, PairInfoDto, PairInfoModel } from 'core/models';
+import { Model } from 'core/models';
 
 export interface PairListMappedDto {
-  BTC: PairInfoDto[];
-  ALT: PairInfoDto[];
-  STABLE: PairInfoDto[];
+  BTC: TradeSymbol[];
+  ALT: TradeSymbol[];
+  STABLE: TradeSymbol[];
 }
 
 export class PairListMappedModel extends Model<PairListMappedDto> {
-  get BTC(): PairInfoModel[] {
-    return Model.instantiateDtos<PairInfoDto, PairInfoModel>(this.dto.BTC, PairInfoModel);
+  get BTC(): TradeSymbol[] {
+    return this.dto.BTC ?? [];
   }
 
-  get ALT(): PairInfoModel[] {
-    return Model.instantiateDtos<PairInfoDto, PairInfoModel>(this.dto.ALT, PairInfoModel);
+  get ALT(): TradeSymbol[] {
+    return this.dto.ALT ?? [];
   }
 
-  get STABLE(): PairInfoModel[] {
-    return Model.instantiateDtos<PairInfoDto, PairInfoModel>(this.dto.STABLE, PairInfoModel);
+  get STABLE(): TradeSymbol[] {
+    return this.dto.STABLE ?? [];
   }
 
   get markets(): string[] {
     return Object.keys(this.dto);
   }
 
-  public getListByMarket = (market: string): PairInfoModel[] => {
+  public getListByMarket = (market: string): TradeSymbol[] => {
     switch (market) {
       case 'BTC':
         return this.BTC;
