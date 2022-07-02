@@ -32,7 +32,7 @@ export class TradesViewController {
     if (this.trades.length > 100) {
       this.trades = this.trades.slice(0, 100);
     }
-    console.log(trade.symbol, trade.price, this.trades.length);
+
     this.isLoading = false;
   };
 }

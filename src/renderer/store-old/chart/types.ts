@@ -1,4 +1,4 @@
-import { Intervals } from '../exchange/types';
+import { Intervals } from 'app/components/TVChartContainer/types';
 
 export type Layouts = 'one' | 'leftright' | 'topbot' | 'topbotleftright';
 

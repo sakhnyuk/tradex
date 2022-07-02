@@ -23,6 +23,10 @@ export class ExchangeController {
     return this.exchangeService.getCurrentExchangeRepository().getName();
   };
 
+  public getSupportedTimeframes = () => {
+    return this.exchangeService.getCurrentExchangeRepository().getSupportedTimeframes();
+  };
+
   public getActivePair = (): TradeSymbol => {
     return this.exchangeService.getCurrentPair();
   };
@@ -33,6 +37,10 @@ export class ExchangeController {
 
   public addPairUpdateListener = (handler: PairUpdateHandler): void => {
     this.pairChanged.add(handler);
+  };
+
+  public getExchangeName = () => {
+    return this.exchangeService.getCurrentExchangeRepository().getName();
   };
 
   public setExchange = (exchangeName: ExchangeName): void => {

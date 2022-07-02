@@ -1,9 +1,9 @@
-import { KlineResItem } from 'renderer/api/exchangesApi/types';
-import { LibrarySymbolInfo } from 'charting_library/charting_library.min';
-import logger from '../../../utils/logger';
-import API from '../../../api';
-import { forSince } from '../../../utils/chartUtils';
-import { saveState } from '../../../utils/localStorage';
+import API from 'app/api';
+import { KlineResItem } from 'app/api/exchangesApi/types';
+import { forSince } from 'app/utils/chartUtils';
+import { saveState } from 'app/utils/localStorage';
+import logger from 'app/utils/logger';
+import { LibrarySymbolInfo } from '../../../../charting_library/charting_library.min';
 
 const history = {};
 

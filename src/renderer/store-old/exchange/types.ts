@@ -1,8 +1,6 @@
-import { OnTradeRes } from 'renderer/api/exchangesApi/types';
+import { OnTradeRes } from 'app/api/exchangesApi/types';
+import { Intervals, SupportedIntervals } from 'app/components/TVChartContainer/types';
 import { Exchange } from '../../appConstant';
-
-export type Intervals = '1' | '3' | '5' | '15' | '30' | '60' | '120' | '240' | '1D' | '1W' | '1M';
-export type SupportedIntervals = Array<Intervals>;
 
 export interface PairObj {
   symbol: string;

@@ -7,6 +7,7 @@ import { CoreViewController } from './CoreStore';
 import { ExchangeViewController } from './ExchangeViewController';
 import { PairViewController } from './PairViewController';
 import { TradesViewController } from './TradesViewController';
+import { TVChartViewController } from './TVChartViewController';
 
 @Service()
 export class Store {
@@ -20,6 +21,9 @@ export class Store {
 
   @Inject()
   tradesViewController!: TradesViewController;
+
+  @Inject()
+  tvChartViewController!: TVChartViewController;
 }
 
 Container.set('Logger', new LoggerService());

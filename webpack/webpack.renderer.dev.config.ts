@@ -4,6 +4,7 @@ import { merge } from 'webpack-merge';
 import { spawn } from 'child_process';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import rendererConfig from './webpack.renderer.config';
+import path from 'path';
 
 const port = 2003;
 
@@ -26,6 +27,9 @@ const config: webpack.Configuration = merge(rendererConfig, {
     compress: true,
     hot: true,
     historyApiFallback: true,
+    static: {
+      directory: path.join(__dirname, '..', 'src'),
+    },
 
     client: {
       logging: 'warn',

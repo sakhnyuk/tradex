@@ -7,6 +7,7 @@ import { ExchangeName } from 'core/types';
 export class ExchangeViewController {
   @observable activeExchange: ExchangeName;
   @observable supportedExchanges: ExchangeName[];
+  @observable supportedTimeframes: string[] = [];
 
   constructor(
     @Inject() private exchangeController: ExchangeController,
@@ -16,6 +17,7 @@ export class ExchangeViewController {
     this.activeExchange = this.exchangeController.getActiveExchangeName();
     this.supportedExchanges = this.exchangesListController.exchangesList;
     this.exchangeController.addExchangeUpdateListener(this.updateActiveExchange);
+    this.supportedTimeframes = this.exchangeController.getSupportedTimeframes();
   }
 
   @action

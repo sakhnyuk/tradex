@@ -1,12 +1,10 @@
-import { Theme } from '@material-ui/core';
-import { LayoutsIntervalsKeys } from '../../store-old/chart/types';
-import { Intervals } from '../../store-old/exchange/types';
+import { Theme } from '@mui/material';
+import { ThemeType } from 'app/theme';
 
 export interface ChartOptions {
   exchange: string;
   symbol: string;
   interval: Intervals;
-  containerId: LayoutsIntervalsKeys;
   chartsStorageUrl?: string;
   chartsStorageApiVersion?: '1.0' | '1.1' | undefined;
   clientId?: string;
@@ -16,4 +14,8 @@ export interface ChartOptions {
   theme: Theme;
   defaultCase?: boolean;
   isExplore?: boolean;
+  themeType: ThemeType;
 }
+
+export type Intervals = '1' | '3' | '5' | '15' | '30' | '60' | '120' | '240' | '1D' | '1W' | '1M';
+export type SupportedIntervals = Array<Intervals>;

@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/camelcase,no-unused-expressions */
-import { Exchange } from 'renderer/appConstant';
-import { KlineResItem } from 'renderer/api/exchangesApi/types';
-import { DatafeedConfiguration, IBasicDataFeed, LibrarySymbolInfo } from 'charting_library/charting_library.min';
+
+import {
+  DatafeedConfiguration,
+  IBasicDataFeed,
+  LibrarySymbolInfo,
+} from '../../../../charting_library/charting_library.min';
 import logger from '../../../utils/logger';
 import historyProvider from './historyProvider';
 import updater from './updater';
 import { loadState } from '../../../utils/localStorage';
 import { forSince, getTimezone } from '../../../utils/chartUtils';
-import api from '../../../api/exchangesApi/exchanges/index'
+import { ExchangeName } from 'core/types';
+import api from 'app/api';
 
 const supportedResolutions = ['1', '3', '5', '15', '30', '60', '120', '240', '1D', '1W', '1M'];
 
@@ -26,13 +30,11 @@ const Datafeed: IBasicDataFeed = {
       }
     }, 0);
   },
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   searchSymbols: () => {},
   resolveSymbol: (symbolName, onSymbolResolvedCallback) => {
     console.log('resolveSymbol');
     const splitData = symbolName.split(/[:/]/);
-    const exchange = splitData[0].toLowerCase() as Exchange;
-
+    const exchange = splitData[0].toLowerCase() as ExchangeName;
     const resolut = new api[exchange]().getSupportedInterval();
 
     const symbolStub: LibrarySymbolInfo = {
@@ -48,7 +50,7 @@ const Datafeed: IBasicDataFeed = {
       has_intraday: true,
       has_weekly_and_monthly: true,
       intraday_multipliers: resolut, // TODO: Add resolution from API
-      supported_resolutions: supportedResolutions,  // TODO: Add resolution from API
+      supported_resolutions: supportedResolutions, // TODO: Add resolution from API
       volume_precision: 8,
       data_status: 'streaming',
       full_name: symbolName,

@@ -1,23 +1,15 @@
-/* eslint-disable react/display-name */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useCallback } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
-// import Refresh from '@material-ui/icons/Refresh';
-import IconButton from '@material-ui/core/IconButton';
-import { useSelector } from 'react-redux';
-import { SeriesStyle } from 'charting_library/charting_library.min';
+import clsx from 'clsx';
 import styles from './styles';
 import { useChartActions } from '../../../store-old/chart/useChartActions';
-import { Intervals } from '../../../store-old/exchange/types';
 import { selectSupportedIntervals } from '../../../store-old/exchange/selectors';
 import { chartSelector } from '../../../store-old/chart/selectors';
 import { LayoutsIntervalsKeys, Layouts } from '../../../store-old/chart/types';
 import { IntervalMenu } from './components/IntervalMenu';
 import { CandlesMenu } from './components/CandlesMenu';
-
-export const useStyles = makeStyles(styles);
+import { Intervals } from '../types';
+import { SeriesStyle } from '../../../../charting_library/charting_library.min';
+import { useViewControllers } from 'app/view-controllers';
 
 const layouts: Layouts[] = ['one', 'leftright', 'topbot', 'topbotleftright'];
 
@@ -88,11 +80,9 @@ const ChartHeader: React.FC<Props> = ({
   setCandleType,
   isExplore,
 }) => {
-  const classes = useStyles();
+  const { exchangeViewController } = useViewControllers();
 
-  const { setLayout, setChartInterval } = useChartActions();
   const supportedIntervals = useSelector(selectSupportedIntervals);
-  const layout = useSelector(chartSelector.layout);
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [candlesAnchorEl, setCandlesAnchorEl] = useState<Element | null>(null);
@@ -219,32 +209,6 @@ const ChartHeader: React.FC<Props> = ({
         >
           Indicators
         </span>
-      </div>
-
-      <div className={classes.chartHeaderRight}>
-        {isExplore &&
-          layouts.map((layoutItem) => (
-            <IconButton
-              key={layoutItem}
-              onClick={() => setLayout(layoutItem)}
-              color="inherit"
-              classes={{ root: classes.icon, label: classes.iconLabel }}
-            >
-              {renderSvg[layoutItem]()}
-            </IconButton>
-          ))}
-
-        {/* <IconButton
-          onClick={() => {
-            // reload
-            setReloadChart(containerId);
-          }}
-          color="inherit"
-          classes={{ root: classes.icon, label: classes.iconLabel }}
-          disableRipple
-        >
-          <Refresh className={classes.fontSize} />
-        </IconButton> */}
       </div>
     </div>
   );

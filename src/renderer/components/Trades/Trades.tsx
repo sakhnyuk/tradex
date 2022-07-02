@@ -8,8 +8,6 @@ import { observer } from 'mobx-react-lite';
 const Trades = observer(() => {
   const { tradesViewController } = useViewControllers();
 
-  console.log(tradesViewController.trades.length);
-
   if (tradesViewController.isLoading) {
     return (
       <div className="h-full w-full flex justify-center items-center">

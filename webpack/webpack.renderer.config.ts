@@ -14,6 +14,7 @@ const config: webpack.Configuration = merge(baseConfig, {
       core: '/src/core',
       main: '/src/main',
       adapters: '/src/adapters',
+      'tv-chart': '/src/charting_library',
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },

@@ -67,7 +67,8 @@
       "app/*": ["./src/renderer/*"],
       "core/*": ["./src/core/*"],
       "main/*": ["./src/main/*"],
-      "adapters/*": ["./src/adapters"]
+      "adapters/*": ["./src/adapters/*"],
+      "tv-chart/*": ["./src/charting_library/*"]
     }
   },
   "ts-node": {

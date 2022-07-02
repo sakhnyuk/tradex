@@ -1,14 +1,10 @@
 import React from 'react';
-import { Box, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 
 import Header from 'app/components/AppHeader';
 import PairsBar from 'app/components/PairsBar';
 import Trades from 'app/components/Trades';
-
-// import OrderBook from '../../components/OrderBook';
-// import Exchanges from '../../components/ExchangesMenu';
-// import PairsBar from '../../components/PairsBar';
-// import Chart from '../../components/Chart';
+import Chart from 'app/components/Chart';
 
 const Explore = () => {
   return (
@@ -19,7 +15,9 @@ const Explore = () => {
 
       <PairsBar />
 
-      <div className="m-1 col-[1/2] row-[2/4]">{/* <Chart isExplore /> */}</div>
+      <div className="m-1 col-[1/2] row-[2/4]">
+        <Chart />
+      </div>
 
       <Paper className="my-1 mr-1 col-[2/3] row-[2/3]" variant="outlined" square>
         {/* <OrderBook /> */}
