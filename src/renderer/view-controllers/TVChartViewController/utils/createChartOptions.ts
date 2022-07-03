@@ -2,12 +2,12 @@ import { Theme } from '@mui/material';
 import { ThemeType } from 'app/theme';
 import { ChartingLibraryWidgetOptions, IBasicDataFeed } from 'tv-chart/charting_library.min';
 import { getTimezone } from 'app/utils/chartUtils';
-import { Intervals } from 'core/types';
+import { ChartTimeframe } from 'core/types';
 
 export interface ChartParams {
   exchange: string;
   symbol: string;
-  interval: Intervals;
+  interval: ChartTimeframe;
   chartsStorageUrl?: string;
   chartsStorageApiVersion?: '1.0' | '1.1' | undefined;
   clientId?: string;
@@ -19,6 +19,7 @@ export interface ChartParams {
   isExplore?: boolean;
   themeType: ThemeType;
   datafeed: IBasicDataFeed;
+  containerId: string;
 }
 
 export const createChartOptions = (params: ChartParams) => {
@@ -36,6 +37,7 @@ export const createChartOptions = (params: ChartParams) => {
     defaultCase,
     themeType,
     datafeed,
+    containerId,
   } = params;
 
   const widgetOptions: ChartingLibraryWidgetOptions = {
@@ -44,7 +46,7 @@ export const createChartOptions = (params: ChartParams) => {
     symbol: `${exchange}:${symbol}`,
     datafeed,
     interval,
-    container_id: 'tv_chart_container',
+    container_id: containerId,
     library_path: '../charting_library/',
     locale: 'en',
     charts_storage_url: chartsStorageUrl,

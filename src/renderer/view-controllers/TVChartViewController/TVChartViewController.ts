@@ -1,7 +1,7 @@
 import { Theme } from '@mui/material';
 import { ThemeType } from 'app/theme';
 import { ChartController, ExchangeController } from 'core/controllers';
-import { action, computed, makeObservable, observable } from 'mobx';
+import type { Logger } from 'core/ports';
 import { IChartingLibraryWidget, SeriesStyle, widget } from 'tv-chart/charting_library.min';
 import { Inject, Service } from 'typedi';
 import { ExchangeViewController } from '../ExchangeViewController';
@@ -9,15 +9,17 @@ import { PairViewController } from '../PairViewController';
 import { TVDataFeed } from './TVDataFeed';
 import { createChartOptions } from './utils/createChartOptions';
 
+const DOM_CONTAINER_ID = 'tv_chart_container';
+
 @Service()
 export class TVChartViewController {
   tvWidget?: IChartingLibraryWidget;
 
-  @Inject()
-  tvDataFeed!: TVDataFeed;
+  @Inject('Logger')
+  logger!: Logger;
 
   @Inject()
-  private chartController!: ChartController;
+  tvDataFeed!: TVDataFeed;
 
   @Inject()
   private exchangeViewController!: ExchangeViewController;
@@ -25,9 +27,15 @@ export class TVChartViewController {
   @Inject()
   private pairViewController!: PairViewController;
 
-  constructor(@Inject() private exchangeController: ExchangeController) {
+  public CONTAINER_ID = DOM_CONTAINER_ID;
+
+  constructor(
+    @Inject() private exchangeController: ExchangeController,
+    @Inject() private chartController: ChartController,
+  ) {
     this.exchangeController.addExchangeUpdateListener(this.refetchData);
     this.exchangeController.addPairUpdateListener(this.refetchData);
+    this.chartController.addTimeframeUpdateListener(this.refetchData);
   }
 
   public applyTheme = (theme: Theme, themeType: ThemeType) => {
@@ -55,6 +63,7 @@ export class TVChartViewController {
       themeType,
       datafeed: this.tvDataFeed,
       autosize: true,
+      containerId: this.CONTAINER_ID,
     });
 
     this.tvWidget = new widget(widgetOptions);
@@ -79,6 +88,8 @@ export class TVChartViewController {
     const exchange = this.exchangeViewController.activeExchange;
     const symbol = this.pairViewController.activePair;
     const interval = this.chartController.getTimeframe();
+
+    this.logger.info('refetchData', { exchange, symbol, interval });
 
     this.tvWidget?.setSymbol(`${exchange}:${symbol}`, interval, () => {});
   };

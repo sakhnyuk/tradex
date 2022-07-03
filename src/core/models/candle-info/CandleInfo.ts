@@ -1,4 +1,5 @@
 import { Model } from 'core/models';
+import defaultsDeep from 'lodash/defaultsDeep';
 
 export interface CandleInfoDto {
   close: number;
@@ -10,30 +11,20 @@ export interface CandleInfoDto {
 }
 
 export class CandleInfoModel extends Model<CandleInfoDto> {
-  get close(): Price {
-    return this.dto.close;
-  }
+  close: Price;
+  high: Price;
+  low: Price;
+  open: Price;
+  time: Timestamp;
+  volume: number;
 
-  get high(): Price {
-    return this.dto.high;
+  constructor(data: CandleInfoDto) {
+    super(data);
+    this.close = data.close;
+    this.high = data.high;
+    this.low = data.low;
+    this.open = data.open;
+    this.time = data.time;
+    this.volume = data.volume;
   }
-
-  get low(): Price {
-    return this.dto.low;
-  }
-
-  get open(): Price {
-    return this.dto.open;
-  }
-
-  get time(): Timestamp {
-    return this.dto.time;
-  }
-
-  get volume(): number {
-    return this.dto.volume;
-  }
-
-  public isBarClosed = false;
-  public isLastBar = false;
 }

@@ -3,16 +3,18 @@ import signals from 'signals';
 import { CandleInfoModel } from 'core/models';
 import { ExchangeService } from 'core/services';
 import type { ExchangeProvider } from 'core/ports';
-import { CandleUpdateHandler, Intervals } from 'core/types';
+import { CandleUpdateHandler, ChartTimeframe, TimeframeUpdateHandler } from 'core/types';
 
 @Service()
 export class ChartController {
-  private timeframe: Intervals;
+  private timeframe: ChartTimeframe;
 
   private candleUpdated: signals.Signal<CandleInfoModel> = new signals.Signal();
 
+  private timeframeUpdated: signals.Signal<ChartTimeframe> = new signals.Signal();
+
   constructor(private exchangeService: ExchangeService) {
-    this.timeframe = '60';
+    this.timeframe = this.currentExchange.getDefaultTimeframe();
 
     this.exchangeService.onExchangeUpdate(async (exchange) => {
       exchange.onCandleUpdate(this.exchangeService.getCurrentPair(), this.timeframe, this.emitCandleUpdate);
@@ -44,12 +46,21 @@ export class ChartController {
     this.candleUpdated.add(handler);
   };
 
-  public setTimeframe = (timeframe: Intervals) => {
+  public setTimeframe = (timeframe: ChartTimeframe) => {
     this.timeframe = timeframe;
+    this.timeframeUpdated.dispatch(timeframe);
   };
 
-  public getTimeframe = (): Intervals => {
+  public getTimeframe = (): ChartTimeframe => {
     return this.timeframe;
+  };
+
+  public addTimeframeUpdateListener = (handler: TimeframeUpdateHandler) => {
+    this.timeframeUpdated.add(handler);
+  };
+
+  public removeTimeframeUpdateListener = (handler: TimeframeUpdateHandler) => {
+    this.timeframeUpdated.remove(handler);
   };
 
   public closeUpdateCandle = (): void => {

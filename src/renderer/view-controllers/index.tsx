@@ -6,6 +6,7 @@ import { LoggerService } from '../../adapters/logger';
 import { CoreViewController } from './CoreStore';
 import { ExchangeViewController } from './ExchangeViewController';
 import { PairViewController } from './PairViewController';
+import { TimeframesController } from './TimeframesController';
 import { TradesViewController } from './TradesViewController';
 import { TVChartViewController } from './TVChartViewController';
 
@@ -24,6 +25,9 @@ export class Store {
 
   @Inject()
   tvChartViewController!: TVChartViewController;
+
+  @Inject()
+  timeframeController!: TimeframesController;
 }
 
 Container.set('Logger', new LoggerService());

@@ -1,8 +1,6 @@
 import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import { useStyles } from '../../ChartHeader';
-import { SeriesStyle } from '../../../../../../charting_library/charting_library.min';
+import { Menu, MenuItem } from '@mui/material';
+import { SeriesStyle } from 'tv-chart/charting_library.min';
 
 const candleTypes = [
   { name: 'Bars', code: 0 },
@@ -21,13 +19,11 @@ interface Props {
 }
 
 export const CandlesMenu: React.FC<Props> = ({ setCandleType, anchorEl, handleClose }) => {
-  const classes = useStyles();
-
   return (
     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
       {candleTypes.map((candleType) => (
         <MenuItem
-          classes={{ root: classes.menuItem }}
+          classes={{ root: 'h-5 text-sm' }}
           key={candleType.code}
           onClick={() => setCandleType(candleType.code)}
         >

@@ -1,29 +1,19 @@
-import React, { useState, useCallback } from 'react';
-import clsx from 'clsx';
-import styles from './styles';
-import { useChartActions } from '../../../store-old/chart/useChartActions';
-import { selectSupportedIntervals } from '../../../store-old/exchange/selectors';
-import { chartSelector } from '../../../store-old/chart/selectors';
-import { LayoutsIntervalsKeys, Layouts } from '../../../store-old/chart/types';
+import React, { useState } from 'react';
 import { IntervalMenu } from './components/IntervalMenu';
 import { CandlesMenu } from './components/CandlesMenu';
-import { Intervals } from '../types';
-import { SeriesStyle } from '../../../../charting_library/charting_library.min';
 import { useViewControllers } from 'app/view-controllers';
+import { ChartTimeframe } from 'core/types';
+import clsx from 'clsx';
+import { observer } from 'mobx-react-lite';
 
-const layouts: Layouts[] = ['one', 'leftright', 'topbot', 'topbotleftright'];
-
-// TODO: Add resolution from API
-export const intervalDictionary = {
+export const intervalDictionary: Record<ChartTimeframe, string> = {
   1: '1m',
   3: '3m',
   5: '5m',
-  10: '10m',
   15: '15m',
   30: '30m',
   60: '1H',
   120: '2H',
-  180: '3H',
   240: '4H',
   360: '6H',
   480: '8H',
@@ -33,69 +23,14 @@ export const intervalDictionary = {
   '1M': '1M',
 };
 
-const renderSvg = {
-  one: () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12">
-      <rect width="10" height="10" fill="none" stroke="currentColor" rx="2" transform="translate(.5 .5)" />
-    </svg>
-  ),
-  leftright: () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12">
-      <g fill="none" stroke="currentColor" transform="translate(.5 .5)">
-        <rect width="10" height="10" rx="2" />
-        <path d="M5 0v10" />
-      </g>
-    </svg>
-  ),
-  topbot: () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12">
-      <g fill="none" stroke="currentColor" transform="translate(.5 .5)">
-        <rect width="10" height="10" rx="2" />
-        <path d="M0 5h10" />
-      </g>
-    </svg>
-  ),
-  topbotleftright: () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12">
-      <g fill="none" stroke="currentColor" transform="translate(.5 .5)">
-        <rect width="10" height="10" rx="2" />
-        <path d="M0 5h10M5 0v10" />
-      </g>
-    </svg>
-  ),
-};
-
-interface Props {
-  activeInterval: Intervals;
-  containerId: LayoutsIntervalsKeys;
-  setCandleType: (type: SeriesStyle) => void;
-  showIndicatorsDialog: () => void;
-  isExplore?: boolean;
-}
-
-const ChartHeader: React.FC<Props> = ({
-  activeInterval,
-  showIndicatorsDialog,
-  containerId,
-  setCandleType,
-  isExplore,
-}) => {
-  const { exchangeViewController } = useViewControllers();
-
-  const supportedIntervals = useSelector(selectSupportedIntervals);
+const ChartHeader: React.FC = observer(() => {
+  const { tvChartViewController, timeframeController } = useViewControllers();
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [candlesAnchorEl, setCandlesAnchorEl] = useState<Element | null>(null);
-  const [intervals, setIntervals] = useState<Intervals[]>([]);
+  const [intervals, setIntervals] = useState<ChartTimeframe[]>([]);
 
-  const { minutes, hours, days } = supportedIntervals;
-
-  const handleIntervalChange = useCallback(
-    (interval: Intervals) => {
-      setChartInterval({ layout, interval, id: containerId });
-    },
-    [containerId, layout, setChartInterval],
-  );
+  const { minutes, hours, days } = timeframeController.groupedTimeframes;
 
   const handleCandlesOpen = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     setCandlesAnchorEl(event.currentTarget);
@@ -105,9 +40,9 @@ const ChartHeader: React.FC<Props> = ({
     setCandlesAnchorEl(null);
   };
 
-  const handleInntervalMenuOpen = (
+  const handleIntervalMenuOpen = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    exactIntervals: Intervals[],
+    exactIntervals: ChartTimeframe[],
   ) => {
     setAnchorEl(event.currentTarget);
     setIntervals(exactIntervals);
@@ -118,37 +53,43 @@ const ChartHeader: React.FC<Props> = ({
   };
 
   return (
-    <div className={classes.root}>
-      <div className={classes.chartHeaderLeft}>
+    <div className="flex justify-between items-center bg-ui-paper">
+      <div className="w-1/2 h-5 pl-1 flex justify-start items-center">
         <IntervalMenu
           anchorEl={anchorEl}
           handleClose={handleIntervalMenuClose}
           intervals={intervals}
-          onIntervalChange={handleIntervalChange}
+          onIntervalChange={timeframeController.setTimeframe}
         />
 
-        <CandlesMenu anchorEl={candlesAnchorEl} handleClose={handleCandlesClose} setCandleType={setCandleType} />
+        <CandlesMenu
+          anchorEl={candlesAnchorEl}
+          handleClose={handleCandlesClose}
+          setCandleType={tvChartViewController.setCandleType}
+        />
 
         {minutes.length > 1 ? (
           <div
-            className={classnames({
-              [classes.menuButton]: true,
-              [classes.active]: minutes.includes(activeInterval),
+            className={clsx('text-sm cursor-pointer text-typo-primary font-normal mr-2 whitespace-nowrap last:ml-1', {
+              ['text-typo-active']: minutes.includes(timeframeController.currentTimeframe),
             })}
-            onClick={(event) => handleInntervalMenuOpen(event, minutes)}
+            onClick={(event) => handleIntervalMenuOpen(event, minutes)}
           >
-            <span>{minutes.includes(activeInterval) ? intervalDictionary[activeInterval] : 'm'}</span>
-            <span className={classes.arrowBottom}>&#x25bc;</span>
+            <span>
+              {minutes.includes(timeframeController.currentTimeframe)
+                ? intervalDictionary[timeframeController.currentTimeframe]
+                : 'm'}
+            </span>
+            <span className="ml-1 text-xs">&#x25bc;</span>
           </div>
         ) : (
           minutes.map((minuteInterval) => (
             <span
               key={minuteInterval}
-              className={classnames({
-                [classes.menuButton]: true,
-                [classes.active]: minuteInterval === activeInterval,
+              className={clsx('text-sm cursor-pointer text-typo-primary font-normal mr-2 whitespace-nowrap last:ml-1', {
+                ['text-typo-active']: minuteInterval === timeframeController.currentTimeframe,
               })}
-              onClick={() => handleIntervalChange(minuteInterval)}
+              onClick={() => timeframeController.setTimeframe(minuteInterval)}
             >
               {intervalDictionary[minuteInterval]}
             </span>
@@ -156,24 +97,26 @@ const ChartHeader: React.FC<Props> = ({
         )}
         {hours.length > 1 ? (
           <div
-            className={classnames({
-              [classes.menuButton]: true,
-              [classes.active]: hours.includes(activeInterval),
+            className={clsx('text-sm cursor-pointer text-typo-primary font-normal mr-2 whitespace-nowrap last:ml-1', {
+              ['text-typo-active']: hours.includes(timeframeController.currentTimeframe),
             })}
-            onClick={(event) => handleInntervalMenuOpen(event, hours)}
+            onClick={(event) => handleIntervalMenuOpen(event, hours)}
           >
-            <span>{hours.includes(activeInterval) ? intervalDictionary[activeInterval] : 'H'}</span>
-            <span className={classes.arrowBottom}>&#x25bc;</span>
+            <span>
+              {hours.includes(timeframeController.currentTimeframe)
+                ? intervalDictionary[timeframeController.currentTimeframe]
+                : 'H'}
+            </span>
+            <span className="ml-1 text-xs">&#x25bc;</span>
           </div>
         ) : (
           hours.map((hourInterval) => (
             <span
               key={hourInterval}
-              className={classnames({
-                [classes.menuButton]: true,
-                [classes.active]: hourInterval === activeInterval,
+              className={clsx('text-sm cursor-pointer text-typo-primary font-normal mr-2 whitespace-nowrap last:ml-1', {
+                ['text-typo-active']: hourInterval === timeframeController.currentTimeframe,
               })}
-              onClick={() => handleIntervalChange(hourInterval)}
+              onClick={() => timeframeController.setTimeframe(hourInterval)}
             >
               {intervalDictionary[hourInterval]}
             </span>
@@ -183,28 +126,28 @@ const ChartHeader: React.FC<Props> = ({
         {days.map((dayInterval) => (
           <span
             key={dayInterval}
-            className={classnames({
-              [classes.menuButton]: true,
-              [classes.active]: dayInterval === activeInterval,
+            className={clsx('text-sm cursor-pointer text-typo-primary font-normal mr-2 whitespace-nowrap last:ml-1', {
+              ['text-typo-active']: dayInterval === timeframeController.currentTimeframe,
             })}
-            onClick={() => handleIntervalChange(dayInterval)}
+            onClick={() => timeframeController.setTimeframe(dayInterval)}
           >
             {dayInterval.toUpperCase()}
           </span>
         ))}
 
-        <span className={classes.menuButton} onClick={handleCandlesOpen}>
+        <span
+          className="text-sm cursor-pointer text-typo-primary font-normal mr-2 whitespace-nowrap last:ml-1"
+          onClick={handleCandlesOpen}
+        >
           Candles
         </span>
 
-        <span className={classes.divider} style={{ marginRight: 8 }}>
-          |
-        </span>
+        <span className="text-typo-primary mr-2">|</span>
 
         <span
-          className={classes.menuButton}
+          className="text-sm cursor-pointer text-typo-primary font-normal mr-2 whitespace-nowrap last:ml-1"
           onClick={() => {
-            showIndicatorsDialog();
+            tvChartViewController.showIndicatorDialog();
           }}
         >
           Indicators
@@ -212,6 +155,6 @@ const ChartHeader: React.FC<Props> = ({
       </div>
     </div>
   );
-};
+});
 
 export default ChartHeader;

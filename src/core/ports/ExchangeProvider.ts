@@ -1,5 +1,5 @@
 import { CandleInfoModel, OrderBookUpdateInfo, PairListModel, TradeInfoModel } from 'core/models';
-import { ExchangeName } from 'core/types';
+import { ChartTimeframe, ExchangeName } from 'core/types';
 
 export interface ExchangeProvider {
   /**
@@ -7,7 +7,8 @@ export interface ExchangeProvider {
    */
   getName: () => ExchangeName;
   getKey: () => string;
-  getSupportedTimeframes: () => string[];
+  getSupportedTimeframes: () => ChartTimeframe[];
+  getDefaultTimeframe: () => ChartTimeframe;
   getDefaultSymbol: () => TradeSymbol;
   getStableCoins: () => TradeSymbol[];
 
@@ -20,7 +21,12 @@ export interface ExchangeProvider {
   closeCandle(): void;
 
   getPairs: () => Promise<PairListModel>;
-  getCandles: (symbol: TradeSymbol, interval: string, start: Timestamp, end: Timestamp) => Promise<CandleInfoModel[]>;
+  getCandles: (
+    symbol: TradeSymbol,
+    interval: ChartTimeframe,
+    start: Timestamp,
+    end: Timestamp,
+  ) => Promise<CandleInfoModel[]>;
   getTradesHistory: (symbol: TradeSymbol) => Promise<TradeInfoModel[]>;
   getOrderBook: (symbol: string) => Promise<OrderBookUpdateInfo>;
 }

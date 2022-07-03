@@ -10,7 +10,7 @@ import {
   PairListModel,
   TradeInfoModel,
 } from 'core/models';
-import { ExchangeName, OrderBookUpdateType, TradeSide } from 'core/types';
+import { ChartTimeframe, ExchangeName, OrderBookUpdateType, TradeSide } from 'core/types';
 import {
   BinanceTradeDto,
   BinanceTradeStream,
@@ -36,7 +36,7 @@ export class BinanceAdapter implements ExchangeProvider {
 
   private defaultTicker = 'BTC/USDT';
 
-  private chartTimeframes: Record<string, string> = {
+  private readonly timeframes: Record<ChartTimeframe, string> = {
     1: '1m',
     3: '3m',
     5: '5m',
@@ -53,7 +53,7 @@ export class BinanceAdapter implements ExchangeProvider {
     '1M': '1M',
   };
 
-  private defaultTimeframe = this.chartTimeframes[60];
+  private defaultTimeframe = this.timeframes[60];
 
   private getExchangeInfoUrl = () => `${this.BASE_API_URL}/api/v3/exchangeInfo`;
 
@@ -73,7 +73,7 @@ export class BinanceAdapter implements ExchangeProvider {
     depthLevel: (symbol: TradeSymbol, level: string): string =>
       `${this.BASE_WS_URL}${symbol.toLowerCase()}@depth${level}`,
     kline: (symbol: TradeSymbol, timeframe: number | string): string =>
-      `${this.BASE_WS_URL}${symbol.toLowerCase()}@kline_${this.chartTimeframes[timeframe]}`,
+      `${this.BASE_WS_URL}${symbol.toLowerCase()}@kline_${this.timeframes[timeframe]}`,
     trade: (symbol: TradeSymbol): string => `${this.BASE_WS_URL}${symbol.toLowerCase()}@aggTrade`,
     ticker: (symbol: TradeSymbol): string => `${this.BASE_WS_URL}${symbol.toLowerCase()}@ticker`,
   };
@@ -121,7 +121,9 @@ export class BinanceAdapter implements ExchangeProvider {
 
   public getDefaultSymbol = (): TradeSymbol => this.defaultTicker;
 
-  public getSupportedTimeframes = (): string[] => Object.keys(this.chartTimeframes);
+  public getDefaultTimeframe = (): ChartTimeframe => '60';
+
+  public getSupportedTimeframes = (): ChartTimeframe[] => Object.keys(this.timeframes) as ChartTimeframe[];
 
   public getStableCoins = (): string[] => this.stableCoins;
 
@@ -293,7 +295,7 @@ export class BinanceAdapter implements ExchangeProvider {
   ): Promise<CandleInfoModel[]> => {
     const pair = symbol.replace('/', '');
 
-    const res = await fetch(this.getCandlesUrl(pair, this.chartTimeframes[interval], endTime * 1000));
+    const res = await fetch(this.getCandlesUrl(pair, this.timeframes[interval], endTime * 1000));
     const resData = await res.json();
 
     return resData.map((obj: (string | number)[]) => {

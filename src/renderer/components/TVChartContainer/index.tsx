@@ -1,16 +1,13 @@
 import React, { useEffect } from 'react';
-// import ChartHeader from './ChartHeader';
+import ChartHeader from './ChartHeader';
 
 import { useTheme } from '@mui/material';
 import { useViewControllers } from 'app/view-controllers';
 
 const TVChartContainer = () => {
-  const { exchangeViewController, pairViewController, core, tvChartViewController } = useViewControllers();
+  const { core, tvChartViewController } = useViewControllers();
 
-  const exchange = exchangeViewController.activeExchange;
-  const symbol = pairViewController.activePair;
   const appTheme = core.theme;
-  const isOnline = core.isOnline;
 
   const theme = useTheme();
 
@@ -22,24 +19,10 @@ const TVChartContainer = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   tvChartViewController.refetchData();
-  // }, [exchange, symbol, isOnline]);
-
-  // useEffect(() => {
-  //   tvChartViewController.applyTheme(theme, appTheme);
-  // }, [appTheme]);
-
   return (
     <>
-      {/* <ChartHeader
-        setCandleType={setCandleType}
-        activeInterval={interval}
-        showIndicatorsDialog={showIndicatorsDialog}
-        containerId={containerId}
-        isExplore={isExplore}
-      /> */}
-      <div id="tv_chart_container" className="h-full bg-ui-default border-0" />
+      <ChartHeader />
+      <div id={tvChartViewController.CONTAINER_ID} className="h-[calc(100%-20px)] bg-ui-default border-0" />
     </>
   );
 };

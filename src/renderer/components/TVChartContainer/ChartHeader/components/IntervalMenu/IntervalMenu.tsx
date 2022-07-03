@@ -1,19 +1,17 @@
+import { Menu, MenuItem } from '@mui/material';
+import { ChartTimeframe } from 'core/types';
 import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import { Intervals } from '../../../../../store-old/exchange/types';
-import { useStyles, intervalDictionary } from '../../ChartHeader';
+import { intervalDictionary } from '../../ChartHeader';
 
 interface Props {
   anchorEl: Element | null;
   handleClose: () => void;
-  intervals: Intervals[];
-  onIntervalChange: (interval: Intervals) => void;
+  intervals: ChartTimeframe[];
+  onIntervalChange: (timeframe: ChartTimeframe) => void;
 }
 
 export const IntervalMenu: React.FC<Props> = ({ anchorEl, handleClose, intervals, onIntervalChange }) => {
-  const classes = useStyles();
-  const handleIntervalChange = (interval: Intervals) => {
+  const handleIntervalChange = (interval: ChartTimeframe) => {
     onIntervalChange(interval);
     handleClose();
   };
@@ -21,7 +19,7 @@ export const IntervalMenu: React.FC<Props> = ({ anchorEl, handleClose, intervals
   return (
     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
       {intervals.map((interval) => (
-        <MenuItem classes={{ root: classes.menuItem }} key={interval} onClick={() => handleIntervalChange(interval)}>
+        <MenuItem classes={{ root: 'h-5 text-sm' }} key={interval} onClick={() => handleIntervalChange(interval)}>
           {intervalDictionary[interval]}
         </MenuItem>
       ))}
