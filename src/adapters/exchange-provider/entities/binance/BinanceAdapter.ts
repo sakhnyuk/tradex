@@ -213,7 +213,7 @@ export class BinanceAdapter implements ExchangeProvider {
         high: +data.k.h,
         low: +data.k.l,
         open: +data.k.o,
-        time: +data.k.T,
+        time: +data.k.t,
         volume: +data.k.v,
       };
 

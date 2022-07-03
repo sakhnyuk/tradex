@@ -37,20 +37,21 @@ export class TVDataFeed implements IBasicDataFeed {
   private onTick: SubscribeBarsCallback = () => {};
 
   private candleUpdater: CandleUpdateHandler = (candle) => {
-    if (
-      this.lastCandle &&
-      forSince(this.chartController.getTimeframe()) * 1000 <= Math.abs(this.lastCandle?.close - candle.close)
-    ) {
+    if (this.lastCandle) {
       this.lastCandle = candle;
       this.onTick(candle);
     }
   };
 
-  private lastPriceUpdater: TradeInfoAddedHandler = (trade) => {
-    if (this.lastCandle) {
+  private priceUpdaterByTrade: TradeInfoAddedHandler = (trade) => {
+    if (!this.lastCandle) return;
+
+    const isCandleOpened = trade.time < this.lastCandle?.time + forSince(this.chartController.getTimeframe()) * 1000;
+    const isPriceDifferent = this.lastCandle.close !== trade.price;
+
+    if (isCandleOpened && isPriceDifferent) {
       const updatedCandle = this.lastCandle.updateModel({ close: trade.price }, CandleInfoModel);
       this.lastCandle = updatedCandle;
-
       this.onTick(this.lastCandle);
     }
   };
@@ -143,13 +144,13 @@ export class TVDataFeed implements IBasicDataFeed {
     const exchange = splitSymbol[0].toLowerCase() as ExchangeName;
 
     this.chartController.addCandleUpdateListener(this.candleUpdater);
-    this.tradeHistoryController.addTradeUpdateListener(this.lastPriceUpdater);
+    this.tradeHistoryController.addTradeUpdateListener(this.priceUpdaterByTrade);
     this.chartController.initCandles();
   }
 
   unsubscribeBars(): void {
     this.chartController.closeUpdateCandle();
-    this.tradeHistoryController.removeTradeUpdateListener(this.lastPriceUpdater);
+    this.tradeHistoryController.removeTradeUpdateListener(this.priceUpdaterByTrade);
   }
 
   calculateHistoryDepth(resolution: string): HistoryDepth {
