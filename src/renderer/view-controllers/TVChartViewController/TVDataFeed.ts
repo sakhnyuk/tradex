@@ -1,7 +1,8 @@
-import { getTimezone } from 'app/utils/chartUtils';
-import { ChartController, ExchangeController } from 'core/controllers';
+import { forSince, getTimezone } from 'app/utils/chartUtils';
+import { ChartController, ExchangeController, TradeHistoryController } from 'core/controllers';
+import { CandleInfoModel } from 'core/models';
 import type { Logger } from 'core/ports';
-import { ExchangeName } from 'core/types';
+import { CandleUpdateHandler, ExchangeName, TradeInfoAddedHandler } from 'core/types';
 import {
   ErrorCallback,
   HistoryCallback,
@@ -28,6 +29,32 @@ export class TVDataFeed implements IBasicDataFeed {
   @Inject()
   chartController!: ChartController;
 
+  @Inject()
+  tradeHistoryController!: TradeHistoryController;
+
+  lastCandle?: CandleInfoModel;
+
+  private onTick: SubscribeBarsCallback = () => {};
+
+  private candleUpdater: CandleUpdateHandler = (candle) => {
+    if (
+      this.lastCandle &&
+      forSince(this.chartController.getTimeframe()) * 1000 <= Math.abs(this.lastCandle?.close - candle.close)
+    ) {
+      this.lastCandle = candle;
+      this.onTick(candle);
+    }
+  };
+
+  private lastPriceUpdater: TradeInfoAddedHandler = (trade) => {
+    if (this.lastCandle) {
+      const updatedCandle = this.lastCandle.updateModel({ close: trade.price }, CandleInfoModel);
+      this.lastCandle = updatedCandle;
+
+      this.onTick(this.lastCandle);
+    }
+  };
+
   onReady(callback: OnReadyCallback): void {
     try {
       setTimeout(() => {
@@ -44,7 +71,7 @@ export class TVDataFeed implements IBasicDataFeed {
   searchSymbols(userInput: string, exchange: string, symbolType: string, onResult: SearchSymbolsCallback): void {}
 
   resolveSymbol(symbolName: string, onResolve: ResolveCallback, onError: ErrorCallback): void {
-    this.logger.info('resolveSymbol');
+    this.logger.info('resolveSymbol', symbolName);
     const splitData = symbolName.split(/[:/]/);
     const exchange = splitData[0].toLowerCase() as ExchangeName;
     const supportedTimeframes = this.exchangeController.getSupportedTimeframes();
@@ -89,9 +116,12 @@ export class TVDataFeed implements IBasicDataFeed {
   ): void {
     try {
       this.chartController.getCandles(rangeStartDate, rangeEndDate).then((candles) => {
+        if (candles.length > 0) {
+          this.lastCandle = candles[candles.length - 1];
+        }
+
         onResult(candles, {
           noData: candles.length === 0,
-          nextTime: candles.length ? candles[0].time : 0,
         });
       });
     } catch (err) {
@@ -106,18 +136,20 @@ export class TVDataFeed implements IBasicDataFeed {
     listenerGuid: string,
     onResetCacheNeededCallback: () => void,
   ): void {
+    this.onTick = onTick;
+
     const splitSymbol = symbolInfo.name.split(/[:/]/);
     const symbol = `${splitSymbol[1]}/${splitSymbol[2]}`;
     const exchange = splitSymbol[0].toLowerCase() as ExchangeName;
 
-    let lastCandle = {};
-
-    this.chartController.addCandleUpdateListener(onTick);
+    this.chartController.addCandleUpdateListener(this.candleUpdater);
+    this.tradeHistoryController.addTradeUpdateListener(this.lastPriceUpdater);
     this.chartController.initCandles();
   }
 
   unsubscribeBars(): void {
     this.chartController.closeUpdateCandle();
+    this.tradeHistoryController.removeTradeUpdateListener(this.lastPriceUpdater);
   }
 
   calculateHistoryDepth(resolution: string): HistoryDepth {

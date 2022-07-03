@@ -33,4 +33,7 @@ export class CandleInfoModel extends Model<CandleInfoDto> {
   get volume(): number {
     return this.dto.volume;
   }
+
+  public isBarClosed = false;
+  public isLastBar = false;
 }

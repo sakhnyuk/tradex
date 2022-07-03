@@ -288,11 +288,12 @@ export class BinanceAdapter implements ExchangeProvider {
   public getCandles = async (
     symbol: TradeSymbol = this.defaultTicker,
     interval = '60',
+    startTime: Timestamp = new Date().getTime(),
     endTime: Timestamp = new Date().getTime(),
   ): Promise<CandleInfoModel[]> => {
     const pair = symbol.replace('/', '');
 
-    const res = await fetch(this.getCandlesUrl(pair, this.chartTimeframes[interval], endTime));
+    const res = await fetch(this.getCandlesUrl(pair, this.chartTimeframes[interval], endTime * 1000));
     const resData = await res.json();
 
     return resData.map((obj: (string | number)[]) => {

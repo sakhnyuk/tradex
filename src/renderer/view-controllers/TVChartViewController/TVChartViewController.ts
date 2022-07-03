@@ -25,6 +25,11 @@ export class TVChartViewController {
   @Inject()
   private pairViewController!: PairViewController;
 
+  constructor(@Inject() private exchangeController: ExchangeController) {
+    this.exchangeController.addExchangeUpdateListener(this.refetchData);
+    this.exchangeController.addPairUpdateListener(this.refetchData);
+  }
+
   public applyTheme = (theme: Theme, themeType: ThemeType) => {
     this.tvWidget?.addCustomCSSFile(themeType === ThemeType.DARK ? './night.css' : './day.css');
 

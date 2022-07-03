@@ -40,4 +40,8 @@ export class TradeHistoryController {
   public addTradeUpdateListener = (handler: TradeInfoAddedHandler): void => {
     this.tradeAdded.add(handler);
   };
+
+  public removeTradeUpdateListener = (handler: TradeInfoAddedHandler): void => {
+    this.tradeAdded.remove(handler);
+  };
 }
