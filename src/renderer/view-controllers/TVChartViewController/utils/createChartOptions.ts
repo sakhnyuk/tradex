@@ -46,7 +46,6 @@ export const createChartOptions = (params: ChartParams) => {
     symbol: `${exchange}:${symbol}`,
     datafeed,
     interval: interval as ResolutionString,
-
     container: containerId,
     library_path: '../charting_library/',
     locale: 'en',
@@ -93,7 +92,7 @@ export const createChartOptions = (params: ChartParams) => {
       'control_bar',
     ],
     enabled_features: ['same_data_requery'],
-    // custom_css_url: themeType === ThemeType.DARK ? './night.css' : './day.css',
+    custom_css_url: themeType === ThemeType.DARK ? './night.css' : './day.css',
   };
 
   return widgetOptions;

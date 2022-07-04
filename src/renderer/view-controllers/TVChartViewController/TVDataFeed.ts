@@ -88,7 +88,7 @@ export class TVDataFeed implements IBasicDataFeed {
     this.logger.info('resolveSymbol', symbolName);
     const splitData = symbolName.split(/[:/]/);
     const exchange = splitData[0].toLowerCase() as ExchangeName;
-    const supportedTimeframes = this.exchangeController.getSupportedTimeframes();
+    const supportedTimeframes = this.exchangeController.getSupportedTimeframes() as ResolutionString[];
 
     const symbolStub: LibrarySymbolInfo = {
       name: symbolName,
@@ -101,14 +101,15 @@ export class TVDataFeed implements IBasicDataFeed {
       minmov: 1,
       pricescale: 100000000,
       has_intraday: true,
+      has_daily: true,
       has_weekly_and_monthly: true,
-      intraday_multipliers: supportedTimeframes, // TODO: Add resolution from API
-      supported_resolutions: supportedResolutions, // TODO: Add resolution from API
+      supported_resolutions: supportedTimeframes,
       volume_precision: 8,
       data_status: 'streaming',
       full_name: symbolName,
       format: 'price',
       listed_exchange: splitData[0],
+      sector: 'crypto',
     };
 
     if (splitData[2].match(/USDT|USD|EUR|JPY|AUD|GBP|KRW|CNY/)) {

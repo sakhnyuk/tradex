@@ -101,7 +101,7 @@ export class TVChartViewController {
 
     this.logger.info('refetchData', { exchange, symbol, interval });
 
-    this.tvWidget?.setSymbol(`${exchange}:${symbol}`, interval, () => {});
+    this.tvWidget?.setSymbol(`${exchange}:${symbol}`, interval as TradingView.ResolutionString, () => {});
   };
 
   public showIndicatorDialog = () => {
