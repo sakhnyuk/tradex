@@ -17,13 +17,9 @@ const Header = observer(() => {
         elevation={0}
       >
         <Toolbar disableGutters className="min-h-fit">
-          <Button
-            className=" border-l-2 border-solid border-ui-default h-12 rounded-none relative py-1 px-8 whitespace-nowrap"
-            onClick={() => pairViewController.setPairsBarOpen(true)}
-            color="inherit"
-          >
+          <div className="flex justify-center items-center h-12 py-1 px-8 whitespace-nowrap font-bold" color="inherit">
             {pairViewController.activePair}
-          </Button>
+          </div>
 
           <Button
             className=" border-l-2 border-solid border-ui-default h-12 rounded-none relative py-1 px-8 whitespace-nowrap"

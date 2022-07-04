@@ -87,6 +87,7 @@ export class TVDataFeed implements IBasicDataFeed {
   resolveSymbol(symbolName: string, onResolve: ResolveCallback, onError: ErrorCallback): void {
     this.logger.info('resolveSymbol', symbolName);
     const splitData = symbolName.split(/[:/]/);
+    const ticker = splitData[1] + splitData[2];
     const exchange = splitData[0].toLowerCase() as ExchangeName;
     const supportedTimeframes = this.exchangeController.getSupportedTimeframes() as ResolutionString[];
 
@@ -106,7 +107,7 @@ export class TVDataFeed implements IBasicDataFeed {
       supported_resolutions: supportedTimeframes,
       volume_precision: 8,
       data_status: 'streaming',
-      full_name: symbolName,
+      full_name: ticker,
       format: 'price',
       listed_exchange: splitData[0],
       sector: 'crypto',

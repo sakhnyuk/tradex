@@ -4,10 +4,11 @@ import { AutoSizer, List } from 'react-virtualized';
 import StarOutlined from '@mui/icons-material/StarOutline';
 import StarBorder from '@mui/icons-material/StarBorder';
 import { formatQuantity } from '../../../utils/setFormatPrice';
-import ListItemTextWithPrice from './ListItemTextWithPrice';
+import { ListItemPrice } from './ListItemPrice';
 import { PairInfoModel, PairListModel } from 'core/models';
 import { IconButton, ListItem, ListItemText, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
+import { ListItemChange } from './ListItemChange';
 
 interface PairListProps {
   pairListModel: PairListModel | null;
@@ -45,16 +46,19 @@ const PairList: React.FC<PairListProps> = observer(
           <ListItem button className="pr-0 pl-2 py-1" onClick={() => setPair(pairInfo.symbol)}>
             <ListItemText
               classes={{
-                primary: 'text-sm',
-                secondary: 'text-sx',
+                root: 'flex-1',
+                primary: 'text-xs font-bold',
               }}
               primary={pairInfo.symbol}
-              secondary={`Vol: ${formatQuantity(pairInfo.volume)}`}
             />
-            <ListItemTextWithPrice pair={pairInfo} />
+
+            <ListItemPrice pair={pairInfo} />
+
+            <ListItemChange pair={pairInfo} />
 
             <IconButton
               className="w-12 h-12 hover:bg-transparent"
+              size="small"
               onClick={(e) => {
                 e.stopPropagation();
                 toggleWatchlist(pairInfo);
@@ -65,9 +69,9 @@ const PairList: React.FC<PairListProps> = observer(
               }}
             >
               {watchlist.some((watchlistPair) => pairList[watchlistPair].symbol === pairInfo.symbol) ? (
-                <StarOutlined classes={{ root: 'text-lg' }} />
+                <StarOutlined classes={{ root: 'text-sm' }} />
               ) : (
-                <StarBorder classes={{ root: 'text-lg' }} />
+                <StarBorder classes={{ root: 'text-sm' }} />
               )}
             </IconButton>
           </ListItem>
@@ -82,7 +86,7 @@ const PairList: React.FC<PairListProps> = observer(
             width={width}
             height={height}
             rowCount={pairList.length}
-            rowHeight={55}
+            rowHeight={30}
             rowRenderer={rowRenderer}
             noRowsRenderer={() => <Typography className="mt-1 ml-2">There are no pairs</Typography>}
           />

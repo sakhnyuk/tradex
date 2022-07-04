@@ -45,15 +45,11 @@ const Markets: React.FC<MarketProps> = ({ markets, activeMarket, onClick }) => {
 };
 
 const PairsBar: React.FC = observer(() => {
-  const { pairViewController, exchangeViewController } = useViewControllers();
+  const { pairViewController } = useViewControllers();
 
   useEffect(() => {
     pairViewController.getPairList();
   }, []);
-
-  useEffect(() => {
-    pairViewController.setSearchPairValue('');
-  }, [pairViewController.pairsBarOpen]);
 
   const onChangeSearch = useCallback(({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
@@ -62,7 +58,6 @@ const PairsBar: React.FC = observer(() => {
 
   const onPairClick = useCallback((pair: TradeSymbol) => {
     pairViewController.setActivePair(pair);
-    pairViewController.setPairsBarOpen(false);
   }, []);
 
   const handleMarketChange = useCallback((pair: string) => {
@@ -73,48 +68,28 @@ const PairsBar: React.FC = observer(() => {
   // const sorters: Sorters = ['Volume', 'Name', 'Price', 'Change'];
 
   return (
-    <Drawer
-      classes={{
-        paper: 'relative w-[250px]',
-      }}
-      open={pairViewController.pairsBarOpen}
-      onClose={() => pairViewController.setPairsBarOpen(false)}
-    >
-      <div>
-        <div className="flex items-center justify-around px-2 h-20">
-          <Typography variant="h6" className="text-sm">
-            {exchangeViewController.activeExchange.toUpperCase()}
-          </Typography>
-
-          <IconButton onClick={() => pairViewController.setPairsBarOpen(false)}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-
-        <ListItem color="inherit" className="text-center text-sm p-0">
-          <ListItemText primary="Pairs" classes={{ primary: 'text-center text-sm p-0' }} />
-        </ListItem>
-        <Divider />
-
+    <>
+      <div className="px-2">
         <TextField
           id="search"
           label="Search"
           type="search"
-          className="mx-2 w-[230px]"
+          size="small"
+          className="w-full"
           margin="normal"
           onChange={onChangeSearch}
           value={pairViewController.searchPairValue}
           variant="outlined"
         />
-
-        <Markets
-          markets={pairViewController.markets}
-          activeMarket={pairViewController.activeMarket}
-          onClick={(market: string) => handleMarketChange(market)}
-        />
-        <Divider />
       </div>
+
+      <Markets
+        markets={pairViewController.markets}
+        activeMarket={pairViewController.activeMarket}
+        onClick={(market: string) => handleMarketChange(market)}
+      />
+
+      <Divider />
 
       {/* <div className="h-6 px-1 flex justify-between">
         {sorters.map((name) => (
@@ -133,7 +108,7 @@ const PairsBar: React.FC = observer(() => {
         ))}
       </div> */}
 
-      <List id="drawerList" className="h-full overflow-hidden p-0 outline-none">
+      <List id="drawerList" className="h-[calc(100%-98px)] overflow-hidden p-0 outline-none">
         <PairList
           pairListModel={pairViewController.pairList}
           activeMarket={pairViewController.activeMarket}
@@ -142,7 +117,7 @@ const PairsBar: React.FC = observer(() => {
           watchlist={[]}
         />
       </List>
-    </Drawer>
+    </>
   );
 });
 

@@ -1,11 +1,10 @@
 const formatFunc = (number: number, digits: number) =>
-  number.toLocaleString('ru-RU', {
+  number.toLocaleString('en-US', {
     maximumFractionDigits: digits,
     minimumFractionDigits: digits,
   });
 
 export const formatPrice = (price = 0) => {
-  // eslint-disable-next-line no-restricted-globals
   if (isNaN(price)) {
     return 0;
   }
@@ -34,7 +33,7 @@ export const formatPrice = (price = 0) => {
     return formatFunc(price, 6);
   }
   if (price >= 0.01) {
-    return formatFunc(price, 6);
+    return formatFunc(price, 8);
   }
   if (price >= 0.0001) {
     return formatFunc(price, 8);

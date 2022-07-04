@@ -7,7 +7,6 @@ import { PairListModel } from 'core/models';
 export class PairViewController {
   @observable activePair: TradeSymbol;
   @observable pairList: PairListModel | null = null;
-  @observable pairsBarOpen = false;
   @observable searchPairValue: string = '';
   @observable activeMarket = 'BTC';
 
@@ -40,11 +39,6 @@ export class PairViewController {
 
   setActivePair = (pair: TradeSymbol) => {
     this.exchangeController.setActivePair(pair);
-  };
-
-  @action
-  setPairsBarOpen = (value: boolean) => {
-    this.pairsBarOpen = value;
   };
 
   @action

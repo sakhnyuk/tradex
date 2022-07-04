@@ -13,14 +13,12 @@ const Explore = () => {
         <Header />
       </div>
 
-      <PairsBar />
-
       <div className="m-1 col-[1/2] row-[2/4]">
         <Chart />
       </div>
 
       <Paper className="my-1 mr-1 col-[2/3] row-[2/3]" variant="outlined" square>
-        {/* <OrderBook /> */}
+        <PairsBar />
       </Paper>
 
       <Paper className="mb-1 mr-1 col-[2/3] row-[3/4]" variant="outlined" square>
