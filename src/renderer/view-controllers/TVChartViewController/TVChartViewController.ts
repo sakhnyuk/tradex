@@ -4,6 +4,7 @@ import { ChartController, ExchangeController } from 'core/controllers';
 import type { Logger } from 'core/ports';
 import { IChartingLibraryWidget, SeriesStyle, widget } from 'tv-chart/charting_library.min';
 import { Inject, Service } from 'typedi';
+import { CoreViewController } from '../CoreStore';
 import { ExchangeViewController } from '../ExchangeViewController';
 import { PairViewController } from '../PairViewController';
 import { TVDataFeed } from './TVDataFeed';
@@ -32,10 +33,15 @@ export class TVChartViewController {
   constructor(
     @Inject() private exchangeController: ExchangeController,
     @Inject() private chartController: ChartController,
+    @Inject() private coreViewController: CoreViewController,
   ) {
     this.exchangeController.addExchangeUpdateListener(this.refetchData);
     this.exchangeController.addPairUpdateListener(this.refetchData);
-    this.chartController.addTimeframeUpdateListener(this.refetchData);
+    this.coreViewController.addOnlineStatusUpdateListener((isOnline) => {
+      if (isOnline) {
+        this.refetchData;
+      }
+    });
   }
 
   public applyTheme = (theme: Theme, themeType: ThemeType) => {
@@ -50,7 +56,7 @@ export class TVChartViewController {
     });
   };
 
-  public loadTradingViewWidget = (theme: Theme, themeType: ThemeType) => {
+  public loadChart = (theme: Theme, themeType: ThemeType) => {
     if (this.tvWidget) {
       return;
     }
@@ -76,6 +82,10 @@ export class TVChartViewController {
       //     saveState(state, 'CHART_SETTINGS');
       //   });
       // });
+
+      this.tvWidget?.subscribe('chart_load_requested', (event) => {
+        console.log('chart_load_requested', event);
+      });
     });
   };
 

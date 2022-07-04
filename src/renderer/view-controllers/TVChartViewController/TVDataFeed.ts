@@ -2,7 +2,7 @@ import { forSince, getTimezone } from 'app/utils/chartUtils';
 import { ChartController, ExchangeController, TradeHistoryController } from 'core/controllers';
 import { CandleInfoModel } from 'core/models';
 import type { Logger } from 'core/ports';
-import { CandleUpdateHandler, ExchangeName, TradeInfoAddedHandler } from 'core/types';
+import { CandleUpdateHandler, ChartTimeframe, ExchangeName, TradeInfoAddedHandler } from 'core/types';
 import {
   ErrorCallback,
   HistoryCallback,
@@ -115,6 +115,12 @@ export class TVDataFeed implements IBasicDataFeed {
     onError: ErrorCallback,
     isFirstCall: boolean,
   ): void {
+    const currentTimeframe = this.chartController.getTimeframe();
+
+    if (currentTimeframe !== resolution && isFirstCall) {
+      this.chartController.setTimeframe(resolution as ChartTimeframe);
+    }
+
     try {
       this.chartController.getCandles(rangeStartDate, rangeEndDate).then((candles) => {
         if (candles.length > 0) {

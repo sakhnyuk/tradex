@@ -1,1 +1,0 @@
-export { IntervalMenu } from './IntervalMenu';

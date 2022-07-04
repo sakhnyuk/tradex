@@ -82,27 +82,18 @@ export const createChartOptions = (params: ChartParams) => {
       'header_screenshot',
       'header_saveload',
       'header_symbol_search',
+      'header_fullscreen_button',
       'use_localstorage_for_settings',
       'header_settings',
       'symbol_search_hot_key',
       'symbol_info',
       'context_menus',
-      'header_widget',
       'go_to_date',
+      'control_bar',
     ],
     enabled_features: ['same_data_requery'],
     custom_css_url: themeType === ThemeType.DARK ? './night.css' : './day.css',
   };
-
-  if (!defaultCase) {
-    if (typeof widgetOptions.enabled_features !== 'undefined') {
-      widgetOptions.enabled_features.push('hide_left_toolbar_by_default');
-    }
-
-    if (typeof widgetOptions.disabled_features !== 'undefined') {
-      widgetOptions.disabled_features.push('control_bar');
-    }
-  }
 
   return widgetOptions;
 };
