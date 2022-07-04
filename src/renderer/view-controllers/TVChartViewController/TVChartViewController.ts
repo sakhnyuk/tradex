@@ -77,11 +77,19 @@ export class TVChartViewController {
     this.tvWidget.onChartReady(() => {
       this.applyTheme(theme, themeType);
 
-      // this.tvWidget?.subscribe('onAutoSaveNeeded', () => {
-      //   this.tvWidget?.save((state) => {
-      //     saveState(state, 'CHART_SETTINGS');
-      //   });
-      // });
+      const chartSettingsString = localStorage.getItem('CHART_SETTINGS');
+      const chartSettings = chartSettingsString ? JSON.parse(chartSettingsString) : null;
+
+      if (chartSettings) {
+        this.tvWidget?.load(chartSettings);
+        this.applyTheme(theme, themeType);
+      }
+
+      this.tvWidget?.subscribe('onAutoSaveNeeded', () => {
+        this.tvWidget?.save((state) => {
+          localStorage.setItem('CHART_SETTINGS', JSON.stringify(state));
+        });
+      });
 
       this.tvWidget?.subscribe('chart_load_requested', (event) => {
         console.log('chart_load_requested', event);

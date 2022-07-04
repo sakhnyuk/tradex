@@ -316,6 +316,10 @@ export class BinanceAdapter implements ExchangeProvider {
       const res = await fetch(this.getTradesUrl(symbol));
       const rawData: BinanceTradeDto[] = await res.json();
 
+      if (!rawData) {
+        throw new Error('Wrong data');
+      }
+
       return rawData.map(
         (tradeItemDto) =>
           new TradeInfoModel({

@@ -83,7 +83,6 @@ export const createChartOptions = (params: ChartParams) => {
       'header_saveload',
       'header_symbol_search',
       'header_fullscreen_button',
-      'use_localstorage_for_settings',
       'header_settings',
       'symbol_search_hot_key',
       'symbol_info',
