@@ -65,8 +65,8 @@ export class BinanceAdapter implements ExchangeProvider {
 
   private getPairsUrl = (): string => `${this.BASE_API_URL}/api/v1/ticker/24hr`;
 
-  private getCandlesUrl = (symbol: TradeSymbol, timeframe: string, endTime: number): string =>
-    `${this.BASE_API_URL}/api/v1/klines?symbol=${symbol}&interval=${timeframe}&endTime=${endTime}&limit=1000`;
+  private getCandlesUrl = (symbol: TradeSymbol, timeframe: string, endTime: number, count: number): string =>
+    `${this.BASE_API_URL}/api/v1/klines?symbol=${symbol}&interval=${timeframe}&endTime=${endTime}&limit=${count}`;
 
   private streamUrls = {
     depth: (symbol: TradeSymbol): string => `${this.BASE_WS_URL}${symbol.toLowerCase()}@depth`,
@@ -292,10 +292,11 @@ export class BinanceAdapter implements ExchangeProvider {
     interval = '60',
     startTime: Timestamp = new Date().getTime(),
     endTime: Timestamp = new Date().getTime(),
+    count: number = 1000,
   ): Promise<CandleInfoModel[]> => {
     const pair = symbol.replace('/', '');
 
-    const res = await fetch(this.getCandlesUrl(pair, this.timeframes[interval], endTime * 1000));
+    const res = await fetch(this.getCandlesUrl(pair, this.timeframes[interval], endTime * 1000, count));
     const resData = await res.json();
 
     return resData.map((obj: (string | number)[]) => {

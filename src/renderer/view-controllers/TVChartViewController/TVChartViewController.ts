@@ -2,7 +2,7 @@ import { Theme } from '@mui/material';
 import { ThemeType } from 'app/theme';
 import { ChartController, ExchangeController } from 'core/controllers';
 import type { Logger } from 'core/ports';
-import { IChartingLibraryWidget, SeriesStyle, widget } from 'tv-chart/charting_library.min';
+import * as TradingView from 'tv-chart/charting_library';
 import { Inject, Service } from 'typedi';
 import { CoreViewController } from '../CoreStore';
 import { ExchangeViewController } from '../ExchangeViewController';
@@ -14,7 +14,7 @@ const DOM_CONTAINER_ID = 'tv_chart_container';
 
 @Service()
 export class TVChartViewController {
-  tvWidget?: IChartingLibraryWidget;
+  tvWidget?: TradingView.IChartingLibraryWidget;
 
   @Inject('Logger')
   logger!: Logger;
@@ -72,7 +72,7 @@ export class TVChartViewController {
       containerId: this.CONTAINER_ID,
     });
 
-    this.tvWidget = new widget(widgetOptions);
+    this.tvWidget = new TradingView.widget(widgetOptions);
 
     this.tvWidget.onChartReady(() => {
       this.applyTheme(theme, themeType);
@@ -108,7 +108,7 @@ export class TVChartViewController {
     this.tvWidget?.chart().executeActionById('insertIndicator');
   };
 
-  public setCandleType = (type: SeriesStyle) => {
+  public setCandleType = (type: TradingView.SeriesStyle) => {
     this.tvWidget?.chart().setChartType(type);
   };
 }

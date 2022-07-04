@@ -4,7 +4,12 @@
 
 @layer components {
   .electron-drag {
+    -webkit-user-select: none;
     -webkit-app-region: drag;
+  }
+
+  .electron-no-drag {
+    -webkit-app-region: no-drag;
   }
 
   .header-transition {

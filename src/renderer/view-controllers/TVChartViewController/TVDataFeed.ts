@@ -6,17 +6,30 @@ import { CandleUpdateHandler, ChartTimeframe, ExchangeName, TradeInfoAddedHandle
 import {
   ErrorCallback,
   HistoryCallback,
-  HistoryDepth,
   IBasicDataFeed,
   LibrarySymbolInfo,
   OnReadyCallback,
+  PeriodParams,
+  ResolutionString,
   ResolveCallback,
   SearchSymbolsCallback,
   SubscribeBarsCallback,
-} from 'tv-chart/charting_library.min';
+} from 'tv-chart/charting_library';
 import { Inject, Service } from 'typedi';
 
-export const supportedResolutions = ['1', '3', '5', '15', '30', '60', '120', '240', '1D', '1W', '1M'];
+export const supportedResolutions = [
+  '1',
+  '3',
+  '5',
+  '15',
+  '30',
+  '60',
+  '120',
+  '240',
+  '1D',
+  '1W',
+  '1M',
+] as ResolutionString[];
 
 @Service()
 export class TVDataFeed implements IBasicDataFeed {
@@ -109,21 +122,20 @@ export class TVDataFeed implements IBasicDataFeed {
   getBars(
     symbolInfo: LibrarySymbolInfo,
     resolution: string,
-    rangeStartDate: number,
-    rangeEndDate: number,
+    periodParams: PeriodParams,
     onResult: HistoryCallback,
     onError: ErrorCallback,
-    isFirstCall: boolean,
   ): void {
+    const { from, to, countBack, firstDataRequest } = periodParams;
     const currentTimeframe = this.chartController.getTimeframe();
 
-    if (currentTimeframe !== resolution && isFirstCall) {
+    if (currentTimeframe !== resolution && firstDataRequest) {
       this.chartController.setTimeframe(resolution as ChartTimeframe);
     }
 
     try {
-      this.chartController.getCandles(rangeStartDate, rangeEndDate).then((candles) => {
-        if (candles.length > 0) {
+      this.chartController.getCandles(from, to, countBack).then((candles) => {
+        if (candles.length > 0 && firstDataRequest) {
           this.lastCandle = candles[candles.length - 1];
         }
 
@@ -131,7 +143,10 @@ export class TVDataFeed implements IBasicDataFeed {
           noData: candles.length === 0,
         });
       });
-    } catch (err) {
+    } catch (error) {
+      if (error instanceof Error) {
+        onError(error.message);
+      }
       this.logger.error('Datafeed getBars Error');
     }
   }
@@ -159,7 +174,7 @@ export class TVDataFeed implements IBasicDataFeed {
     this.tradeHistoryController.removeTradeUpdateListener(this.priceUpdaterByTrade);
   }
 
-  calculateHistoryDepth(resolution: string): HistoryDepth {
+  calculateHistoryDepth(resolution: string) {
     if (resolution === '1W' || resolution === 'W') {
       return {
         resolutionBack: 'M',

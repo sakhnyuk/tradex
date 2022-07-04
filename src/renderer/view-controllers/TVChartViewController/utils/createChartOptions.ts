@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material';
 import { ThemeType } from 'app/theme';
-import { ChartingLibraryWidgetOptions, IBasicDataFeed } from 'tv-chart/charting_library.min';
+import { ChartingLibraryWidgetOptions, IBasicDataFeed, ResolutionString } from 'tv-chart/charting_library';
 import { getTimezone } from 'app/utils/chartUtils';
 import { ChartTimeframe } from 'core/types';
 
@@ -45,8 +45,9 @@ export const createChartOptions = (params: ChartParams) => {
     timezone: getTimezone(),
     symbol: `${exchange}:${symbol}`,
     datafeed,
-    interval,
-    container_id: containerId,
+    interval: interval as ResolutionString,
+
+    container: containerId,
     library_path: '../charting_library/',
     locale: 'en',
     charts_storage_url: chartsStorageUrl,
@@ -64,7 +65,6 @@ export const createChartOptions = (params: ChartParams) => {
       'paneProperties.background': theme.palette.background.paper,
       'paneProperties.vertGridProperties.color': theme.palette.divider,
       'paneProperties.horzGridProperties.color': theme.palette.divider,
-      'symbolWatermarkProperties.transparency': 80,
       'scalesProperties.lineColor': theme.palette.divider,
       'scalesProperties.textColor': theme.palette.text.primary,
       'mainSeriesProperties.candleStyle.wickUpColor': 'rgb(102, 204, 98)',
@@ -77,6 +77,7 @@ export const createChartOptions = (params: ChartParams) => {
       foregroundColor: theme.palette.text.primary,
     },
     disabled_features: [
+      'border_around_the_chart',
       'header_compare',
       'header_undo_redo',
       'header_screenshot',
@@ -92,7 +93,7 @@ export const createChartOptions = (params: ChartParams) => {
       'control_bar',
     ],
     enabled_features: ['same_data_requery'],
-    custom_css_url: themeType === ThemeType.DARK ? './night.css' : './day.css',
+    // custom_css_url: themeType === ThemeType.DARK ? './night.css' : './day.css',
   };
 
   return widgetOptions;

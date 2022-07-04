@@ -26,6 +26,7 @@ export interface ExchangeProvider {
     interval: ChartTimeframe,
     start: Timestamp,
     end: Timestamp,
+    count?: number,
   ) => Promise<CandleInfoModel[]>;
   getTradesHistory: (symbol: TradeSymbol) => Promise<TradeInfoModel[]>;
   getOrderBook: (symbol: string) => Promise<OrderBookUpdateInfo>;

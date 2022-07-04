@@ -34,8 +34,8 @@ export class ChartController {
     this.candleUpdated.dispatch(candle);
   };
 
-  public getCandles = (start: Timestamp, end: Timestamp): Promise<CandleInfoModel[]> => {
-    return this.currentExchange.getCandles(this.exchangeService.getCurrentPair(), this.timeframe, start, end);
+  public getCandles = (start: Timestamp, end: Timestamp, count: number): Promise<CandleInfoModel[]> => {
+    return this.currentExchange.getCandles(this.exchangeService.getCurrentPair(), this.timeframe, start, end, count);
   };
 
   public initCandles = () => {

@@ -18,7 +18,7 @@ export const AppLayout = () => {
     <div className="flex justify-start flex-col overflow-hidden w-screen h-screen">
       <MacHeader />
 
-      <div className="flex flex-1">
+      <div className="flex flex-1 electron-no-drag">
         <Outlet />
       </div>
     </div>
