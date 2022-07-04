@@ -1,0 +1,1 @@
+export { ExchangesProviderAdapter } from './ExchangesProviderAdapter';

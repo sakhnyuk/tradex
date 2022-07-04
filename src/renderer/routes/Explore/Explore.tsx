@@ -1,41 +1,32 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core';
+import { Paper } from '@mui/material';
 
-import Header from '../../components/TradeHeader/Header';
-import Trades from '../../components/Trades';
-import OrderBook from '../../components/OrderBook';
-import styles from './styles';
-import Exchanges from '../../components/ExchangesMenu';
-import PairsBar from '../../components/PairsBar';
-import Chart from '../../components/Chart';
-
-const useStyles = makeStyles(styles);
+import Header from 'app/components/AppHeader';
+import PairsBar from 'app/components/PairsBar';
+import Trades from 'app/components/Trades';
+import Chart from 'app/components/Chart';
 
 const Explore = () => {
-  const classes = useStyles();
-
   return (
-    <div className={classes.root}>
-      <div className={classes.header}>
-        <Header isExplore />
-      </div>
-      <div>
-        <PairsBar />
-      </div>
-      <div className={classes.chartFullPage}>
-        <Chart isExplore />
+    <div className="w-full h-full grid grid-cols-[1fr_320px] grid-rows-[48px_1fr_250px] bg-ui-default">
+      <div className="grid col-[1/3] row-[1/2] mb-1">
+        <Header />
       </div>
 
-      <Paper className={classes.orderBook} elevation={3} variant="outlined" square>
-        <OrderBook />
+      <div className="m-1 col-[1/2] row-[2/4]">
+        <Chart />
+      </div>
+
+      <Paper className="my-1 mr-1 col-[2/3] row-[2/3]" variant="outlined" square>
+        <PairsBar />
       </Paper>
-      <Paper className={classes.trades} variant="outlined">
+
+      <Paper className="mb-1 mr-1 col-[2/3] row-[3/4]" variant="outlined" square>
         <Trades />
       </Paper>
 
       {/* Exchanges list menu */}
-      <Exchanges isExplore />
+      {/* <Exchanges /> */}
     </div>
   );
 };

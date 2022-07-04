@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import PriceComp from '../../PriceComp';
 import { formatQuantity } from '../../../utils/setFormatPrice';
 import styles from '../style';
-import * as selectExchange from '../../../store/exchange/selectors';
+import * as selectExchange from '../../../store-old/exchange/selectors';
 
 const useStyles = makeStyles(styles);
 

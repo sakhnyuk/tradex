@@ -1,28 +1,21 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useEffect, useState, useCallback, ChangeEvent } from 'react';
-import { useSelector } from 'react-redux';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import Typography from '@material-ui/core/Typography';
-import * as exchSel from '../../store/exchange/selectors';
+import React, { useEffect, useCallback, ChangeEvent } from 'react';
+import {
+  Button,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  TextField,
+  Typography,
+} from '@mui/material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import PairList from './PairList';
-import styles from './style';
-import { selectCore } from '../../store/core/selectors';
-import { useCoreActions } from '../../store/core/useCoreActions';
-import { useExchangeActions } from '../../store/exchange/useExchangeActions';
-import { useExploreActions } from '../../store/explore/useExploreActions';
-import { SortingPairs } from '../../store/core/types';
-
-const useStyles = makeStyles(styles);
+import { useViewControllers } from 'app/view-controllers';
+import { observer } from 'mobx-react-lite';
 
 interface MarketProps {
   markets: string[];
@@ -33,16 +26,14 @@ interface MarketProps {
 type Sorters = ['Volume', 'Name', 'Price', 'Change'];
 
 const Markets: React.FC<MarketProps> = ({ markets, activeMarket, onClick }) => {
-  const classes = useStyles();
-
   return (
-    <ListItem color="inherit" className={classes.markets}>
+    <ListItem color="inherit" className="flex flex-wrap justify-center content-between w-full py-1">
       {markets.map((market) => (
         <Button
           key={market}
           variant="text"
           size="small"
-          classes={{ sizeSmall: classes.buttonMarket, disabled: classes.disabledButtonMarket }}
+          classes={{ sizeSmall: 'py-1 px-2 min-w-[16%] min-h-[20px] text-xs', disabled: 'text-typo-disabled' }}
           onClick={() => onClick(market)}
           disabled={market === activeMarket}
         >
@@ -53,112 +44,58 @@ const Markets: React.FC<MarketProps> = ({ markets, activeMarket, onClick }) => {
   );
 };
 
-const PairsBar: React.FC = () => {
-  const classes = useStyles();
-  const exchange = useSelector(exchSel.selectExchange);
-  const pairList = useSelector(exchSel.selectPairList);
-  const markets = useSelector(exchSel.selectMarkets);
-  const activeMarket = useSelector(exchSel.selectActiveMarket);
-  const filteredPairsList = useSelector(exchSel.selectFilteredPairList);
-  const pairsBarOpen = useSelector(selectCore.pairsBarOpen);
-  const watchlist = useSelector(exchSel.selectWatchlist);
-  const sortBy = useSelector(selectCore.pairListSorting);
-
-  const { setPairListSorting, setOpenPairsBar } = useCoreActions();
-  const { requestPairList, setActiveMarket, toggleWatchlist } = useExchangeActions();
-  const { setExplorePairAndExchange } = useExploreActions();
-
-  const [searchText, setText] = useState('');
-  const [searchedList, setSearchList] = useState<any[]>([]);
+const PairsBar: React.FC = observer(() => {
+  const { pairViewController } = useViewControllers();
 
   useEffect(() => {
-    requestPairList(exchange);
-  }, [exchange, requestPairList]);
+    pairViewController.getPairList();
+  }, []);
 
-  useEffect(() => {
-    setText('');
-  }, [pairsBarOpen]);
+  const onChangeSearch = useCallback(({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { value } = target;
+    pairViewController.setSearchPairValue(value);
+  }, []);
 
-  const onChangeSearch = useCallback(
-    ({ target }: ChangeEvent<HTMLInputElement>) => {
-      const { value } = target;
+  const onPairClick = useCallback((pair: TradeSymbol) => {
+    pairViewController.setActivePair(pair);
+  }, []);
 
-      setText(value);
-      const trimedText = value.trim().toLowerCase();
-      const data: any[] = Object.values(pairList).filter((p: any) => p.symbol.toLowerCase().match(trimedText));
-      setSearchList(data);
-    },
-    [pairList],
-  );
+  const handleMarketChange = useCallback((pair: string) => {
+    pairViewController.setActiveMarket(pair);
+    pairViewController.setSearchPairValue('');
+  }, []);
 
-  const onPairClick = useCallback(
-    (pair: string) => {
-      setExplorePairAndExchange({ exchange, pair });
-      setOpenPairsBar(false);
-    },
-    [exchange, setExplorePairAndExchange, setOpenPairsBar],
-  );
-
-  const handleMarketChange = useCallback(
-    (pair: string) => {
-      setActiveMarket(pair);
-      setText('');
-    },
-    [setActiveMarket],
-  );
-
-  const sorters: Sorters = ['Volume', 'Name', 'Price', 'Change'];
+  // const sorters: Sorters = ['Volume', 'Name', 'Price', 'Change'];
 
   return (
-    <Drawer
-      classes={{
-        paper: classes.drawerPaper,
-        modal: classes.modal,
-      }}
-      open={pairsBarOpen}
-      onClose={() => setOpenPairsBar(false)}
-    >
-      <div>
-        <div className={classes.toolbar}>
-          <Typography variant="h6" className={classes.exchange}>
-            {exchange.toUpperCase()}
-          </Typography>
-
-          <IconButton onClick={() => setOpenPairsBar(false)}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-
-        <ListItem color="inherit" className={classes.header}>
-          <ListItemText primary="Pairs" classes={{ primary: classes.header }} />
-        </ListItem>
-        <Divider />
-
+    <>
+      <div className="px-2">
         <TextField
           id="search"
           label="Search"
           type="search"
-          className={classes.textField}
+          size="small"
+          className="w-full"
           margin="normal"
           onChange={onChangeSearch}
-          value={searchText}
+          value={pairViewController.searchPairValue}
           variant="outlined"
         />
-
-        <Markets
-          markets={markets}
-          activeMarket={activeMarket}
-          onClick={(market: string) => handleMarketChange(market)}
-        />
-        <Divider />
       </div>
 
-      <div className={classes.sortHeader}>
+      <Markets
+        markets={pairViewController.markets}
+        activeMarket={pairViewController.activeMarket}
+        onClick={(market: string) => handleMarketChange(market)}
+      />
+
+      <Divider />
+
+      {/* <div className="h-6 px-1 flex justify-between">
         {sorters.map((name) => (
           <div
             key={name}
-            className={classes.cell}
+            className="whitespace-nowrap py-1 px-1 min-w-[20%] max-w-[20%] text-left text-xs cursor-pointer"
             role="menuitem"
             tabIndex={0}
             onClick={() =>
@@ -169,27 +106,19 @@ const PairsBar: React.FC = () => {
             {sortBy === `${name}Descending` && <span>&#x25BC;</span>}
           </div>
         ))}
-      </div>
+      </div> */}
 
-      <List id="drawerList" className={classes.list}>
-        {searchText === '' ? (
-          <PairList
-            list={filteredPairsList[activeMarket]}
-            setPair={(pair: string) => onPairClick(pair)}
-            toggleWatchlist={toggleWatchlist}
-            watchlist={watchlist}
-          />
-        ) : (
-          <PairList
-            list={searchedList}
-            setPair={(pair: string) => onPairClick(pair)}
-            toggleWatchlist={toggleWatchlist}
-            watchlist={watchlist}
-          />
-        )}
+      <List id="drawerList" className="h-[calc(100%-98px)] overflow-hidden p-0 outline-none">
+        <PairList
+          pairListModel={pairViewController.pairList}
+          activeMarket={pairViewController.activeMarket}
+          setPair={(pair: TradeSymbol) => onPairClick(pair)}
+          toggleWatchlist={() => {}}
+          watchlist={[]}
+        />
       </List>
-    </Drawer>
+    </>
   );
-};
+});
 
 export default PairsBar;

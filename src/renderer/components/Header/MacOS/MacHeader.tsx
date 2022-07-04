@@ -1,13 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import styles from './styles';
 
-const useStyles = makeStyles(styles);
-
-const MacHeader = () => {
-  const classes = useStyles();
-
-  return <div className={classes.macHeader} />;
+export const MacHeader = () => {
+  return <div className="electron-drag h-7 bg-primary text-center text-sm font-medium" />;
 };
-
-export default MacHeader;

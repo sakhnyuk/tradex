@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { app, BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import isDev from 'electron-is-dev';
 import log from 'electron-log';
 import windowStateKeeper, { State } from 'electron-window-state';
-// import MenuBuilder from './Menu';
+import installExtension, { MOBX_DEVTOOLS, REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 
 let mainWindow: BrowserWindow | null;
 
@@ -44,18 +43,15 @@ if (!gotTheLock) {
 
 // Install react/redux chrome devtools extensions
 const installExtensions = async (): Promise<void | any[]> => {
-  // eslint-disable-next-line global-require
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
-
-  return Promise.all(extensions.map((name) => installer.default(installer[name], forceDownload))).catch(console.log);
+  installExtension([MOBX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err));
 };
 
 // main window creator ---------
 const createWindow = async (): Promise<void> => {
   if (isDev) {
-    await installExtensions();
+    // await installExtensions();
   }
 
   const mainWindowState: State = windowStateKeeper({
@@ -126,8 +122,6 @@ const createWindow = async (): Promise<void> => {
     }
   });
 };
-
-app.allowRendererProcessReuse = true;
 
 app.whenReady().then(createWindow);
 

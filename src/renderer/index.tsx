@@ -1,33 +1,14 @@
+import 'reflect-metadata';
 import React from 'react';
-import { render } from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
-import { Provider } from 'react-redux';
-
+import { createRoot } from 'react-dom/client';
 import { App } from './App';
-import { configureStore } from './store/configureStore';
+import './index.css';
 
-const store = configureStore();
+const container = document.getElementById('root');
+const root = createRoot(container!);
 
-render(
-  <AppContainer>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </AppContainer>,
-  document.getElementById('root'),
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
 );
-
-if (module.hot) {
-  module.hot.accept('./', () => {
-    // eslint-disable-next-line global-require
-    const NextApp = require('./App').default;
-    render(
-      <AppContainer>
-        <Provider store={store}>
-          <NextApp />
-        </Provider>
-      </AppContainer>,
-      document.getElementById('root'),
-    );
-  });
-}

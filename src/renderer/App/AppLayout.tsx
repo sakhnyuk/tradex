@@ -1,28 +1,26 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
-
-import MacHeader from '../components/Header/MacOS';
-import WinHeader from '../components/Header/Windows';
-import LeftMenu from '../components/LeftMenu';
-import { isMac } from '../appConstant';
-import { Router } from '../routes/Router';
-import styles from './styles';
-
-const useStyles = makeStyles(styles);
+import { Outlet } from 'react-router-dom';
+import { MacHeader } from 'app/components/Header';
+import { useViewControllers } from 'app/view-controllers';
 
 export const AppLayout = () => {
-  const classes = useStyles();
+  const { core } = useViewControllers();
+
+  React.useEffect(() => {
+    core.startTrackOnlineStatus();
+
+    return () => {
+      core.stopTrackOnlineStatus();
+    };
+  }, []);
 
   return (
-    <div className={classes.root}>
-      {isMac ? <MacHeader /> : <WinHeader />}
-      <div className={classes.container}>
-        <div className={classes.leftMenu}>
-          <LeftMenu />
-        </div>
+    <div className="flex justify-start flex-col overflow-hidden w-screen h-screen">
+      <MacHeader />
 
-        <Router />
+      <div className="flex flex-1 electron-no-drag">
+        <Outlet />
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,79 +1,89 @@
-/* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Grid from '@material-ui/core/Grid';
-
-import { useSelector } from 'react-redux';
+import { TableHead, TableRow, CircularProgress, Table, TableCell, Grid, Typography } from '@mui/material';
 import { AutoSizer, List } from 'react-virtualized';
-import { CircularProgress } from '@material-ui/core';
+import { useViewControllers } from 'app/view-controllers';
 import TradeRow from './TradeRow';
-// import Loader from '../Loader';
+import { observer } from 'mobx-react-lite';
 
-import styles from './style';
-import { selectCore } from '../../store/core/selectors';
+const Trades = observer(() => {
+  const { tradesViewController } = useViewControllers();
 
-const useStyles = makeStyles(styles);
-
-const Trades = () => {
-  const classes = useStyles();
-
-  const tradesIsLoading = useSelector(selectCore.tradesIsLoading);
-
-  if (tradesIsLoading) {
+  if (tradesViewController.isLoading) {
     return (
-      <div className={classes.loading}>
+      <div className="h-full w-full flex justify-center items-center">
         <CircularProgress color="secondary" />
       </div>
     );
   }
 
+  const renderRow = ({ index, style, key }) => {
+    return <TradeRow index={index} style={style} key={key} />;
+  };
+
   return (
-    <div className={classes.root}>
+    <div className="w-full h-full overflow-hidden">
       <Table>
         <TableHead>
-          <TableRow className={classes.header}>
-            <TableCell className={classes.titleHeader}>Recent trades</TableCell>
+          <TableRow className="h-6">
+            <TableCell className="text-typo-secondary px-5 py-1 text-xs font-normal">Recent trades</TableCell>
           </TableRow>
         </TableHead>
       </Table>
 
-      <Table className={classes.table}>
+      <Table className="overflow-y-scroll overflow-x-hidden outline-none">
         <TableHead>
-          <TableRow className={classes.head}>
-            <TableCell padding="none" align="center" className={classes.cellHeader} variant="head">
+          <TableRow className="h-6">
+            <TableCell
+              padding="none"
+              align="center"
+              className="text-typo-primary h-full text-xs font-normal"
+              variant="head"
+            >
               Price
             </TableCell>
 
-            <TableCell padding="none" align="center" className={classes.cellHeader} variant="head">
+            <TableCell
+              padding="none"
+              align="center"
+              className="text-typo-primary h-full text-xs font-normal"
+              variant="head"
+            >
               Quantity
             </TableCell>
 
-            <TableCell padding="none" align="center" className={classes.cellHeader} variant="head">
+            <TableCell
+              padding="none"
+              align="center"
+              className="text-typo-primary h-full text-xs font-normal"
+              variant="head"
+            >
               Total
             </TableCell>
 
-            <TableCell padding="none" align="center" className={classes.cellHeader} variant="head">
+            <TableCell
+              padding="none"
+              align="center"
+              className="text-typo-primary h-full text-xs font-normal"
+              variant="head"
+            >
               Time
             </TableCell>
           </TableRow>
         </TableHead>
       </Table>
 
-      <Grid container className={classes.tableTrades} spacing={0}>
+      <Grid container className="w-full flex-grow" style={{ height: 'calc(100% - 50px)' }} spacing={0}>
         <Grid item xs={12}>
           <AutoSizer>
             {({ width, height }: any) => (
               <List
-                className={classes.table}
+                className="overflow-y-scroll overflow-x-hidden outline-none"
                 width={width}
                 height={height}
-                rowCount={20}
+                rowCount={tradesViewController.trades.length}
                 rowHeight={19}
-                rowRenderer={({ index, style, key }: any) => <TradeRow index={index} style={style} key={key} />}
+                rowRenderer={renderRow}
+                noRowsRenderer={() => <Typography className="mt-1 ml-2">There are no trades</Typography>}
               />
             )}
           </AutoSizer>
@@ -81,6 +91,6 @@ const Trades = () => {
       </Grid>
     </div>
   );
-};
+});
 
 export default Trades;

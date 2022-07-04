@@ -12,7 +12,7 @@ import Totals from './Totals';
 import TableHeader from './TableHeader';
 
 import styles from './style';
-import { selectCore } from '../../store/core/selectors';
+import { selectCore } from '../../store-old/core/selectors';
 
 const useStyles = makeStyles(styles);
 

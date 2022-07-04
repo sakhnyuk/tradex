@@ -1,21 +1,21 @@
+import 'react-virtualized/styles.css';
 import React from 'react';
 import { AutoSizer, List } from 'react-virtualized';
-import get from 'lodash/get';
-import StarOutlined from '@material-ui/icons/StarOutlined';
-import StarBorder from '@material-ui/icons/StarBorder';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import { ListItem, ListItemText, makeStyles } from '@material-ui/core';
-
+import StarOutlined from '@mui/icons-material/StarOutline';
+import StarBorder from '@mui/icons-material/StarBorder';
 import { formatQuantity } from '../../../utils/setFormatPrice';
-import ListItemTextWithPrice from './ListItemTextWithPrice';
-import styles from '../style';
+import { ListItemPrice } from './ListItemPrice';
+import { PairInfoModel, PairListModel } from 'core/models';
+import { IconButton, ListItem, ListItemText, Typography } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import { ListItemChange } from './ListItemChange';
 
 interface PairListProps {
-  list: any;
-  setPair: (pair: string) => void;
-  toggleWatchlist: (watch: { [key: string]: string }) => void;
-  watchlist: any[];
+  pairListModel: PairListModel | null;
+  activeMarket: string;
+  setPair: (pair: TradeSymbol) => void;
+  toggleWatchlist: (watch: PairInfoModel) => void;
+  watchlist: TradeSymbol[];
 }
 
 interface RowRenderer {
@@ -24,69 +24,76 @@ interface RowRenderer {
   style: any;
 }
 
-const useStyles = makeStyles(styles);
-
 // Render your list
-const PairList: React.FC<PairListProps> = ({ list, setPair, toggleWatchlist, watchlist }) => {
-  const classes = useStyles();
+const PairList: React.FC<PairListProps> = observer(
+  ({ pairListModel, activeMarket, setPair, toggleWatchlist, watchlist }) => {
+    const pairList = pairListModel?.mapped.getListByMarket(activeMarket) ?? [];
 
-  const rowRenderer = ({
-    index, // Index of row
-    key, // Unique key within array of rendered rows
-    style, // Style object to be applied to row (to position it);
-  }: RowRenderer) => {
-    const pair = list[index];
+    const rowRenderer = ({
+      index, // Index of row
+      key, // Unique key within array of rendered rows
+      style, // Style object to be applied to row (to position it);
+    }: RowRenderer) => {
+      const pair = pairList[index];
+      const pairInfo = pairListModel?.fullList[pair];
+
+      if (!pairInfo) {
+        return null;
+      }
+
+      return (
+        <div className="w-full flex" key={key} style={style}>
+          <ListItem button className="pr-0 pl-2 py-1" onClick={() => setPair(pairInfo.symbol)}>
+            <ListItemText
+              classes={{
+                root: 'flex-1',
+                primary: 'text-xs font-bold',
+              }}
+              primary={pairInfo.symbol}
+            />
+
+            <ListItemPrice pair={pairInfo} />
+
+            <ListItemChange pair={pairInfo} />
+
+            <IconButton
+              className="w-12 h-12 hover:bg-transparent"
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleWatchlist(pairInfo);
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
+              {watchlist.some((watchlistPair) => pairList[watchlistPair].symbol === pairInfo.symbol) ? (
+                <StarOutlined classes={{ root: 'text-sm' }} />
+              ) : (
+                <StarBorder classes={{ root: 'text-sm' }} />
+              )}
+            </IconButton>
+          </ListItem>
+        </div>
+      );
+    };
 
     return (
-      <div className={classes.menuItemContainer} key={key} style={style}>
-        <ListItem button className={classes.menuItem} onClick={() => setPair(get(pair, 'symbol', ''))}>
-          <ListItemText
-            classes={{
-              primary: classes.primary,
-              secondary: classes.price,
-            }}
-            primary={get(pair, 'symbol', '')}
-            secondary={`Vol: ${formatQuantity(get(pair, 'volume', ''))}`}
+      <AutoSizer>
+        {({ width, height }) => (
+          <List
+            width={width}
+            height={height}
+            rowCount={pairList.length}
+            rowHeight={30}
+            rowRenderer={rowRenderer}
+            noRowsRenderer={() => <Typography className="mt-1 ml-2">There are no pairs</Typography>}
           />
-          <ListItemTextWithPrice pair={pair} />
-
-          <IconButton
-            className={classes.watchlistIcon}
-            onClick={e => {
-              e.stopPropagation();
-              toggleWatchlist(pair);
-            }}
-            onMouseDown={e => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          >
-            {watchlist.some(watchlistPair => watchlistPair.symbol === pair.symbol) ? (
-              <StarOutlined classes={{ root: classes.iconSize }} />
-            ) : (
-              <StarBorder classes={{ root: classes.iconSize }} />
-            )}
-          </IconButton>
-        </ListItem>
-      </div>
+        )}
+      </AutoSizer>
     );
-  };
-
-  return (
-    <AutoSizer>
-      {({ width, height }: { height: number; width: number }) => (
-        <List
-          width={width}
-          height={height}
-          rowCount={list?.length || 0}
-          rowHeight={55}
-          rowRenderer={rowRenderer}
-          className={classes.list}
-          noRowsRenderer={() => <Typography className={classes.noPair}>There are no pairs</Typography>}
-        />
-      )}
-    </AutoSizer>
-  );
-};
+  },
+);
 
 export default PairList;
