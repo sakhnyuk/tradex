@@ -42,7 +42,7 @@ Desktop cross platform client (MacOS and Windows) for explore trading data on al
 
 ## Overall structure overview
 
-There are two main folders in the app(./src): main and renderer. Two electron processes, one with node env which starts the app and one with browser, which renders the app. The later represents react SPA with redux/sagas state. It is single page which consist of trading view chart, trades, orderbook, pair list and etc. Each one of them have its own component in `renderer/app/components` folder. All logic have its place in sagas middleware from `app/store` folder.
+There are two main folders in the app(./src): main and renderer. Two electron processes, one with node env which starts the app and one with browser, which renders the app. The later represents react SPA with redux/sagas state. It is single page which consist of trading view chart, trades, orderbook, pair list and etc. Each one of them have its own component in `renderer/components` folder. All logic have its place in sagas middleware from `app/store` folder.
 
 ### Installation
 

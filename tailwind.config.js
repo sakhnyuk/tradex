@@ -2,7 +2,7 @@ const { colors } = require('@mui/material');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/renderer/**/*.{html,js,jsx,ts,tsx}'],
+  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
     colors: {
       transparent: 'transparent',
