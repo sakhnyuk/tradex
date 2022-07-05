@@ -1,4 +1,4 @@
-import { Timezone, LanguageCode } from 'lib/charting_library/charting_library';
+import { Timezone, LanguageCode } from 'charting_library/charting_library';
 
 const timezones: { [key: string]: Timezone } = {
   0: 'Europe/London',

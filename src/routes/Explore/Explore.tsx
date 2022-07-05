@@ -22,9 +22,6 @@ const Explore = () => {
       <Paper className="mb-1 mr-1 col-[2/3] row-[3/4]" variant="outlined" square>
         <Trades />
       </Paper>
-
-      {/* Exchanges list menu */}
-      {/* <Exchanges /> */}
     </div>
   );
 };

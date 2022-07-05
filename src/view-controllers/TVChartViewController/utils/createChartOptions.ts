@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material';
 import { ThemeType } from 'theme';
-import { ChartingLibraryWidgetOptions, IBasicDataFeed, ResolutionString } from 'lib/charting_library/charting_library';
+import { ChartingLibraryWidgetOptions, IBasicDataFeed, ResolutionString } from 'charting_library/charting_library';
 import { getTimezone } from 'utils/chartUtils';
 import { ChartTimeframe } from 'lib/core/types';
 
@@ -34,7 +34,6 @@ export const createChartOptions = (params: ChartParams) => {
     fullscreen,
     autosize,
     theme,
-    defaultCase,
     themeType,
     datafeed,
     containerId,
@@ -47,7 +46,7 @@ export const createChartOptions = (params: ChartParams) => {
     datafeed,
     interval: interval as ResolutionString,
     container: containerId,
-    library_path: '../charting_library/',
+    library_path: '/charting_library/',
     locale: 'en',
     charts_storage_url: chartsStorageUrl,
     charts_storage_api_version: chartsStorageApiVersion,

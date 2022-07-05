@@ -1,8 +1,9 @@
+import 'reflect-metadata';
 import { Theme } from '@mui/material';
 import { ThemeType } from 'theme';
 import { ChartController, ExchangeController } from 'lib/core/controllers';
 import type { Logger } from 'lib/core/ports';
-import * as TradingView from 'lib/charting_library/charting_library';
+import * as TradingView from 'charting_library/charting_library';
 import { Inject, Service } from 'typedi';
 import { CoreViewController } from '../CoreStore';
 import { ExchangeViewController } from '../ExchangeViewController';
@@ -14,19 +15,19 @@ const DOM_CONTAINER_ID = 'tv_chart_container';
 
 @Service()
 export class TVChartViewController {
-  tvWidget?: TradingView.IChartingLibraryWidget;
-
   @Inject('Logger')
   logger!: Logger;
 
   @Inject()
-  tvDataFeed!: TVDataFeed;
+  private tvDataFeed!: TVDataFeed;
 
   @Inject()
   private exchangeViewController!: ExchangeViewController;
 
   @Inject()
   private pairViewController!: PairViewController;
+
+  private tvWidget?: TradingView.IChartingLibraryWidget;
 
   public CONTAINER_ID = DOM_CONTAINER_ID;
 

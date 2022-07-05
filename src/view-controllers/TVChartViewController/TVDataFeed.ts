@@ -14,7 +14,7 @@ import {
   ResolveCallback,
   SearchSymbolsCallback,
   SubscribeBarsCallback,
-} from 'lib/charting_library/charting_library';
+} from 'charting_library/charting_library';
 import { Inject, Service } from 'typedi';
 
 export const supportedResolutions = [
@@ -50,10 +50,8 @@ export class TVDataFeed implements IBasicDataFeed {
   private onTick: SubscribeBarsCallback = () => {};
 
   private candleUpdater: CandleUpdateHandler = (candle: CandleInfoModel) => {
-    if (this.lastCandle) {
-      this.lastCandle = candle;
-      this.onTick(candle);
-    }
+    this.lastCandle = candle;
+    this.onTick(candle);
   };
 
   private priceUpdaterByTrade: TradeInfoAddedHandler = (trade: TradeInfoModel) => {
@@ -131,7 +129,7 @@ export class TVDataFeed implements IBasicDataFeed {
     const { from, to, countBack, firstDataRequest } = periodParams;
     const currentTimeframe = this.chartController.getTimeframe();
 
-    if (currentTimeframe !== resolution && firstDataRequest) {
+    if (currentTimeframe !== resolution) {
       this.chartController.setTimeframe(resolution as ChartTimeframe);
     }
 
