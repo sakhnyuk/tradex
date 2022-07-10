@@ -45,7 +45,9 @@ export class TVDataFeed implements IBasicDataFeed {
   @Inject()
   tradeHistoryController!: TradeHistoryController;
 
-  lastCandle?: CandleInfoModel;
+  private lastCandle?: CandleInfoModel;
+  private candleListenerGuid?: string;
+  public resetCache?: () => void;
 
   private onTick: SubscribeBarsCallback = () => {};
 
@@ -159,19 +161,20 @@ export class TVDataFeed implements IBasicDataFeed {
     onResetCacheNeededCallback: () => void,
   ): void {
     this.onTick = onTick;
-
-    const splitSymbol = symbolInfo.name.split(/[:/]/);
-    const symbol = `${splitSymbol[1]}/${splitSymbol[2]}`;
-    const exchange = splitSymbol[0].toLowerCase() as ExchangeName;
+    this.candleListenerGuid = listenerGuid;
+    this.resetCache = onResetCacheNeededCallback;
 
     this.chartController.addCandleUpdateListener(this.candleUpdater);
     this.tradeHistoryController.addTradeUpdateListener(this.priceUpdaterByTrade);
     this.chartController.initCandles();
   }
 
-  unsubscribeBars(): void {
-    this.chartController.closeUpdateCandle();
-    this.tradeHistoryController.removeTradeUpdateListener(this.priceUpdaterByTrade);
+  unsubscribeBars(listenerGuid: string): void {
+    if (this.candleListenerGuid === listenerGuid) {
+      this.chartController.closeUpdateCandle();
+      this.tradeHistoryController.removeTradeUpdateListener(this.priceUpdaterByTrade);
+      this.candleListenerGuid = undefined;
+    }
   }
 
   calculateHistoryDepth(resolution: string) {

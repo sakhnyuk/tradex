@@ -88,6 +88,8 @@ export const createChartOptions = (params: ChartParams) => {
       'context_menus',
       'go_to_date',
       'control_bar',
+      'use_localstorage_for_settings',
+      'save_chart_properties_to_local_storage',
     ],
     enabled_features: ['same_data_requery'],
     custom_css_url: themeType === ThemeType.DARK ? './night.css' : './day.css',
