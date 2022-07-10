@@ -10,7 +10,7 @@ import { observer } from 'mobx-react-lite';
 import { ListItemChange } from './ListItemChange';
 
 interface PairListProps {
-  pairListModel: PairListModel | null;
+  pairListModel: PairListModel;
   activeMarket: string;
   setPair: (pair: TradeSymbol) => void;
   toggleWatchlist: (watch: PairInfoModel) => void;
@@ -23,10 +23,9 @@ interface RowRenderer {
   style: any;
 }
 
-// Render your list
 const PairList: React.FC<PairListProps> = observer(
   ({ pairListModel, activeMarket, setPair, toggleWatchlist, watchlist }) => {
-    const pairList = pairListModel?.mapped.getListByMarket(activeMarket) ?? [];
+    const pairList = pairListModel.mapped.getListByMarket(activeMarket);
 
     const rowRenderer = ({
       index, // Index of row
@@ -34,7 +33,7 @@ const PairList: React.FC<PairListProps> = observer(
       style, // Style object to be applied to row (to position it);
     }: RowRenderer) => {
       const pair = pairList[index];
-      const pairInfo = pairListModel?.fullList[pair];
+      const pairInfo = pairListModel.fullList[pair];
 
       if (!pairInfo) {
         return null;

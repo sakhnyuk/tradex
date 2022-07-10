@@ -14,18 +14,17 @@ export class TradesViewController {
   ) {
     makeObservable(this);
 
-    this.exchangeController.addExchangeUpdateListener(() => {
-      this.isLoading = true;
-      this.trades = [];
-    });
-
-    this.exchangeController.addPairUpdateListener(() => {
-      this.isLoading = true;
-      this.trades = [];
-    });
+    this.exchangeController.addExchangeUpdateListener(this.resetTrades);
+    this.exchangeController.addPairUpdateListener(this.resetTrades);
 
     this.tradeHistoryController.initTrades(this.addTrade);
   }
+
+  @action
+  private resetTrades = () => {
+    this.isLoading = true;
+    this.trades = [];
+  };
 
   @action
   private addTrade = (trade: TradeInfoModel) => {

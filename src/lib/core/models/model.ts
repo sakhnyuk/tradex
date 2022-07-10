@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { defaultsDeep, map } from 'lodash';
+import map from 'lodash/map';
+import defaultsDeep from 'lodash/defaultsDeep';
 
 /**
  * Base method for all the entities or non-entities that has

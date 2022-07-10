@@ -32,4 +32,8 @@ export class PairListController {
   public addPairListUpdateListener = (handler: PairListUpdateHandler): void => {
     this.pairListChanged.add(handler);
   };
+
+  public removePairListUpdateListener = (handler: PairListUpdateHandler): void => {
+    this.pairListChanged.remove(handler);
+  };
 }

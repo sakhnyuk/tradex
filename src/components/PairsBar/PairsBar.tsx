@@ -37,6 +37,12 @@ const PairsBar: React.FC = observer(() => {
 
   useEffect(() => {
     pairViewController.getPairList();
+
+    pairViewController.subscribePairListUpdate();
+
+    return () => {
+      pairViewController.unsubscribePairListUpdate();
+    };
   }, [pairViewController]);
 
   const onChangeSearch = useCallback(
@@ -105,15 +111,17 @@ const PairsBar: React.FC = observer(() => {
         ))}
       </div> */}
 
-      <List id="drawerList" className="h-[calc(100%-98px)] overflow-hidden p-0 outline-none">
-        <PairList
-          pairListModel={pairViewController.pairList}
-          activeMarket={pairViewController.activeMarket}
-          setPair={(pair: TradeSymbol) => onPairClick(pair)}
-          toggleWatchlist={() => {}}
-          watchlist={[]}
-        />
-      </List>
+      {pairViewController.pairList && (
+        <List className="h-[calc(100%-98px)] overflow-hidden p-0 outline-none">
+          <PairList
+            pairListModel={pairViewController.pairList}
+            activeMarket={pairViewController.activeMarket}
+            setPair={(pair: TradeSymbol) => onPairClick(pair)}
+            toggleWatchlist={() => {}}
+            watchlist={[]}
+          />
+        </List>
+      )}
     </>
   );
 });
