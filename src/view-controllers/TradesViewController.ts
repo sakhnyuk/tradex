@@ -13,6 +13,7 @@ export class TradesViewController {
     @Inject() private tradeHistoryController: TradeHistoryController,
   ) {
     makeObservable(this);
+
     this.exchangeController.addExchangeUpdateListener(() => {
       this.isLoading = true;
       this.trades = [];

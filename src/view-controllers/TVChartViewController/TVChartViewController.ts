@@ -40,6 +40,8 @@ export class TVChartViewController {
     this.exchangeController.addPairUpdateListener(this.refetchData);
     this.coreViewController.addOnlineStatusUpdateListener((isOnline) => {
       if (isOnline) {
+        this.tvDataFeed.resetCache?.();
+        this.tvWidget?.activeChart().resetData();
         this.refetchData();
       }
     });
